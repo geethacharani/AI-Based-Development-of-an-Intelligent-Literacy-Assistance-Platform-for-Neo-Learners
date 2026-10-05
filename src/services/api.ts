@@ -28,6 +28,10 @@ export const apiClient = {
             });
 
             if (!response.ok) {
+                const contentType = response.headers.get('content-type') || '';
+                if (response.status === 405 || response.status === 404 || response.status === 502 || response.status === 503 || contentType.includes('text/html')) {
+                    throw new Error('BACKEND_OFFLINE');
+                }
                 const errorData = await response.json().catch(() => ({}));
                 let errorMessage = errorData.detail || errorData.message;
                 if (!errorMessage && typeof errorData === 'object' && Object.keys(errorData).length > 0) {
@@ -38,10 +42,21 @@ export const apiClient = {
                 throw new Error(errorMessage || `API Error: ${response.status}`);
             }
 
+            const contentType = response.headers.get('content-type') || '';
+            if (contentType.includes('text/html')) {
+                throw new Error('BACKEND_OFFLINE');
+            }
+
             return await response.json();
         } catch (err: any) {
             // Return custom flag if backend is unreachable so service layer can use fallback mock store smoothly
-            if (err.name === 'TypeError' || err.message?.includes('Failed to fetch')) {
+            if (
+                err.name === 'TypeError' ||
+                err.message?.includes('Failed to fetch') ||
+                err.message === 'BACKEND_OFFLINE' ||
+                err.message?.includes('405') ||
+                err.message?.includes('404')
+            ) {
                 throw new Error('BACKEND_OFFLINE');
             }
             throw err;

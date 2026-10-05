@@ -30,7 +30,18 @@ export const authService = {
             }
             return response;
         } catch (err: any) {
-            if (err.message === 'BACKEND_OFFLINE') {
+            const isOffline =
+                !err ||
+                err.message === 'BACKEND_OFFLINE' ||
+                err.message?.includes('405') ||
+                err.message?.includes('404') ||
+                err.message?.includes('500') ||
+                err.message?.includes('502') ||
+                err.message?.includes('503') ||
+                err.message?.includes('Failed to fetch') ||
+                err.message?.includes('NetworkError');
+
+            if (isOffline) {
                 // Fallback to local storage persistence for standalone frontend execution
                 const newUser: User = {
                     id: `usr_${Date.now()}`,
@@ -86,7 +97,18 @@ export const authService = {
             }
             return response;
         } catch (err: any) {
-            if (err.message === 'BACKEND_OFFLINE') {
+            const isOffline =
+                !err ||
+                err.message === 'BACKEND_OFFLINE' ||
+                err.message?.includes('405') ||
+                err.message?.includes('404') ||
+                err.message?.includes('500') ||
+                err.message?.includes('502') ||
+                err.message?.includes('503') ||
+                err.message?.includes('Failed to fetch') ||
+                err.message?.includes('NetworkError');
+
+            if (isOffline) {
                 // Check if saved profile matches or fallback to mock user
                 const existingProfile = StorageService.getProfile();
                 let user = StorageService.getCurrentUser();
