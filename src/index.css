@@ -1,0 +1,325 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: #F5F8FE;
+    background-image: 
+      radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+      radial-gradient(circle at 90% 12%, rgba(20, 184, 166, 0.07) 0px, transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.06) 0px, transparent 50%),
+      radial-gradient(circle at 15% 85%, rgba(59, 130, 246, 0.07) 0px, transparent 50%),
+      linear-gradient(135deg, #F0F5FE 0%, #F5F2FE 40%, #EFFCF9 75%, #F8F5FF 100%);
+    background-attachment: fixed;
+    color: #0F172A;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+}
+
+/* Learning App Pattern Utilities */
+.bg-learning-dots {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.10) 1.2px, transparent 1.2px);
+  background-size: 26px 26px;
+}
+
+/* Glassmorphism & Soft UI Styles */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(30, 41, 59, 0.04);
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 via-brand-500 to-teal-600;
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, rgba(13, 148, 136, 0.08) 35%, rgba(248, 250, 252, 0) 70%);
+}
+
+/* Subtle Micro-Animations for Floating Elements (4–7px movement maximum, slow & smooth) */
+@keyframes float-subtle-1 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes float-subtle-2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(5px); }
+}
+
+@keyframes float-subtle-3 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes float-subtle-4 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(6px); }
+}
+
+@keyframes float-subtle-5 {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-5px) scale(1.02); }
+}
+
+@keyframes float-subtle-6 {
+  0%, 100% { transform: translateY(0px); opacity: 0.85; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+
+@keyframes float-path-1 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes float-path-2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(4px); }
+}
+
+@keyframes float-ai-teacher {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes pulse-subtle-glow {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50% { opacity: 0.40; transform: scale(1.02); }
+}
+
+/* 3D Floating Animations for Decorative Background with Floating Shadow Effects */
+@keyframes float-3d-left-1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1deg);
+    filter: drop-shadow(0 6px 8px rgba(99, 102, 241, 0.12));
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.8deg) scale(1.01);
+    filter: drop-shadow(0 14px 16px rgba(99, 102, 241, 0.06));
+  }
+}
+
+@keyframes float-3d-left-2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(2deg);
+    filter: drop-shadow(0 4px 6px rgba(99, 102, 241, 0.10));
+  }
+  50% {
+    transform: translateY(6px) rotate(-0.5deg) scale(0.99);
+    filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.16));
+  }
+}
+
+@keyframes float-3d-left-3 {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1.5deg);
+    filter: drop-shadow(0 5px 8px rgba(20, 184, 166, 0.12));
+  }
+  50% {
+    transform: translateY(-6px) rotate(0.5deg);
+    filter: drop-shadow(0 11px 14px rgba(20, 184, 166, 0.06));
+  }
+}
+
+@keyframes float-3d-left-4 {
+  0%, 100% {
+    transform: translateY(0px) rotate(1deg);
+    filter: drop-shadow(0 6px 9px rgba(99, 102, 241, 0.12));
+  }
+  50% {
+    transform: translateY(-7px) rotate(-1deg) scale(1.015);
+    filter: drop-shadow(0 13px 16px rgba(99, 102, 241, 0.06));
+  }
+}
+
+@keyframes float-3d-left-star {
+  0%, 100% {
+    transform: translateY(0px) scale(0.98) rotate(0deg);
+    opacity: 0.65;
+    filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.35));
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02) rotate(3deg);
+    opacity: 0.85;
+    filter: drop-shadow(0 4px 10px rgba(245, 158, 11, 0.50));
+  }
+}
+
+@keyframes float-3d-right-1 {
+  0%, 100% {
+    transform: translateY(0px) rotate(1.2deg);
+    filter: drop-shadow(0 6px 8px rgba(168, 85, 247, 0.12));
+  }
+  50% {
+    transform: translateY(-7px) rotate(-0.8deg) scale(1.01);
+    filter: drop-shadow(0 13px 16px rgba(168, 85, 247, 0.06));
+  }
+}
+
+@keyframes float-3d-right-2 {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1deg);
+    filter: drop-shadow(0 5px 7px rgba(99, 102, 241, 0.11));
+  }
+  50% {
+    transform: translateY(6px) rotate(1deg) scale(0.99);
+    filter: drop-shadow(0 2px 4px rgba(99, 102, 241, 0.17));
+  }
+}
+
+@keyframes float-3d-right-3 {
+  0%, 100% {
+    transform: translateY(0px) rotate(1.5deg);
+    filter: drop-shadow(0 4px 7px rgba(20, 184, 166, 0.11));
+  }
+  50% {
+    transform: translateY(-6px) rotate(-0.5deg);
+    filter: drop-shadow(0 10px 13px rgba(20, 184, 166, 0.06));
+  }
+}
+
+@keyframes float-3d-right-4 {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1.5deg);
+    filter: drop-shadow(0 6px 9px rgba(168, 85, 247, 0.12));
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.8deg) scale(1.015);
+    filter: drop-shadow(0 14px 17px rgba(168, 85, 247, 0.06));
+  }
+}
+
+@keyframes float-3d-right-star {
+  0%, 100% {
+    transform: translateY(0px) scale(0.98) rotate(0deg);
+    opacity: 0.65;
+    filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.35));
+  }
+  50% {
+    transform: translateY(-5px) scale(1.02) rotate(-3deg);
+    opacity: 0.85;
+    filter: drop-shadow(0 4px 10px rgba(245, 158, 11, 0.50));
+  }
+}
+
+@keyframes path-pulse-subtle {
+  0%, 100% {
+    opacity: 0.30;
+    transform: translateY(0px);
+  }
+  50% {
+    opacity: 0.45;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes path-pulse-subtle-right {
+  0%, 100% {
+    opacity: 0.28;
+    transform: translateY(0px);
+  }
+  50% {
+    opacity: 0.42;
+    transform: translateY(4px);
+  }
+}
+
+/* Floating animation classes with diverse durations */
+.animate-float-subtle-1 { animation: float-subtle-1 8s ease-in-out infinite; }
+.animate-float-subtle-2 { animation: float-subtle-2 10s ease-in-out infinite; }
+.animate-float-subtle-3 { animation: float-subtle-3 6s ease-in-out infinite; }
+.animate-float-subtle-4 { animation: float-subtle-4 12s ease-in-out infinite; }
+.animate-float-subtle-5 { animation: float-subtle-5 7s ease-in-out infinite; }
+.animate-float-subtle-6 { animation: float-subtle-6 9s ease-in-out infinite; }
+.animate-float-path-1 { animation: float-path-1 12s ease-in-out infinite; }
+.animate-float-path-2 { animation: float-path-2 14s ease-in-out infinite; }
+.animate-float-ai-teacher { animation: float-ai-teacher 6s ease-in-out infinite; }
+.animate-glow-pulse { animation: pulse-subtle-glow 7s ease-in-out infinite; }
+
+/* 3D Floating animation classes */
+.animate-float-3d-left-1 { animation: float-3d-left-1 8.5s ease-in-out infinite; }
+.animate-float-3d-left-2 { animation: float-3d-left-2 11s ease-in-out infinite; }
+.animate-float-3d-left-3 { animation: float-3d-left-3 7.5s ease-in-out infinite; }
+.animate-float-3d-left-4 { animation: float-3d-left-4 13s ease-in-out infinite; }
+.animate-float-3d-left-star { animation: float-3d-left-star 9s ease-in-out infinite; }
+
+.animate-float-3d-right-1 { animation: float-3d-right-1 9.5s ease-in-out infinite; }
+.animate-float-3d-right-2 { animation: float-3d-right-2 12.5s ease-in-out infinite; }
+.animate-float-3d-right-3 { animation: float-3d-right-3 8s ease-in-out infinite; }
+.animate-float-3d-right-4 { animation: float-3d-right-4 14s ease-in-out infinite; }
+.animate-float-3d-right-star { animation: float-3d-right-star 8.5s ease-in-out infinite; }
+
+.animate-path-left { animation: path-pulse-subtle 12s ease-in-out infinite; }
+.animate-path-right { animation: path-pulse-subtle-right 14s ease-in-out infinite; }
+
+/* Staggered animation delays for natural asynchronous motion */
+.anim-delay-1 { animation-delay: -1.5s; }
+.anim-delay-2 { animation-delay: -3s; }
+.anim-delay-3 { animation-delay: -4.5s; }
+.anim-delay-4 { animation-delay: -6s; }
+.anim-delay-5 { animation-delay: -2s; }
+.anim-delay-6 { animation-delay: -5s; }
+
+/* Accessibility: Disable floating animations when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-subtle-1,
+  .animate-float-subtle-2,
+  .animate-float-subtle-3,
+  .animate-float-subtle-4,
+  .animate-float-subtle-5,
+  .animate-float-subtle-6,
+  .animate-float-path-1,
+  .animate-float-path-2,
+  .animate-float-ai-teacher,
+  .animate-glow-pulse,
+  .animate-float-3d-left-1,
+  .animate-float-3d-left-2,
+  .animate-float-3d-left-3,
+  .animate-float-3d-left-4,
+  .animate-float-3d-left-star,
+  .animate-float-3d-right-1,
+  .animate-float-3d-right-2,
+  .animate-float-3d-right-3,
+  .animate-float-3d-right-4,
+  .animate-float-3d-right-star,
+  .animate-path-left,
+  .animate-path-right {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Smooth Focus Rings for Accessibility */
+*:focus-visible {
+  @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-slate-50;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
