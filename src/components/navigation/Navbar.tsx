@@ -14,7 +14,8 @@ import {
     BookOpen,
     BarChart2,
     Globe,
-    ChevronDown
+    ChevronDown,
+    Shield
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -246,6 +247,15 @@ export const Navbar: React.FC = () => {
                                                 {getTranslation(currentSupportLangCode, 'nav_assessment')}
                                             </Link>
 
+                                            <Link
+                                                to="/admin"
+                                                onClick={() => setIsProfileDropdownOpen(false)}
+                                                className="w-full text-left px-4 py-2.5 text-sm font-medium text-purple-700 hover:bg-purple-50 flex items-center gap-2 font-bold"
+                                            >
+                                                <Shield className="w-4 h-4 text-purple-600" />
+                                                {getTranslation(currentSupportLangCode, 'prof_admin_console') || 'Admin Dashboard'}
+                                            </Link>
+
                                             <button
                                                 onClick={handleLogout}
                                                 className="w-full text-left px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 flex items-center gap-2 mt-1 border-t border-slate-100"
@@ -405,6 +415,14 @@ export const Navbar: React.FC = () => {
                             >
                                 <BookOpen className="w-5 h-5 text-teal-600" />
                                 Take Assessment
+                            </Link>
+                            <Link
+                                to="/admin"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block px-4 py-3 text-base font-bold text-purple-700 rounded-2xl hover:bg-purple-50 flex items-center gap-3"
+                            >
+                                <Shield className="w-5 h-5 text-purple-600" />
+                                Admin Dashboard
                             </Link>
 
                             <div className="pt-4 border-t border-slate-100">

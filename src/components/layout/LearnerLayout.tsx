@@ -335,38 +335,34 @@ export const LearnerLayout: React.FC = () => {
                             </span>
                         </button>
 
-                        {/* [ ⚡ Admin Dashboard ] (Only visible to admin users) */}
-                        {isAdmin && (
-                            <Link
-                                to="/admin"
-                                className="flex items-center justify-between p-4 bg-white/95 backdrop-blur-xs border border-purple-200/80 rounded-2xl hover:border-purple-300 hover:bg-purple-50/40 hover:shadow-md hover:-translate-y-0.5 transition-all group cursor-pointer"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
-                                        <Shield className="w-5 h-5" />
-                                    </div>
-                                    <div className="text-left">
-                                        <span className="block text-sm font-extrabold text-slate-800 group-hover:text-purple-600 transition-colors">
-                                            {t('admin_dash_title')}
-                                        </span>
-                                        <span className="text-[11px] text-slate-400 font-medium">
-                                            {t('admin_dash_desc')}
-                                        </span>
-                                    </div>
+                        {/* [ ⚡ Admin Dashboard ] */}
+                        <Link
+                            to="/admin"
+                            className="flex items-center justify-between p-4 bg-white/95 backdrop-blur-xs border border-purple-200/80 rounded-2xl hover:border-purple-300 hover:bg-purple-50/40 hover:shadow-md hover:-translate-y-0.5 transition-all group cursor-pointer"
+                        >
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
+                                    <Shield className="w-5 h-5" />
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 bg-purple-100 text-purple-700 rounded-lg">
-                                    {t('admin_dash_badge')}
-                                </span>
-                            </Link>
-                        )}
+                                <div className="text-left">
+                                    <span className="block text-sm font-extrabold text-slate-800 group-hover:text-purple-600 transition-colors">
+                                        {t('admin_dash_title')}
+                                    </span>
+                                    <span className="text-[11px] text-slate-400 font-medium">
+                                        {t('admin_dash_desc')}
+                                    </span>
+                                </div>
+                            </div>
+                            <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 bg-purple-100 text-purple-700 rounded-lg">
+                                {t('admin_dash_badge')}
+                            </span>
+                        </Link>
 
                         {/* [ ↪ Logout ] */}
                         <button
                             type="button"
                             onClick={handleLogout}
-                            className={`flex items-center justify-between p-4 bg-white/95 backdrop-blur-xs border border-slate-200/80 rounded-2xl hover:border-rose-300 hover:bg-rose-50/40 hover:shadow-md hover:-translate-y-0.5 transition-all group text-left cursor-pointer ${
-                                !isAdmin ? 'sm:col-span-2 md:col-span-1' : ''
-                            }`}
+                            className="flex items-center justify-between p-4 bg-white/95 backdrop-blur-xs border border-slate-200/80 rounded-2xl hover:border-rose-300 hover:bg-rose-50/40 hover:shadow-md hover:-translate-y-0.5 transition-all group text-left cursor-pointer"
                         >
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold group-hover:scale-105 transition-transform">

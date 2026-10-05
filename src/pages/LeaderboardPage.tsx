@@ -46,6 +46,71 @@ export const LeaderboardPage: React.FC = () => {
     const [leagueName, setLeagueName] = useState('Diamond League 💎');
     const [resetDays, setResetDays] = useState(3);
 
+    const getLocalizedTier = (rawTier: string): string => {
+        const lang = (supportLangCode || 'en').toLowerCase().slice(0, 2);
+        const tierTranslations: Record<string, Record<string, string>> = {
+            diamond: {
+                en: 'Diamond 💎',
+                kn: 'ವಜ್ರ 💎',
+                te: 'వజ్రం 💎',
+                ta: 'வைரம் 💎',
+                hi: 'हीरा 💎',
+                ml: 'ഡയമണ്ട് 💎'
+            },
+            diamond_league: {
+                en: 'Diamond League 💎',
+                kn: 'ವಜ್ರ ಲೀಗ್ 💎',
+                te: 'డైమండ్ లీగ్ 💎',
+                ta: 'வைர லீக் 💎',
+                hi: 'डायमंड लीग 💎',
+                ml: 'ഡയമണ്ട് ലീഗ് 💎'
+            },
+            gold: {
+                en: 'Gold 🥇',
+                kn: 'ಚಿನ್ನ 🥇',
+                te: 'బంగారం 🥇',
+                ta: 'தங்கம் 🥇',
+                hi: 'स्वर्ण 🥇',
+                ml: 'സ്വർണം 🥇'
+            },
+            silver: {
+                en: 'Silver 🥈',
+                kn: 'ಬೆಳ್ಳಿ 🥈',
+                te: 'వెండి 🥈',
+                ta: 'வெள்ளி 🥈',
+                hi: 'रजत 🥈',
+                ml: 'വെള്ളി 🥈'
+            },
+            bronze: {
+                en: 'Bronze 🥉',
+                kn: 'ಕಂಚು 🥉',
+                te: 'కాంస్యం 🥉',
+                ta: 'வெண்கலம் 🥉',
+                hi: 'कांस्य 🥉',
+                ml: 'വെങ്കലം 🥉'
+            },
+            emerald: {
+                en: 'Emerald 💚',
+                kn: 'ಪಚ್ಚೆ 💚',
+                te: 'మరకతం 💚',
+                ta: 'மரகதம் 💚',
+                hi: 'पन्ना 💚',
+                ml: 'മരതകം 💚'
+            }
+        };
+
+        const lower = rawTier.toLowerCase();
+        let key = 'diamond';
+        if (lower.includes('league')) key = 'diamond_league';
+        else if (lower.includes('gold')) key = 'gold';
+        else if (lower.includes('silver')) key = 'silver';
+        else if (lower.includes('bronze')) key = 'bronze';
+        else if (lower.includes('emerald')) key = 'emerald';
+        else if (lower.includes('diamond')) key = 'diamond';
+
+        return tierTranslations[key]?.[lang] || tierTranslations[key]?.['en'] || rawTier;
+    };
+
     useEffect(() => {
         const fetchLeaderboard = async () => {
             setIsLoading(true);
@@ -225,7 +290,7 @@ export const LeaderboardPage: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-4 bg-slate-800/80 backdrop-blur-md p-4 rounded-2xl border border-slate-700/80 text-xs">
                         <div className="text-center px-2">
                             <div className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">{t('lb_current_division')}</div>
-                            <div className="text-base font-extrabold text-amber-400">{leagueName}</div>
+                            <div className="text-base font-extrabold text-amber-400">{getLocalizedTier(leagueName)}</div>
                         </div>
                         <div className="w-px h-8 bg-slate-700" />
                         <div className="text-center px-2">
@@ -491,7 +556,7 @@ export const LeaderboardPage: React.FC = () => {
                                         {/* League Tier */}
                                         <td className="py-4 px-6 whitespace-nowrap text-right">
                                             <span className="px-3 py-1 bg-slate-800 text-slate-200 border border-slate-700 rounded-full font-bold text-xs">
-                                                {entry.league_tier}
+                                                {getLocalizedTier(entry.league_tier)}
                                             </span>
                                         </td>
                                     </tr>

@@ -48,6 +48,201 @@ export const LearningPathPage: React.FC = () => {
 
     const supportLangCode = profile?.comfortable_language?.code || 'en';
     const { t } = useTranslation();
+    const lang = (supportLangCode || 'en').toLowerCase().slice(0, 2);
+
+    const getLocalizedSectionTitle = (unitNumber: number, fallback: string): string => {
+        const titles: Record<number, Record<string, string>> = {
+            1: {
+                en: 'Foundations & Script',
+                ta: 'அடிப்படைகள் & எழுத்துக்கள்',
+                te: 'పునాదులు & లిపి',
+                kn: 'ಮೂಲ ಅಡಿಪಾಯಗಳು & ಲಿಪಿ',
+                hi: 'बुनियाद और लिपि',
+                ml: 'അടിസ്ഥാനങ്ങൾ & ലിപി'
+            },
+            2: {
+                en: 'Core Vocabulary & Sentences',
+                ta: 'முக்கிய சொற்களஞ்சியம் & வாக்கியங்கள்',
+                te: 'ముఖ్య పదజాలం & వాక్యాలు',
+                kn: 'ಪ್ರಮುಖ ಶಬ್ದಕೋಶ & ವಾಕ್ಯಗಳು',
+                hi: 'मुख्य शब्दावली और वाक्य',
+                ml: 'പ്രധാന പദാവലി & വാക്യങ്ങൾ'
+            },
+            3: {
+                en: 'Reading, Writing & Comprehension',
+                ta: 'வாசிப்பு, எழுதுதல் & புரிதல்',
+                te: 'చదవడం, రాయడం & గ్రహణ శక్తి',
+                kn: 'ಓದುವಿಕೆ, ಬರವಣಿಗೆ & ಗ್ರಹಿಕೆ',
+                hi: 'पठन, लेखन और समझ',
+                ml: 'വായന, എഴുത്ത് & ഗ്രഹണം'
+            },
+            4: {
+                en: 'Practical Communication',
+                ta: 'நடைமுறை உரையாடல்',
+                te: 'ఆచరణాత్మక సంభాషణ',
+                kn: 'ಪ್ರಾಯೋಗಿಕ ಸಂವಹನ',
+                hi: 'व्यावहारिक संवाद',
+                ml: 'പ്രായോഗിക ആശയവിനിമയം'
+            },
+            5: {
+                en: 'Confidence & Fluency',
+                ta: 'நம்பிக்கை & சரளத்தன்மை',
+                te: 'ఆత్మవిశ్వాసం & ధారాళత',
+                kn: 'ಆತ್ಮವಿಶ್ವಾಸ & ಧಾರಾಳತೆ',
+                hi: 'आत्मविश्वास और प्रवाह',
+                ml: 'ആത്മവിശ്വാസം & ഒഴുക്ക്'
+            },
+            6: {
+                en: 'Independent Language Mastery',
+                ta: 'சுயாதீன மொழித் தேர்ச்சி',
+                te: 'స్వతంత్ర భాషా నైపుణ్యం',
+                kn: 'ಸ್ವತಂತ್ರ ಭಾಷಾ ಪ್ರವೀಣತೆ',
+                hi: 'स्वतंत्र भाषा प्रवीणता',
+                ml: 'സ്വതന്ത്ര ഭാഷാ വൈദഗ്ദ്ധ്യം'
+            }
+        };
+
+        return titles[unitNumber]?.[lang] || titles[unitNumber]?.['en'] || fallback.replace(/^Section \d+:\s*/, '');
+    };
+
+    const getLocalizedSectionDesc = (unitNumber: number, fallback: string): string => {
+        const descs: Record<number, Record<string, string>> = {
+            1: {
+                en: 'Build your firm foundation in script, sound identification, basic phonics, numbers, and starter greetings.',
+                ta: 'எழுத்துக்கள், ஒலி அடையாளம், அடிப்படை ஒலிப்பு, எண்கள் மற்றும் வாழ்த்துக்களில் வலுவான அடித்தளத்தை உருவாக்குங்கள்.',
+                te: 'లిపి, ధ్వనుల గుర్తింపు, ప్రాథమిక ఉచ్చారణ, సంఖ్యలు మరియు శుభాకాంక్షలలో బలమైన పునాదిని నిర్మించుకోండి.',
+                kn: 'ಲಿಪಿ, ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ, ಮೂಲ ಉಚ್ಚಾರಣೆ, ಸಂಖ್ಯೆಗಳು ಮತ್ತು ಶುಭಾಶಯಗಳಲ್ಲಿ ದೃಢವಾದ ಅಡಿಪಾಯವನ್ನು ನಿರ್ಮಿಸಿ.',
+                hi: 'लिपि, ध्वनि पहचान, बुनियादी ध्वन्यात्मकता, संख्या और बुनियादी अभिवादन में मजबूत नींव बनाएं।',
+                ml: 'ലിപി, ശബ്ദം തിരിച്ചറിയൽ, അടിസ്ഥാന ഉച്ചാരണം, സംഖ്യകൾ, ആശംസകൾ എന്നിവയിൽ ഉറച്ച അടിത്തറ പണിയുക.'
+            },
+            2: {
+                en: 'Expand everyday vocabulary, master subject-object-verb sentence patterns, and participate in basic question-answer exchanges.',
+                ta: 'தினசரி சொற்களஞ்சியத்தை விரிவாக்குங்கள், வாக்கிய அமைப்புகளைக் கற்றுக் கொள்ளுங்கள், எளிய கேள்வி-பதில் உரையாடல்களில் ஈடுபடுங்கள்.',
+                te: 'రోజువారీ పదజాలాన్ని విస్తరించండి, వాక్య నిర్మాణాన్ని నేర్చుకోండి మరియు సాధారణ ప్రశ్నోత్తరాలలో పాల్గొనండి.',
+                kn: 'ದೈನಂದಿನ ಶಬ್ದಕೋಶವನ್ನು ವಿಸ್ತರಿಸಿ, ವಾಕ್ಯ ರಚನೆಯನ್ನು ಕಲಿಯಿರಿ ಮತ್ತು ಸರಳ ಪ್ರಶ್ನೋತ್ತರಗಳಲ್ಲಿ ಭಾಗವಹಿಸಿ.',
+                hi: 'दैनिक शब्दावली का विस्तार करें, वाक्य संरचना में महारत हासिल करें और सरल प्रश्न-उत्तर संवाद में भाग लें।',
+                ml: 'ദൈനംദിന പദസമ്പത്ത് വികസിപ്പിക്കുക, വാക്യഘടന മനസ്സിലാക്കുക, ലളിതമായ ചോദ്യോത്തരങ്ങളിൽ പങ്കാളിയാകുക.'
+            },
+            3: {
+                en: 'Read everyday notices and signs, comprehend multi-sentence paragraphs, and practice written character accuracy.',
+                ta: 'அன்றாட அறிவிப்புகள் மற்றும் பலகைகளை வாசியுங்கள், பத்திகளைப் புரிந்து கொள்ளுங்கள், துல்லியமாக எழுதப் பழகுங்கள்.',
+                te: 'రోజువారీ బోర్డులు మరియు నోటీసులను చదవండి, పేరాలను అర్థం చేసుకోండి, స్పష్టంగా రాయడం ప్రాక్టీస్ చేయండి.',
+                kn: 'ದೈನಂದಿನ ಸೂಚನೆಗಳನ್ನು ಓದಿ, ಪ್ಯಾರಾಗ್ರಾಫ್‌ಗಳನ್ನು ಗ್ರಹಿಸಿ, ಸ್ಪಷ್ಟವಾಗಿ ಬರೆಯಲು ಅಭ್ಯಾಸ ಮಾಡಿ.',
+                hi: 'दैनिक नोटिस और संकेत पढ़ें, अनुच्छेदों को समझें और लिखित वर्णों की सटीकता का अभ्यास करें।',
+                ml: 'ദൈനംദിന ബോർഡുകളും അറിയിപ്പുകളും വായിക്കുക, ഖണ്ഡികകൾ ഗ്രഹിക്കുക, കൃത്യമായി എഴുതി ശീലിക്കുക.'
+            },
+            4: {
+                en: 'Confidently navigate shops, transit, medical clinics, and ask for directions or assistance in everyday real-world situations.',
+                ta: 'கடைகள், பயணம், மருத்துவமனை மற்றும் வழிகேட்டல் போன்ற நிஜ வாழ்க்கை சூழல்களில் தன்னம்பிக்கையுடன் உரையாடுங்கள்.',
+                te: 'దుకాణాలు, ప్రయాణాలు, సహాయం కోరడం వంటి నిజ జీవిత పరిస్థితులలో ఆత్మవిశ్వాసంతో సంభాషించండి.',
+                kn: 'ಅಂಗಡಿಗಳು, ಪ್ರಯಾಣ, ಸಹಾಯ ಕೇಳುವುದು ಮುಂತಾದ ನೈಜ ಸಂದರ್ಭಗಳಲ್ಲಿ ಆತ್ಮವಿಶ್ವಾಸದಿಂದ ಸಂವಹಿಸಿ.',
+                hi: 'दुकानों, यात्रा, अस्पतालों और मदद मांगने जैसी वास्तविक स्थितियों में आत्मविश्वास से बात करें।',
+                ml: 'കടകൾ, യാത്ര, സഹായം ചോദിക്കൽ തുടങ്ങിയ യഥാർത്ഥ സാഹചര്യങ്ങളിൽ ആത്മവിശ്വാസത്തോടെ സംസാരിക്കുക.'
+            },
+            5: {
+                en: 'Speak naturally with native intonation, comprehend fast spoken dialogues, and converse about diverse daily topics.',
+                ta: 'இயற்கையான உச்சரிப்புடன் பேசுங்கள், வேகமான உரையாடல்களைப் புரிந்து கொள்ளுங்கள், பல தலைப்புகளில் பேசுங்கள்.',
+                te: 'సహజమైన ఉచ్చారణతో మాట్లాడండి, వేగవంతమైన సంభాషణలను అర్థం చేసుకోండి, వివిధ అంశాలపై చర్చించండి.',
+                kn: 'ನೈಸರ್ಗಿಕ ಧ್ವನಿಯಲ್ಲಿ ಮಾತನಾಡಿ, ವೇಗದ ಸಂಭಾಷಣೆಗಳನ್ನು ಗ್ರಹಿಸಿ, ವಿವಿಧ ವಿಷಯಗಳ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ.',
+                hi: 'प्राकृतिक प्रवाह के साथ बोलें, तेज बातचीत को समझें और विभिन्न विषयों पर धाराप्रवाह चर्चा करें।',
+                ml: 'സ്വാഭാവികമായ ഒഴുക്കോടെ സംസാരിക്കുക, വേഗതയേറിയ സംഭാഷണങ്ങൾ ഗ്രഹിക്കുക, വിവിധ വിഷയങ്ങളിൽ സംസാരിക്കുക.'
+            },
+            6: {
+                en: 'Achieve autonomous language mastery capable of understanding complex media, professional discourse, and nuanced cultural communication.',
+                ta: 'ஊடகங்கள், தொழில்சார் பேச்சுக்கள் மற்றும் பண்பாட்டு உரையாடல்களைப் புரிந்துகொள்ளும் முழுமையான மொழித் தேர்ச்சியை அடையுங்கள்.',
+                te: 'మీడియా, వృత్తిపరమైన సంభాషణలు మరియు సాంస్కృతిక విషయాలను స్వతంత్రంగా అర్థం చేసుకునే పరిపూర్ణత సాధించండి.',
+                kn: 'ಮಾಧ್ಯಮ, ವೃತ್ತಿಪರ ಭಾಷಣ ಮತ್ತು ಸಾಂಸ್ಕೃತಿಕ ವಿಷಯಗಳನ್ನು ಗ್ರಹಿಸುವ ಸಂಪೂರ್ಣ ಸ್ವತಂತ್ರ ಭಾಷಾ ಪ್ರವೀಣತೆಯನ್ನು ಪಡೆಯಿರಿ.',
+                hi: 'जटिल मीडिया, व्यावसायिक संवाद और सांस्कृतिक बारीकियों को समझने में पूर्ण भाषा स्वतंत्रता हासिल करें।',
+                ml: 'സങ്കീർണ്ണമായ മാധ്യമങ്ങൾ, തൊഴിൽപരമായ സംഭാഷണങ്ങൾ എന്നിവ ഗ്രഹിക്കാനുള്ള സ്വതന്ത്ര ഭാഷാ വൈദഗ്ദ്ധ്യം കൈവരിക്കുക.'
+            }
+        };
+
+        return descs[unitNumber]?.[lang] || descs[unitNumber]?.['en'] || fallback;
+    };
+
+    const getLocalizedSkill = (skill: string): string => {
+        const skillsMap: Record<string, Record<string, string>> = {
+            'character recognition': { en: 'Character recognition', ta: 'எழுத்து அடையாளம்', te: 'అక్షరాల గుర్తింపు', kn: 'ಅಕ್ಷರ ಗುರುತಿಸುವಿಕೆ', hi: 'अक्षर पहचान', ml: 'അക്ഷര തിരിച്ചറിയൽ' },
+            'basic pronunciation': { en: 'Basic pronunciation', ta: 'அடிப்படை உச்சரிப்பு', te: 'ప్రాథమిక ఉచ్చారణ', kn: 'ಮೂಲ ಉಚ್ಚಾರಣೆ', hi: 'बुनियादी उच्चारण', ml: 'അടിസ്ഥാന ഉച്ചാരണം' },
+            'greetings & etiquette': { en: 'Greetings & etiquette', ta: 'வாழ்த்துக்கள் & மரியாதை', te: 'మర్యాదలు & శుభాకాంక్షలు', kn: 'ಶುಭಾಶಯಗಳು & ನಡವಳಿಕೆ', hi: 'अभिवादन और शिष्टाचार', ml: 'ആശംസകളും മര്യാദകളും' },
+            'numbers & common starter words': { en: 'Numbers & starter words', ta: 'எண்கள் & தொடக்கச் சொற்கள்', te: 'సంఖ్యలు & ప్రాథమిక పదాలు', kn: 'ಸಂಖ್ಯೆಗಳು & ಸಾಮಾನ್ಯ ಪದಗಳು', hi: 'संख्या और शुरुआती शब्द', ml: 'സംഖ്യകളും വാക്കുകളും' },
+            'everyday vocabulary depth': { en: 'Everyday vocabulary', ta: 'அன்றாட சொல்லகராதி', te: 'రోజువారీ పదజాలం', kn: 'ದೈನಂದಿನ ಶಬ್ದಕೋಶ', hi: 'दैनिक शब्दावली विस्तार', ml: 'ദൈനംദിന പദസമ്പത്ത്' },
+            'action verbs & conjugation': { en: 'Action verbs', ta: 'செயல் வினைகள்', te: 'క్రియా రూపాలు', kn: 'ಕ್ರಿಯಾಪದಗಳು', hi: 'क्रियाएं और काल', ml: 'ക്രിയകൾ' },
+            'sov sentence formation': { en: 'Sentence formation', ta: 'வாக்கிய அமைப்பு', te: 'వాక్య నిర్మాణం', kn: 'ವಾಕ್ಯ ರಚನೆ', hi: 'वाक्य निर्माण (SOV)', ml: 'വാക്യഘടന' },
+            'question & answer patterns': { en: 'Question & answer', ta: 'கேள்வி பதில் முறைகள்', te: 'ప్రశ్నోత్తరాలు', kn: 'ಪ್ರಶ್ನೋತ್ತರಗಳು', hi: 'प्रश्न और उत्तर', ml: 'ചോദ്യോത്തരങ്ങൾ' },
+            'continuous word reading': { en: 'Word reading', ta: 'சொல் வாசிப்பு', te: 'పదాల పఠనం', kn: 'ಪದಗಳ ಓದುವಿಕೆ', hi: 'शब्द पठन', ml: 'വാക്കുകൾ വായിക്കൽ' },
+            'sentence comprehension': { en: 'Sentence comprehension', ta: 'வாக்கிய புரிதல்', te: 'వాక్య గ్రహణశక్తి', kn: 'ವಾಕ್ಯ ಗ್ರಹಿಕೆ', hi: 'वाक्य समझ', ml: 'വാക്യ ഗ്രഹണം' },
+            'reading fluency': { en: 'Reading fluency', ta: 'வாசிப்பு சரளம்', te: 'చదివే ధారాళత', kn: 'ಓದುವ ಧಾರಾಳತೆ', hi: 'पठन प्रवाह', ml: 'വായനാ ഒഴുക്ക്' },
+            'handwriting & spelling': { en: 'Spelling accuracy', ta: 'எழுத்துப்பிழை துல்லியம்', te: 'అక్షర క్రమం', kn: 'ಕಾಗುಣಿತ ನಿಖರತೆ', hi: 'वर्तनी और लेखन', ml: 'അക്ഷരത്തെറ്റില്ലാത്ത എഴുത്ത്' },
+            'real-world question formation': { en: 'Real-world questions', ta: 'நடைமுறை கேள்விகள்', te: 'నిజజీవిత ప్రశ్నలు', kn: 'ಪ್ರಾಯೋಗಿಕ ಪ್ರಶ್ನೆಗಳು', hi: 'व्यावहारिक प्रश्न निर्माण', ml: 'പ്രായോഗിക ചോദ്യങ്ങൾ' },
+            'transit & transit navigation': { en: 'Transit navigation', ta: 'பயண வழிகாட்டுதல்', te: 'ప్రయాణ మార్గాలు', kn: 'ಪ್ರಯಾಣ ಮಾರ್ಗದರ್ಶನ', hi: 'यात्रा और दिशा-निर्देश', ml: 'യാത്രാ വഴികൾ' },
+            'market & commerce dialogue': { en: 'Market & shopping', ta: 'சந்தை உரையாடல்', te: 'షాపింగ్ సంభాషణ', kn: 'ಮಾರುಕಟ್ಟೆ ಸಂಭಾಷಣೆ', hi: 'बाज़ार और खरीदारी', ml: 'വിപണി സംഭാഷണം' },
+            'emergency & health assistance': { en: 'Emergency phrases', ta: 'அவசர உதவி சொற்றொடர்', te: 'అత్యవసర సహాయం', kn: 'ತುರ್ತು ಸಹಾಯ', hi: 'आपातकालीन सहायता', ml: 'അടിയന്തര സഹായം' },
+            'multi-turn conversation': { en: 'Multi-turn conversation', ta: 'தொடர் உரையாடல்', te: 'బహుళ-సంభాషణ', kn: 'ನಿರಂತರ ಸಂಭಾಷಣೆ', hi: 'निरंतर संवाद', ml: 'തുടർ സംഭാഷണം' },
+            'speech rhythm & native intonation': { en: 'Native intonation', ta: 'இயற்கை உச்சரிப்பு', te: 'సహజ శైలి', kn: 'ನೈಸರ್ಗಿಕ ಧ್ವನಿ ಲಯ', hi: 'स्वाभाविक लय और सुर', ml: 'സ്വാഭാവിക ശൈലി' },
+            'listening to native media': { en: 'Media listening', ta: 'ஊடகக் கேட்பு', te: 'ఆడియో శ్రవణం', kn: 'ಮಾಧ್ಯಮ ಆಲಿಸುವಿಕೆ', hi: 'ऑडियो और मीडिया समझ', ml: 'ശ്രവണ ഗ്രഹണം' },
+            'idiomatic expressions': { en: 'Idiomatic expressions', ta: 'மரபுத்தொடர்கள்', te: 'సామెతలు & జాతీయాలు', kn: 'ನುಡಿಗಟ್ಟುಗಳು', hi: 'मुहावरे और लोकोक्तियाँ', ml: 'ശൈലികൾ' },
+            'autonomous comprehension': { en: 'Autonomous comprehension', ta: 'சுயாதீன புரிதல்', te: 'స్వయం గ్రహణశక్తి', kn: 'ಸ್ವತಂತ್ರ ಗ್ರಹಿಕೆ', hi: 'स्वतंत्र समझ', ml: 'സ്വതന്ത്ര ഗ്രഹണം' },
+            'register shifting (formal/informal)': { en: 'Formal / Informal', ta: 'முறைசாரா / முறைசார் பேச்சு', te: 'మర్యాదపూర్వక సంభాషణ', kn: 'ಔಪಚಾರಿಕ / ಅನೌಪಚಾರಿಕ', hi: 'औपचारिक व अनौपचारिक भाषा', ml: 'ഔദ്യോഗിക / അനൗദ്യോഗിക' },
+            'professional & civic literacy': { en: 'Professional literacy', ta: 'தொழில்சார் கல்வியறிவு', te: 'వృత్తిపరమైన అక్షరాస్యత', kn: 'ವೃತ್ತಿಪರ ಸಾಕ್ಷರತೆ', hi: 'व्यावसायिक साक्षरता', ml: 'തൊഴിൽപരമായ അറിവ്' },
+            'comprehensive bilingual mastery': { en: 'Bilingual mastery', ta: 'இருமொழித் தேர்ச்சி', te: 'ద్విభాషా ప్రావీణ్యం', kn: 'ದ್ವಿಭಾಷಾ ಪಾಂಡಿತ್ಯ', hi: 'द्विभाषी दक्षता', ml: 'ദ്വിഭാഷാ നൈപുണ്യം' }
+        };
+
+        const key = skill.toLowerCase().trim();
+        return skillsMap[key]?.[lang] || skillsMap[key]?.['en'] || skill;
+    };
+
+    const getLocalizedNodeTitle = (title: string): string => {
+        if (/alphabet & characters/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Alphabet & Characters', ta: 'எழுத்துக்கள் & வடிவங்கள்', te: 'అక్షరాలు & లిపి', kn: 'ಅಕ್ಷರಗಳು & ರೂಪಗಳು', hi: 'वर्णमाला और अक्षर', ml: 'അക്ഷരങ്ങളും ലിപിയും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/basic sounds & phonics/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Basic Sounds & Phonics', ta: 'அடிப்படை ஒலிகள் & ஒலிப்பு', te: 'ప్రాథమిక శబ్దాలు & ఉచ్చారణ', kn: 'ಮೂಲ ಧ್ವನಿಗಳು & ಉಚ್ಚಾರಣೆ', hi: 'बुनियादी ध्वनियाँ और ध्वन्यात्मकता', ml: 'അടിസ്ഥാന ശബ്ദങ്ങൾ' };
+            return tr[lang] || tr['en'];
+        }
+        if (/pronunciation basics & greetings/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Greetings & Pronunciation', ta: 'வாழ்த்துக்கள் & உச்சரிப்பு', te: 'శుభాకాంక్షలు & ఉచ్చారణ', kn: 'ಶುಭಾಶಯಗಳು & ಉಚ್ಚಾರಣೆ', hi: 'अभिवादन और उच्चारण', ml: 'ആശംസകളും ഉച്ചാരണവും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/numbers & very common words/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Numbers & Common Words', ta: 'எண்கள் & பொதுச் சொற்கள்', te: 'సంఖ్యలు & సాధారణ పదాలు', kn: 'ಸಂಖ್ಯೆಗಳು & ಸಾಮಾನ್ಯ ಪದಗಳು', hi: 'संख्या और सामान्य शब्द', ml: 'സംഖ്യകളും പൊതുവാക്കുകളും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/milestone check/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Section Milestone Check', ta: 'மைல்கல் சோதனை', te: 'మైలురాయి పరీక్ష', kn: 'ಮೈಲಿಗಲ್ಲು ಪರೀಕ್ಷೆ', hi: 'माइलस्टोन परीक्षा', ml: 'നാഴികക്കല്ല് പരിശോധന' };
+            return tr[lang] || tr['en'];
+        }
+        if (/everyday vocabulary/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Everyday Vocabulary', ta: 'அன்றாட சொற்களஞ்சியம்', te: 'రోజువారీ పదజాలం', kn: 'ದೈನಂದಿನ ಶಬ್ದಕೋಶ', hi: 'दैनिक शब्दावली', ml: 'ദൈനംദിന പദാവലി' };
+            return tr[lang] || tr['en'];
+        }
+        if (/sentence builder/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Sentence Builder', ta: 'வாக்கிய அமைப்பு', te: 'వాక్యాల నిర్మాణం', kn: 'ವಾಕ್ಯ ರಚನೆಕಾರ', hi: 'वाक्य निर्माता', ml: 'വാക്യ നിർമ്മാണം' };
+            return tr[lang] || tr['en'];
+        }
+        if (/questions & answers/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Questions & Answers', ta: 'கேள்விகள் & பதில்கள்', te: 'ప్రశ్నలు & సమాధానాలు', kn: 'ಪ್ರಶ್ನೆಗಳು & ಉತ್ತರಗಳು', hi: 'प्रश्न और उत्तर', ml: 'ചോദ്യങ്ങളും ഉത്തരങ്ങളും' };
+            return tr[lang] || tr['en'];
+        }
+        return title;
+    };
+
+    const getLocalizedNodeSubtitle = (sub: string): string => {
+        if (/listen and recognize/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Listen and recognize letters and sounds', ta: 'எழுத்துக்களையும் ஒலிகளையும் கேட்டு அறியுங்கள்', te: 'అక్షరాలను మరియు శబ్దాలను విని గుర్తించండి', kn: 'ಅಕ್ಷರಗಳನ್ನು ಮತ್ತು ಧ್ವನಿಗಳನ್ನು ಕೇಳಿ ಗುರುತಿಸಿ', hi: 'अक्षरों और ध्वनियों को सुनकर पहचानें', ml: 'അക്ഷരങ്ങളും ശബ്ദങ്ങളും കേട്ട് തിരിച്ചറിയുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/listen to native audio/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Listen to native audio and match patterns', ta: 'ஆடியோவைக் கேட்டு சரியானதை ஒப்பிடுங்கள்', te: 'ఆడియోను విని సరిపోలించండి', kn: 'ಆಡಿಯೊ ಆಲಿಸಿ ಸರಿಯಾದ್ದನ್ನು ಹೊಂದಿಸಿ', hi: 'ऑडियो सुनें और सही मिलान करें', ml: 'ഓഡിയോ കേട്ട് ശരിയായത് തിരഞ്ഞെടുക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/speak basic greetings/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Speak greetings aloud with teacher guidance', ta: 'ஆசிரியர் வழிகாட்டலுடன் உரக்கப் பேசுங்கள்', te: 'ఉపాధ్యాయుల మార్గదర్శకత్వంలో మాట్లాడండి', kn: 'ಶಿಕ್ಷಕರ ಮಾರ್ಗದರ್ಶನದಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ', hi: 'शिक्षक के मार्गदर्शन से बोलकर अभ्यास करें', ml: 'അധ്യാപകന്റെ സഹായത്തോടെ ഉറക്കെ സംസാരിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        return sub;
+    };
 
     useEffect(() => {
         loadData();
@@ -243,7 +438,7 @@ export const LearningPathPage: React.FC = () => {
                                     </div>
 
                                     <h4 className="text-sm font-black text-white leading-tight">
-                                        {unit.title.replace(/^Section \d+:\s*/, '')}
+                                        {getLocalizedSectionTitle(unit.unit_number, unit.title)}
                                     </h4>
 
                                     {/* Progress Bar */}
@@ -273,7 +468,7 @@ export const LearningPathPage: React.FC = () => {
                                         <div className="flex flex-wrap gap-1 pt-1">
                                             {unit.skills.slice(0, 2).map((sk, idx) => (
                                                 <span key={idx} className="text-[9px] font-semibold text-slate-300 bg-white/5 px-1.5 py-0.5 rounded">
-                                                    • {sk}
+                                                    • {getLocalizedSkill(sk)}
                                                 </span>
                                             ))}
                                         </div>
@@ -341,15 +536,19 @@ export const LearningPathPage: React.FC = () => {
                                             )}
                                         </div>
 
-                                        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">{unit.title}</h2>
-                                        <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed">{unit.description}</p>
+                                        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                                            {t('lp_section_label')} {unit.unit_number}: {getLocalizedSectionTitle(unit.unit_number, unit.title)}
+                                        </h2>
+                                        <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed">
+                                            {getLocalizedSectionDesc(unit.unit_number, unit.description)}
+                                        </p>
 
                                         {/* Measurable Skills Badges */}
                                         {unit.skills && (
                                             <div className="flex flex-wrap items-center gap-1.5 pt-1">
                                                 {unit.skills.map((skill, sIdx) => (
                                                     <span key={sIdx} className="text-[10px] font-bold bg-white/15 px-2 py-0.5 rounded-md text-white">
-                                                        ✓ {skill}
+                                                        ✓ {getLocalizedSkill(skill)}
                                                     </span>
                                                 ))}
                                             </div>
@@ -472,9 +671,9 @@ export const LearningPathPage: React.FC = () => {
                                             <div className="mt-2.5 text-center max-w-[220px] bg-white/95 backdrop-blur-xs p-3 rounded-2xl border border-slate-200/90 shadow-md">
                                                 <div className="flex items-center justify-center gap-1 mb-0.5">
                                                     <span className="text-xs">{getNodeIcon()}</span>
-                                                    <p className="text-xs sm:text-sm font-black text-slate-900 line-clamp-1">{node.title}</p>
+                                                    <p className="text-xs sm:text-sm font-black text-slate-900 line-clamp-1">{getLocalizedNodeTitle(node.title)}</p>
                                                 </div>
-                                                <p className="text-[11px] font-medium text-slate-500 line-clamp-1">{node.subtitle}</p>
+                                                <p className="text-[11px] font-medium text-slate-500 line-clamp-1">{getLocalizedNodeSubtitle(node.subtitle || '')}</p>
                                                 <div className="flex items-center justify-center gap-1.5 mt-1.5">
                                                     <span className="inline-flex items-center gap-1 text-[10px] font-extrabold text-brand-700 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-200">
                                                         <Star className="w-3 h-3 fill-brand-600 text-brand-600" /> +{node.xp_reward} XP
@@ -566,11 +765,11 @@ export const LearningPathPage: React.FC = () => {
                 <Modal
                     isOpen={isLessonModalOpen}
                     onClose={() => setIsLessonModalOpen(false)}
-                    title={`${t('lp_ai_teacher_lesson')} ${activeNode.title}`}
+                    title={`${t('lp_ai_teacher_lesson')} ${getLocalizedNodeTitle(activeNode.title)}`}
                 >
                     <div className="space-y-6 py-2">
                         <div className="flex items-center justify-between p-3 bg-brand-50 rounded-2xl text-xs font-bold text-brand-900 border border-brand-200">
-                            <span>{t('lp_activity_label')} {activeNode.subtitle}</span>
+                            <span>{t('lp_activity_label')} {getLocalizedNodeSubtitle(activeNode.subtitle || '')}</span>
                             <span className="flex items-center gap-1 text-amber-600">
                                 <Star className="w-4 h-4 fill-amber-500" /> {t('lp_reward_label')} +{activeNode.xp_reward} XP
                             </span>

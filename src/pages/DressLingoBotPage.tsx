@@ -356,6 +356,148 @@ export const DressLingoBotPage: React.FC = () => {
         ? CUSTOMIZATION_ITEMS.filter(item => item.category === selectedCategory)
         : [];
 
+    const getLocalizedItemName = (item: CustomizationItem): string => {
+        const lang = (supportLangCode || 'en').toLowerCase().slice(0, 2);
+        const nameMap: Record<string, Record<string, string>> = {
+            scholar_vest: {
+                en: 'Scholar Vest',
+                ta: 'கல்வி மேலங்கி (Scholar Vest)',
+                te: 'విద్వాంసుడి వెస్ట్ (Scholar Vest)',
+                kn: 'ವಿದ್ವಾಂಸರ ಅಂಗಿ (Scholar Vest)',
+                hi: 'विद्वान वेस्ट (Scholar Vest)',
+                ml: 'പണ്ഡിത കുപ്പായം (Scholar Vest)'
+            },
+            detective_trench: {
+                en: 'Detective Trench',
+                ta: 'துப்பறியும் கோட் (Detective Trench)',
+                te: 'డిటెక్టివ్ కోటు (Detective Trench)',
+                kn: 'ಪತ್ತೇದಾರಿ ಕೋಟ್ (Detective Trench)',
+                hi: 'जासूसी कोट (Detective Trench)',
+                ml: 'ഡിറ്റക്ടീവ് കോട്ട് (Detective Trench)'
+            },
+            festive_kurta: {
+                en: 'Festive Kurta',
+                ta: 'பண்டிகை குர்தா (Festive Kurta)',
+                te: 'పండుగ కుర్తా (Festive Kurta)',
+                kn: 'ಹಬ್ಬದ ಕುರ್ತಾ (Festive Kurta)',
+                hi: 'उत्सवी कुर्ता (Festive Kurta)',
+                ml: 'ഉത്സവ കുർത്ത (Festive Kurta)'
+            },
+            lingo_street_hoodie: {
+                en: 'Lingo Street Hoodie',
+                ta: 'லிங்கோ ஹூடி (Lingo Street Hoodie)',
+                te: 'లింగో స్ట్రీట్ హూడీ (Lingo Street Hoodie)',
+                kn: 'ಲಿಂಗೋ ಹುಡಿ (Lingo Street Hoodie)',
+                hi: 'लिंगो स्ट्रीट हूडी (Lingo Street Hoodie)',
+                ml: 'ലിംഗോ സ്ട്രീറ്റ് ഹൂഡി (Lingo Street Hoodie)'
+            },
+            detective_fedora: {
+                en: 'Detective Fedora',
+                ta: 'துப்பறியும் தொப்பி (Detective Fedora)',
+                te: 'డిటెక్టివ్ టోపీ (Detective Fedora)',
+                kn: 'ಪತ್ತೇದಾರಿ ಟೋಪಿ (Detective Fedora)',
+                hi: 'जासूसी टोपी (Detective Fedora)',
+                ml: 'ഡിറ്റക്ടീവ് തൊപ്പി (Detective Fedora)'
+            },
+            graduation_cap: {
+                en: 'Graduation Cap',
+                ta: 'பட்டமளிப்பு தொப்பி (Graduation Cap)',
+                te: 'పట్టభద్రుల టోపీ (Graduation Cap)',
+                kn: 'ಪದವಿ ಪ್ರದಾನ ಟೋಪಿ (Graduation Cap)',
+                hi: 'दीक्षांत टोपी (Graduation Cap)',
+                ml: 'ബിരുദദാന തൊപ്പി (Graduation Cap)'
+            },
+            language_monarch_crown: {
+                en: 'Language Monarch Crown',
+                ta: 'மொழி அரசர் கிரீடம் (Monarch Crown)',
+                te: 'భాషా రారాజు కిరీటం (Monarch Crown)',
+                kn: 'ಭಾಷಾ ರಾಜ ಕಿರೀಟ (Monarch Crown)',
+                hi: 'भाषा सम्राट मुकुट (Monarch Crown)',
+                ml: 'ഭാഷാ രാജ കിരീടം (Monarch Crown)'
+            },
+            smart_reading_glasses: {
+                en: 'Smart Reading Glasses',
+                ta: 'படிப்பு கண்ணாடி (Reading Glasses)',
+                te: 'చదువు కళ్ళద్దాలు (Reading Glasses)',
+                kn: 'ಓದುವ ಕನ್ನಡಕ (Reading Glasses)',
+                hi: 'पठन चश्मा (Reading Glasses)',
+                ml: 'വായനാ കണ്ണട (Reading Glasses)'
+            },
+            detective_monocle: {
+                en: 'Detective Monocle',
+                ta: 'ஒற்றைக் கண்ணாடி (Monocle)',
+                te: 'మోనోకిల్ (Monocle)',
+                kn: 'ಏಕ ನೇತ್ರ ಕನ್ನಡಕ (Monocle)',
+                hi: 'मोनोकल (Monocle)',
+                ml: 'മോണോക്കിൾ (Monocle)'
+            },
+            sunglasses_cool: {
+                en: 'Neon Sunglasses',
+                ta: 'சூரிய கண்ணாடி (Sunglasses)',
+                te: 'సన్ గ్లాసెస్ (Sunglasses)',
+                kn: 'ಸನ್ ಗ್ಲಾಸ್ (Sunglasses)',
+                hi: 'धूप का चश्मा (Sunglasses)',
+                ml: 'സൺഗ്ലാസ് (Sunglasses)'
+            },
+            scholar_satchel: {
+                en: 'Scholar Satchel',
+                ta: 'படிப்பு பை (Scholar Satchel)',
+                te: 'పుస్తకాల సంచి (Scholar Satchel)',
+                kn: 'ಪುಸ್ತಕದ ಚೀಲ (Scholar Satchel)',
+                hi: 'विद्वान थैला (Scholar Satchel)',
+                ml: 'പുസ്തക സഞ്ചി (Scholar Satchel)'
+            },
+            explorer_backpack: {
+                en: 'Explorer Backpack',
+                ta: 'பயண பை (Backpack)',
+                te: 'యాత్రా బ్యాక్‌ప్యాక్ (Backpack)',
+                kn: 'ಪ್ರಯಾಣ ಬೆನ್ನುಚೀಲ (Backpack)',
+                hi: 'यात्री बैग (Backpack)',
+                ml: 'യാത്രാ ബാഗ് (Backpack)'
+            },
+            golden_quill: {
+                en: 'Golden Quill',
+                ta: 'தங்க இறகு பேனா (Golden Quill)',
+                te: 'బంగారు కలం (Golden Quill)',
+                kn: 'ಚಿನ್ನದ ಗರಿ ಲೇಖನಿ (Golden Quill)',
+                hi: 'सुनहरी कलम (Golden Quill)',
+                ml: 'സ്വർണ്ണ തൂവൽ പേന (Golden Quill)'
+            },
+            magnifying_glass: {
+                en: 'Magnifying Glass',
+                ta: 'பூதக்கண்ணாடி (Magnifying Glass)',
+                te: 'భూతద్దం (Magnifying Glass)',
+                kn: 'ಭೂತಗನ್ನಡಿ (Magnifying Glass)',
+                hi: 'आवर्धक लेंस (Magnifying Glass)',
+                ml: 'ഭൂതക്കണ്ണാടി (Magnifying Glass)'
+            }
+        };
+
+        return nameMap[item.id]?.[lang] || nameMap[item.id]?.['en'] || item.name;
+    };
+
+    const getLocalizedConcept = (targetWord: string): string => {
+        const lang = (supportLangCode || 'en').toLowerCase().slice(0, 2);
+        const conceptMap: Record<string, Record<string, string>> = {
+            'vest': { en: 'Vest', ta: 'மேலங்கி (Vest)', te: 'వెస్ట్ / జాకెట్', kn: 'ಅಂಗಿ / ವೆಸ್ಟ್', hi: 'सदरिया / वेस्ट', ml: 'കുപ്പായം / വെസ്റ്റ്' },
+            'overcoat / trench coat': { en: 'Overcoat / Trench Coat', ta: 'நீள கோட் (Trench Coat)', te: 'ఓవర్‌కోటు', kn: 'ದೊಡ್ಡ ಕೋಟ್', hi: 'लंबा लबादा / कोट', ml: 'നീളൻ കോട്ട്' },
+            'kurta / traditional shirt': { en: 'Kurta / Traditional Shirt', ta: 'பாரம்பரிய குர்தா (Kurta)', te: 'కుర్తా / సాంప్రదాయ చొక్కా', kn: 'ಕುರ್ತಾ / ಉಡುಪು', hi: 'पारंपरिक कुर्ता', ml: 'പരമ്പരാഗത കുർത്ത' },
+            'hoodie / sweatshirt': { en: 'Hoodie / Sweatshirt', ta: 'ஹூடி / ஸ்வெட்டர் (Hoodie)', te: 'స్వెటర్ / హూడీ', kn: 'ಸ್ವೆಟರ್ / ಹುಡಿ', hi: 'गर्म स्वेटर / हूडी', ml: 'സ്വെറ്റർ / ഹൂഡി' },
+            'hat / fedora': { en: 'Hat / Fedora', ta: 'தொப்பி (Hat / Fedora)', te: 'టోపీ (Fedora)', kn: 'ಟೋಪಿ (Fedora)', hi: 'टोपी (Fedora)', ml: 'തൊപ്പി (Fedora)' },
+            'graduation cap / mortarboard': { en: 'Graduation Cap', ta: 'பட்டமளிப்பு தொப்பி (Graduation Cap)', te: 'పట్టభద్రుల టోపీ', kn: 'ಪದವಿ ಟೋಪಿ', hi: 'दीक्षांत टोपी', ml: 'ബിരുദദാന തൊപ്പി' },
+            'crown / tiara': { en: 'Crown / Tiara', ta: 'கிரீடம் (Crown)', te: 'కిరీటం (Crown)', kn: 'ಕಿರೀಟ (Crown)', hi: 'मुकुट / ताज (Crown)', ml: 'കിരീടം (Crown)' },
+            'glasses / spectacles': { en: 'Glasses / Spectacles', ta: 'கண்ணாடி (Glasses)', te: 'కళ్ళద్దాలు', kn: 'ಕನ್ನಡಕ', hi: 'चश्मा (Glasses)', ml: 'കണ്ണട (Glasses)' },
+            'monocle / single lens': { en: 'Monocle', ta: 'ஒற்றை லென்ஸ் (Monocle)', te: 'మోనోకిల్', kn: 'ಏಕ ನೇತ್ರ ಮಸೂರ', hi: 'एक आँख का चश्मा', ml: 'മോണോക്കിൾ' },
+            'bag / satchel': { en: 'Bag / Satchel', ta: 'தோள்பை (Satchel)', te: 'సంచి / బ్యాగ్', kn: 'ಚೀಲ (Satchel)', hi: 'थैला / बैग', ml: 'സഞ്ചി / ബാഗ്' },
+            'backpack': { en: 'Backpack', ta: 'முதுகுப்பை (Backpack)', te: 'బ్యాక్‌ప్యాక్', kn: 'ಬೆನ್ನುಚೀಲ', hi: 'पीठ का बैग (Backpack)', ml: 'ബാക്ക്‌പാക്ക്' },
+            'pen / quill': { en: 'Pen / Quill', ta: 'எழுதுகோல் / பேனா (Quill)', te: 'కలం / పెన్ను', kn: 'ಲೇಖನಿ / ಪೆನ್ನು', hi: 'कलम / पंख', ml: 'തൂവൽ പേന' },
+            'lens / magnifier': { en: 'Magnifier', ta: 'பூதக்கண்ணாடி (Magnifier)', te: 'భూతద్దం', kn: 'ಭೂತಗನ್ನಡಿ', hi: 'आवर्धक लेंस', ml: 'ഭൂതക്കണ്ണാടി' }
+        };
+
+        const key = targetWord.toLowerCase().trim();
+        return conceptMap[key]?.[lang] || conceptMap[key]?.['en'] || targetWord;
+    };
+
     const isEquipped = (category: ItemCategory, itemId: string) => {
         if (category === 'clothes') return customization.clothes === itemId;
         if (category === 'hats') return customization.hat === itemId;
@@ -716,7 +858,7 @@ export const DressLingoBotPage: React.FC = () => {
                                                         {item.icon}
                                                     </div>
                                                     <div>
-                                                        <h4 className="text-xs font-black text-slate-900">{item.name}</h4>
+                                                        <h4 className="text-xs font-black text-slate-900">{getLocalizedItemName(item)}</h4>
                                                         <div className="text-[11px] font-bold text-brand-700">
                                                             {script}
                                                         </div>
@@ -744,7 +886,7 @@ export const DressLingoBotPage: React.FC = () => {
                                             </div>
 
                                             <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                                                <span className="text-slate-500 font-medium">{cur.concept}: {item.learning.targetWord}</span>
+                                                <span className="text-slate-500 font-medium">{cur.concept}: {getLocalizedConcept(item.learning.targetWord)}</span>
                                                 <span className="text-brand-600 font-bold hover:underline">{cur.learn_equip}</span>
                                             </div>
                                         </div>
@@ -761,10 +903,10 @@ export const DressLingoBotPage: React.FC = () => {
                                         <span className="text-2xl">{activeItem.icon}</span>
                                         <div>
                                             <div className="text-[10px] font-black uppercase text-indigo-700 tracking-wider">
-                                                {cur.micro_lesson} • {activeItem.name}
+                                                {cur.micro_lesson} • {getLocalizedItemName(activeItem)}
                                             </div>
                                             <h3 className="text-base font-black text-slate-900">
-                                                {cur.target_concept}: "{activeItem.learning.targetWord}"
+                                                {cur.target_concept}: "{getLocalizedConcept(activeItem.learning.targetWord)}"
                                             </h3>
                                         </div>
                                     </div>
