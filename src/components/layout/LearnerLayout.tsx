@@ -46,9 +46,11 @@ export const LearnerLayout: React.FC = () => {
 
     const targetLanguages = [
         { code: 'hi', name: 'Hindi (हिन्दी)', flag: '🇮🇳' },
-        { code: 'en', name: 'English (English)', flag: '🇬🇧' },
-        { code: 'te', name: 'Telugu (తెలుగు)', flag: '🇮🇳' },
+        { code: 'kn', name: 'Kannada (ಕನ್ನಡ)', flag: '🇮🇳' },
         { code: 'ta', name: 'Tamil (தமிழ்)', flag: '🇮🇳' },
+        { code: 'te', name: 'Telugu (తెలుగు)', flag: '🇮🇳' },
+        { code: 'ml', name: 'Malayalam (മലയാളം)', flag: '🇮🇳' },
+        { code: 'en', name: 'English (English)', flag: '🇬🇧' },
         { code: 'es', name: 'Spanish (Español)', flag: '🇪🇸' },
         { code: 'fr', name: 'French (Français)', flag: '🇫🇷' },
         { code: 'de', name: 'German (Deutsch)', flag: '🇩🇪' },

@@ -171,6 +171,41 @@ const VOICE_STUDIO_TRANSLATIONS: Record<string, Record<string, string>> = {
     }
 };
 
+const PHRASE_MEANINGS: Record<number, Record<string, string>> = {
+    1: {
+        en: "Good morning! How are you today?",
+        hi: "शुभप्रभात! आप आज कैसे हैं?",
+        kn: "ಶುಭೋದಯ! ನೀವು ಇಂದು ಹೇಗಿದ್ದೀರಿ?",
+        te: "శుభోదయం! మీరు ఈ రోజు ఎలా ఉన్నారు?",
+        ta: "காலை வணக்கம்! நீங்கள் இன்று எப்படி இருக்கிறீர்கள்?",
+        ml: "സുപ്രഭാതം! നിങ്ങൾക്ക് ഇന്ന് സുഖമാണോ?"
+    },
+    2: {
+        en: "Welcome to LingoPath AI platform.",
+        hi: "लिंगोपाथ एआई प्लेटफॉर्म में आपका स्वागत है।",
+        kn: "ಲಿಂಗೋಪಾತ್ AI ವೇದಿಕೆಗೆ ಸುಸ್ವಾಗತ.",
+        te: "లింగోపాత్ AI ప్లాట్‌ఫారమ్‌కు స్వాగతం.",
+        ta: "லிங்கோபாத் AI தளத்திற்கு நல்வரவு.",
+        ml: "ലിംഗോപാത്ത് AI പ്ലാറ്റ്‌ഫോമിലേക്ക് സ്വാഗതം."
+    },
+    3: {
+        en: "I am learning a new language step by step every day.",
+        hi: "मैं हर दिन कदम दर कदम नई भाषा सीख रहा हूँ।",
+        kn: "ನಾನು ಪ್ರತಿದಿನ ಹಂತ ಹಂತವಾಗಿ ಹೊಸ ಭಾಷೆಯನ್ನು ಕಲಿಯುತ್ತಿದ್ದೇನೆ.",
+        te: "నేను ప్రతిరోజు కొత్త భాషను నేర్చుకుంటున్నాను.",
+        ta: "நான் தினமும் புதிய மொழியை கற்றுக்கொள்கிறேன்.",
+        ml: "ഞാൻ ദിവസവും പുതിയ ഭാഷ പഠിക്കുന്നു."
+    },
+    4: {
+        en: "Education opens up new opportunities for growth.",
+        hi: "शिक्षा व्यक्तिगत विकास के नए अवसर खोलती है।",
+        kn: "ಶಿಕ್ಷಣವು ಹೊಸ ಅವಕಾಶಗಳನ್ನು ತೆರೆಯುತ್ತದೆ.",
+        te: "విద్య వ్యక్తిగత ఎదుగుదలకు అవకాశాలను ఇస్తుంది.",
+        ta: "கல்வி தனிப்பட்ட வளர்ச்சிக்கு கதவுகளை திறக்கிறது.",
+        ml: "വിദ്യാഭ്യാസം പുതിയ അവസരങ്ങൾ തുറക്കുന്നു."
+    }
+};
+
 export const VoiceLearningPage: React.FC = () => {
     const navigate = useNavigate();
     const { profile } = useAuth();
@@ -189,6 +224,15 @@ export const VoiceLearningPage: React.FC = () => {
 
     const initialLang = (profile?.target_language?.code || 'kn').toLowerCase();
     const [selectedLang, setSelectedLang] = useState<string>(initialLang);
+
+    // Sync selected learning language when learner profile or target language updates
+    useEffect(() => {
+        if (profile?.target_language?.code) {
+            const code = profile.target_language.code.toLowerCase();
+            setSelectedLang(code);
+            setSelectedPhraseIndex(0);
+        }
+    }, [profile?.target_language?.code]);
 
     const activeLangObj = VOICE_LANGUAGES.find(l => l.code === selectedLang) || VOICE_LANGUAGES[0];
     const targetLangCode = selectedLang;
@@ -410,7 +454,7 @@ export const VoiceLearningPage: React.FC = () => {
                             🗣️ {cur.guide}: "{currentPhrase.phonetic}"
                         </div>
                         <div className="text-slate-400 font-medium">
-                            💡 {cur.meaning}: "{currentPhrase.englishMeaning}"
+                            💡 {cur.meaning}: "{PHRASE_MEANINGS[currentPhrase.id]?.[langKey] || currentPhrase.englishMeaning}"
                         </div>
                     </div>
 
