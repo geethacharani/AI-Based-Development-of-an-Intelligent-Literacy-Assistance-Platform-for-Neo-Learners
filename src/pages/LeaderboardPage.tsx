@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import { useTranslation } from '../utils/translations';
+import { getLocalizedName } from '../utils/nameLocalization';
 import {
     Trophy,
     Award,
@@ -37,7 +38,7 @@ interface LeaderboardEntry {
 
 export const LeaderboardPage: React.FC = () => {
     const { profile, user } = useAuth();
-    const { t } = useTranslation();
+    const { t, supportLangCode } = useTranslation();
     const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filterPeriod, setFilterPeriod] = useState<'weekly' | 'alltime'>('weekly');
@@ -265,7 +266,7 @@ export const LeaderboardPage: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                            <h3 className="font-extrabold text-lg text-white truncate">{top2?.full_name}</h3>
+                            <h3 className="font-extrabold text-lg text-white truncate">{getLocalizedName(top2?.full_name || '', supportLangCode)}</h3>
                             <p className="text-xs text-slate-400">{top2?.comfortable_language} → {top2?.target_language}</p>
                         </div>
                         <div className="flex items-center justify-center gap-3 pt-2 text-xs font-bold">
@@ -298,7 +299,7 @@ export const LeaderboardPage: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                            <h3 className="font-extrabold text-xl text-amber-300 truncate">{top1?.full_name}</h3>
+                            <h3 className="font-extrabold text-xl text-amber-300 truncate">{getLocalizedName(top1?.full_name || '', supportLangCode)}</h3>
                             <p className="text-xs text-amber-200/80">{top1?.comfortable_language} → {top1?.target_language}</p>
                         </div>
                         <div className="flex items-center justify-center gap-3 pt-2 text-xs font-bold">
@@ -331,7 +332,7 @@ export const LeaderboardPage: React.FC = () => {
                             </div>
                         </div>
                         <div>
-                            <h3 className="font-extrabold text-lg text-white truncate">{top3?.full_name}</h3>
+                            <h3 className="font-extrabold text-lg text-white truncate">{getLocalizedName(top3?.full_name || '', supportLangCode)}</h3>
                             <p className="text-xs text-slate-400">{top3?.comfortable_language} → {top3?.target_language}</p>
                         </div>
                         <div className="flex items-center justify-center gap-3 pt-2 text-xs font-bold">
@@ -436,7 +437,7 @@ export const LeaderboardPage: React.FC = () => {
                                                 </div>
                                                 <div>
                                                     <div className="flex items-center gap-2">
-                                                        <span className="font-extrabold text-white text-sm">{entry.full_name}</span>
+                                                        <span className="font-extrabold text-white text-sm">{getLocalizedName(entry.full_name, supportLangCode)}</span>
                                                         {isCurrentUser && (
                                                             <span className="px-2 py-0.5 bg-brand-500 text-slate-950 text-[10px] font-black tracking-wider uppercase rounded-full shadow-sm">
                                                                 {t('lb_you_label')}

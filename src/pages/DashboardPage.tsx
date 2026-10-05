@@ -8,6 +8,7 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { useTranslation } from '../utils/translations';
+import { getLocalizedName } from '../utils/nameLocalization';
 import { AlphabetExplorer } from '../components/learning/AlphabetExplorer';
 import { DailyAIChallengeCard } from '../components/learning/DailyAIChallengeCard';
 import { ExploreLingoPath } from '../components/learning/ExploreLingoPath';
@@ -43,12 +44,11 @@ export const DashboardPage: React.FC = () => {
     const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const supportLangCode = profile?.comfortable_language?.code || 'en';
+    const { t, supportLangCode } = useTranslation();
     const targetLangCode = profile?.target_language?.code || 'hi';
-    const learnerName = profile?.full_name || 'Learner';
     const targetLangName = profile?.target_language?.name || 'Hindi';
-
-    const { t } = useTranslation();
+    const rawName = profile?.full_name || 'Learner';
+    const learnerName = getLocalizedName(rawName, supportLangCode);
 
     useEffect(() => {
         const loadDashboardData = async () => {

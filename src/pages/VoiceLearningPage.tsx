@@ -24,9 +24,159 @@ import {
     HelpCircle
 } from 'lucide-react';
 
+const VOICE_STUDIO_TRANSLATIONS: Record<string, Record<string, string>> = {
+    en: {
+        back: "Back to Dashboard",
+        badge: "Speaking & Voice Studio",
+        title: "Interactive Speech Studio & Pronunciation Feedback",
+        desc: "Listen to native TTS audio, pronounce the sentence, and get real-time AI pronunciation feedback!",
+        select_lang: "Select Language to Practice:",
+        phrase: "Phrase",
+        target_in: "Target Phrase in",
+        guide: "Pronunciation Guide",
+        meaning: "Meaning",
+        tts_speed: "TTS Speech Speed:",
+        slow: "Slow (0.7x)",
+        normal: "Normal (0.9x)",
+        fast: "Fast (1.1x)",
+        listen_tts: "Listen Text-to-Speech (TTS)",
+        mic_listening: "Listening... Speak into microphone 🎙️",
+        mic_tap: "Tap microphone to start real-time Speech-to-Text",
+        stt_sub: "Real-time STT captures your voice and evaluates pronunciation clarity.",
+        live_stt: "Live STT Transcription:",
+        rec_active: "RECORDING ACTIVE",
+        score_title: "Pronunciation Score",
+        clarity: "Clarity",
+        word_breakdown: "Word Accuracy Breakdown:"
+    },
+    kn: {
+        back: "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಹಿಂತಿರುಗಿ",
+        badge: "ಧ್ವನಿ & ಉಚ್ಚಾರಣಾ ಸ್ಟುಡಿಯೋ",
+        title: "ಸಂವಾದಾತ್ಮಕ ಧ್ವನಿ ಸ್ಟುಡಿಯೋ & ಉಚ್ಚಾರಣಾ ಮಾರ್ಗದರ್ಶಿ",
+        desc: "ನೈಜ ಆಡಿಯೊ ಆಲಿಸಿ, ವಾಕ್ಯವನ್ನು ಮಾತನಾಡಿ ಮತ್ತು ತಕ್ಷಣದ AI ಉಚ್ಚಾರಣಾ ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆಯಿರಿ!",
+        select_lang: "ಅಭ್ಯಾಸ ಮಾಡಲು ಭಾಷೆ ಆರಿಸಿ:",
+        phrase: "ವಾಕ್ಯ",
+        target_in: "ಗುರಿ ವಾಕ್ಯ",
+        guide: "ಉಚ್ಚಾರಣಾ ಮಾರ್ಗದರ್ಶಿ",
+        meaning: "ಅರ್ಥ",
+        tts_speed: "ಧ್ವನಿ ವೇಗ:",
+        slow: "ನಿಧಾನ (0.7x)",
+        normal: "ಸಾಮಾನ್ಯ (0.9x)",
+        fast: "ವೇಗ (1.1x)",
+        listen_tts: "ಧ್ವನಿಯನ್ನು ಆಲಿಸಿ (TTS)",
+        mic_listening: "ಆಲಿಸುತ್ತಿದೆ... ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಮಾತನಾಡಿ 🎙️",
+        mic_tap: "ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಪ್ರಾರಂಭಿಸಲು ಮೈಕ್ ಟ್ಯಾಪ್ ಮಾಡಿ",
+        stt_sub: "ನಿಮ್ಮ ಧ್ವನಿಯನ್ನು ಗುರುತಿಸಿ ಉಚ್ಚಾರಣೆಯ ನಿಖರತೆಯನ್ನು ಮೌಲ್ಯಮಾಪನ ಮಾಡುತ್ತದೆ.",
+        live_stt: "ನೇರ ಪ್ರತಿಲೇಖನ:",
+        rec_active: "ರೆಕಾರ್ಡಿಂಗ್ ಸಕ್ರಿಯವಾಗಿದೆ",
+        score_title: "ಉಚ್ಚಾರಣಾ ಅಂಕ",
+        clarity: "ಸ್ಪಷ್ಟತೆ",
+        word_breakdown: "ಪದಗಳ ನಿಖರತೆಯ ವಿವರ:"
+    },
+    te: {
+        back: "డ్యాష్‌బోర్డ్‌కు తిరిగి వెళ్లండి",
+        badge: "వాయిస్ & ఉచ్చారణ స్టూడియో",
+        title: "ఇంటరాక్టివ్ స్పీచ్ స్టూడియో & ఉచ్చారణ ఫీడ్‌బ్యాక్",
+        desc: "స్వర ఆడియో వినండి, వాక్యాన్ని పలకండి మరియు నిజ-సమయ AI ఫీడ్‌బ్యాక్ పొందండి!",
+        select_lang: "సాధన కోసం భాషను ఎంచుకోండి:",
+        phrase: "వాక్యం",
+        target_in: "లక్ష్య వాక్యం",
+        guide: "ఉచ్చారణ గైడ్",
+        meaning: "అర్థం",
+        tts_speed: "స్పీచ్ వేగం:",
+        slow: "నెమ్మదిగా (0.7x)",
+        normal: "సాధారణం (0.9x)",
+        fast: "వేగంగా (1.1x)",
+        listen_tts: "ఆడియో వినండి (TTS)",
+        mic_listening: "వింటోంది... మైక్రోఫోన్‌లో మాట్లాడండి 🎙️",
+        mic_tap: "స్పీచ్-టు-టెక్స్ట్ ప్రారంభించడానికి మైక్‌ని నొక్కండి",
+        stt_sub: "మీ స్వరాన్ని గుర్తించి ఉచ్చారణ స్పష్టతను అంచనా వేస్తుంది.",
+        live_stt: "ప్రత్యక్ష లిప్యంతరీకరణ:",
+        rec_active: "రికార్డింగ్ యాక్టివ్",
+        score_title: "ఉచ్చారణ స్కోరు",
+        clarity: "స్పష్టత",
+        word_breakdown: "పదాల ఖచ్చితత్వం:"
+    },
+    hi: {
+        back: "डैशबोर्ड पर वापस जाएं",
+        badge: "ध्वनि एवं उच्चारण स्टूडियो",
+        title: "इंटरैक्टिव स्पीच स्टूडियो और उच्चारण फीडबैक",
+        desc: "ऑडियो सुनें, वाक्य बोलें और तत्काल एआई उच्चारण स्पष्टता प्रतिक्रिया प्राप्त करें!",
+        select_lang: "अभ्यास के लिए भाषा चुनें:",
+        phrase: "वाक्य",
+        target_in: "लक्षित वाक्य",
+        guide: "उच्चारण गाइड",
+        meaning: "अर्थ",
+        tts_speed: "बोलने की गति:",
+        slow: "धीमी (0.7x)",
+        normal: "सामान्य (0.9x)",
+        fast: "तेज़ (1.1x)",
+        listen_tts: "ऑडियो सुनें (TTS)",
+        mic_listening: "सुन रहा है... माइक्रोफ़ोन में बोलें 🎙️",
+        mic_tap: "बोलने के लिए माइक पर टैप करें",
+        stt_sub: "आपकी आवाज़ पहचानकर उच्चारण की स्पष्टता का मूल्यांकन करता है।",
+        live_stt: "लाइव ट्रांसक्रिप्शन:",
+        rec_active: "रिकॉर्डिंग सक्रिय है",
+        score_title: "उच्चारण स्कोर",
+        clarity: "स्पष्टता",
+        word_breakdown: "शब्द सटीकता विवरण:"
+    },
+    ta: {
+        back: "டாஷ்போர்டுக்குத் திரும்பு",
+        badge: "குரல் & உச்சரிப்பு அரங்கம்",
+        title: "ஊடாடும் குரல் அரங்கம் & உச்சரிப்பு கருத்து",
+        desc: "ஆடியோவைக் கேளுங்கள், வாக்கியத்தைப் பேசுங்கள் மற்றும் உடனடி AI கருத்தைப் பெறுங்கள்!",
+        select_lang: "பயிற்சிக்கு மொழியைத் தேர்வு செய்யவும்:",
+        phrase: "வாக்கியம்",
+        target_in: "இலக்கு வாக்கியம்",
+        guide: "உச்சரிப்பு வழிகாட்டி",
+        meaning: "பொருள்",
+        tts_speed: "பேச்சு வேகம்:",
+        slow: "மெதுவாக (0.7x)",
+        normal: "இயல்பான (0.9x)",
+        fast: "வேகமாக (1.1x)",
+        listen_tts: "ஆடியோவைக் கேள் (TTS)",
+        mic_listening: "கேட்கிறது... மைக்ரோஃபோனில் பேசுங்கள் 🎙️",
+        mic_tap: "பேச மைக்ரோஃபோனைத் தட்டவும்",
+        stt_sub: "உங்கள் குரலைக் கேட்டு உச்சரிப்புத் தெளிவை மதிப்பிடுகிறது.",
+        live_stt: "நேரடி உரை மாற்றம்:",
+        rec_active: "பதிவு செய்யப்படுகிறது",
+        score_title: "உச்சரிப்பு மதிப்பெண்",
+        clarity: "தெளிவு",
+        word_breakdown: "சொல் துல்லியம்:"
+    },
+    ml: {
+        back: "ഡാഷ്‌ബോർഡിലേക്ക് മടങ്ങുക",
+        badge: "വോയ്‌സ് & ഉച്ചാരണ സ്റ്റുഡിയോ",
+        title: "സംവേദനാത്മക സംസാര സ്റ്റുഡിയോ & ഉച്ചാരണ ഫീഡ്‌ബാക്ക്",
+        desc: "ഓഡിയോ കേൾക്കൂ, വാക്യം പറയൂ, തത്സമയ AI ഫീഡ്‌ബാക്ക് നേടൂ!",
+        select_lang: "പരിശീലിക്കാൻ ഭാഷ തിരഞ്ഞെടുക്കൂ:",
+        phrase: "വാക്യം",
+        target_in: "ലക്ഷ്യ വാക്യം",
+        guide: "ഉച്ചാരണ സഹായി",
+        meaning: "അർത്ഥം",
+        tts_speed: "സംസാര വേഗത:",
+        slow: "പതുക്കെ (0.7x)",
+        normal: "സാധാരണം (0.9x)",
+        fast: "വേഗത്തിൽ (1.1x)",
+        listen_tts: "ഓഡിയോ കേൾക്കൂ (TTS)",
+        mic_listening: "കേൾക്കുന്നു... മൈക്രോഫോണിൽ സംസാരിക്കൂ 🎙️",
+        mic_tap: "സംസാരിക്കാൻ മൈക്ക് തൊടുക",
+        stt_sub: "നിങ്ങളുടെ ശബ്ദം തിരിച്ചറിഞ്ഞു ഉച്ചാരണം വിലയിരുത്തുന്നു.",
+        live_stt: "തത്സമയ ടെക്സ്റ്റ്:",
+        rec_active: "റെക്കോർഡിംഗ് സജീവം",
+        score_title: "ഉച്ചാരണ സ്കോർ",
+        clarity: "വ്യക്തത",
+        word_breakdown: "വാക്കുകളുടെ കൃത്യത:"
+    }
+};
+
 export const VoiceLearningPage: React.FC = () => {
     const navigate = useNavigate();
     const { profile } = useAuth();
+    const { t, supportLangCode } = useTranslation();
+    const langKey = (supportLangCode || 'en').toLowerCase().slice(0, 2);
+    const cur = VOICE_STUDIO_TRANSLATIONS[langKey] || VOICE_STUDIO_TRANSLATIONS['en'];
 
     const VOICE_LANGUAGES = [
         { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳' },
@@ -43,7 +193,6 @@ export const VoiceLearningPage: React.FC = () => {
     const activeLangObj = VOICE_LANGUAGES.find(l => l.code === selectedLang) || VOICE_LANGUAGES[0];
     const targetLangCode = selectedLang;
     const targetLangName = activeLangObj.name;
-    const supportLangCode = profile?.comfortable_language?.code || 'en';
 
     const languagePhrases: Record<string, Array<{
         id: number;
@@ -173,20 +322,20 @@ export const VoiceLearningPage: React.FC = () => {
                     onClick={() => navigate('/dashboard')}
                     leftIcon={<ArrowLeft className="w-4 h-4" />}
                 >
-                    Back to Dashboard
+                    {cur.back}
                 </Button>
                 <Badge variant="amber" size="md" className="font-extrabold gap-1.5 bg-amber-400 text-slate-950 shadow-md">
-                    <Mic className="w-4 h-4" /> Speaking & Voice Studio ({targetLangName})
+                    <Mic className="w-4 h-4" /> {cur.badge} ({targetLangName})
                 </Badge>
             </div>
 
             {/* Title & Description */}
             <div className="text-center space-y-2">
                 <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                    Interactive Speech Studio & Pronunciation Feedback
+                    {cur.title}
                 </h1>
                 <p className="text-sm text-slate-600 max-w-lg mx-auto">
-                    Listen to native TTS audio in <strong className="text-brand-700 font-bold">{targetLangName}</strong>, pronounce the sentence, and get AI pronunciation clarity feedback!
+                    {cur.desc}
                 </p>
             </div>
 
@@ -194,7 +343,7 @@ export const VoiceLearningPage: React.FC = () => {
             <div className="bg-white p-3 rounded-2xl border-2 border-slate-200/90 shadow-sm flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2 text-xs font-black text-slate-800 px-1">
                     <Sparkles className="w-4 h-4 text-amber-500" />
-                    <span>Select Language to Practice:</span>
+                    <span>{cur.select_lang}</span>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                     {VOICE_LANGUAGES.map(l => (
@@ -237,7 +386,7 @@ export const VoiceLearningPage: React.FC = () => {
                             : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                             }`}
                     >
-                        Phrase {idx + 1} ({phrase.level})
+                        {cur.phrase} {idx + 1} ({phrase.level})
                     </button>
                 ))}
             </div>
@@ -247,7 +396,7 @@ export const VoiceLearningPage: React.FC = () => {
                 {/* Target Phrase Card with Native Script, Phonetics & Translation */}
                 <div className="p-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl text-center space-y-4 shadow-xl border border-indigo-900/50">
                     <span className="text-[11px] font-extrabold uppercase tracking-widest text-amber-400 bg-white/10 px-3.5 py-1.5 rounded-full border border-amber-400/20 inline-block shadow-inner">
-                        Target Phrase in {targetLangName}
+                        {cur.target_in} {targetLangName}
                     </span>
 
                     {/* Native Script Large Display */}
@@ -258,22 +407,22 @@ export const VoiceLearningPage: React.FC = () => {
                     {/* Phonetic Pronunciation Guide & Translation */}
                     <div className="bg-slate-900/80 p-3 rounded-2xl border border-slate-800 space-y-1 text-xs">
                         <div className="text-teal-300 font-bold italic">
-                            🗣️ Pronunciation Guide: "{currentPhrase.phonetic}"
+                            🗣️ {cur.guide}: "{currentPhrase.phonetic}"
                         </div>
                         <div className="text-slate-400 font-medium">
-                            💡 Meaning: "{currentPhrase.englishMeaning}"
+                            💡 {cur.meaning}: "{currentPhrase.englishMeaning}"
                         </div>
                     </div>
 
                     {/* Speech Rate Controls (TTS) */}
                     <div className="flex flex-wrap items-center justify-center gap-2 pt-2 border-t border-slate-800">
                         <span className="text-xs text-slate-400 font-semibold flex items-center gap-1">
-                            <Volume2 className="w-3.5 h-3.5 text-amber-400" /> TTS Speech Speed:
+                            <Volume2 className="w-3.5 h-3.5 text-amber-400" /> {cur.tts_speed}
                         </span>
                         {[
-                            { label: 'Slow (0.7x)', value: 0.7 },
-                            { label: 'Normal (0.9x)', value: 0.9 },
-                            { label: 'Fast (1.1x)', value: 1.1 },
+                            { label: cur.slow, value: 0.7 },
+                            { label: cur.normal, value: 0.9 },
+                            { label: cur.fast, value: 1.1 },
                         ].map(speed => (
                             <button
                                 key={speed.value}
@@ -295,7 +444,7 @@ export const VoiceLearningPage: React.FC = () => {
                         leftIcon={<Play className="w-4 h-4 fill-brand-600 text-brand-600" />}
                         className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold shadow-md border-none"
                     >
-                        Listen Text-to-Speech (TTS)
+                        {cur.listen_tts}
                     </Button>
                 </div>
 
@@ -314,11 +463,11 @@ export const VoiceLearningPage: React.FC = () => {
                     <div className="text-center space-y-1">
                         <span className="text-sm font-extrabold text-slate-900 block">
                             {isRecording
-                                ? 'Listening... Speak into microphone 🎙️'
-                                : 'Tap microphone to start real-time Speech-to-Text'}
+                                ? cur.mic_listening
+                                : cur.mic_tap}
                         </span>
                         <p className="text-xs text-slate-500">
-                            Real-time STT captures your voice and evaluates pronunciation clarity.
+                            {cur.stt_sub}
                         </p>
                     </div>
                 </div>
@@ -329,12 +478,12 @@ export const VoiceLearningPage: React.FC = () => {
                         <div className="flex items-center justify-between text-xs font-bold text-slate-600">
                             <span className="flex items-center gap-1.5">
                                 <Radio className={`w-3.5 h-3.5 ${isRecording ? 'text-red-500 animate-pulse' : 'text-slate-400'}`} />
-                                Live STT Transcription:
+                                {cur.live_stt}
                             </span>
-                            {isRecording && <span className="text-red-600 font-extrabold animate-pulse">RECORDING ACTIVE</span>}
+                            {isRecording && <span className="text-red-600 font-extrabold animate-pulse">{cur.rec_active}</span>}
                         </div>
                         <p className="text-base font-extrabold text-slate-900 min-h-[30px] italic">
-                            "{realtimeTranscription || (isRecording ? 'Listening...' : '')}"
+                            "{realtimeTranscription || (isRecording ? cur.mic_listening : '')}"
                         </p>
                     </div>
                 )}
@@ -352,10 +501,10 @@ export const VoiceLearningPage: React.FC = () => {
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2 font-extrabold text-teal-900 text-base">
                                 <CheckCircle2 className="w-5 h-5 text-teal-600 shrink-0" />
-                                <span>Pronunciation Score</span>
+                                <span>{cur.score_title}</span>
                             </div>
                             <Badge variant="teal" size="md" className="font-extrabold text-teal-950 bg-teal-300">
-                                {evaluationResult.rating} ({evaluationResult.score}% Clarity)
+                                {evaluationResult.rating} ({evaluationResult.score}% {cur.clarity})
                             </Badge>
                         </div>
 
@@ -366,7 +515,7 @@ export const VoiceLearningPage: React.FC = () => {
                         {/* Word-by-Word Matched Breakdown */}
                         {evaluationResult.wordMatch.length > 0 && (
                             <div className="space-y-1.5">
-                                <span className="text-xs font-bold text-teal-800 uppercase tracking-wider block">Word Accuracy Breakdown:</span>
+                                <span className="text-xs font-bold text-teal-800 uppercase tracking-wider block">{cur.word_breakdown}</span>
                                 <div className="flex flex-wrap gap-2">
                                     {evaluationResult.wordMatch.map((wm, idx) => (
                                         <span

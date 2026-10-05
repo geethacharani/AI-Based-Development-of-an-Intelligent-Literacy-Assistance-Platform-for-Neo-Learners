@@ -111,7 +111,158 @@ const ALL_GAMES: GameDefinition[] = [
 export const PuzzlesAndGamesPage: React.FC = () => {
     const navigate = useNavigate();
     const { profile } = useAuth();
-    const { t } = useTranslation();
+    const { t, supportLangCode } = useTranslation();
+    const langKey = (supportLangCode || 'en').toLowerCase().slice(0, 2);
+
+    const GAME_TRANSLATIONS: Record<string, Record<string, { title: string; skill: string; desc: string }>> = {
+        kn: {
+            word_tetris: {
+                title: "ವರ್ಡ್ ಟೆಟ್ರಿಸ್",
+                skill: "ಶಬ್ದಕೋಶ & ಕಾಗುಣಿತ",
+                desc: "ಗ್ರಿಡ್ ತುಂಬುವ ಮೊದಲು ಬೀಳುವ ಅಕ್ಷರ ಬ್ಲಾಕ್‌ಗಳನ್ನು ಬಳಸಿ ಗುರಿ ಭಾಷೆಯ ಪದಗಳನ್ನು ರಚಿಸಿ."
+            },
+            memory_flip: {
+                title: "ಮೆಮೊರಿ ಫ್ಲಿಪ್",
+                skill: "ಅನುವಾದ & ಸ್ಮರಣಶಕ್ತಿ",
+                desc: "ಸಮಯ ಮಿತಿಯಲ್ಲಿ ಪದಗಳನ್ನು ಅವುಗಳ ಅರ್ಥಗಳೊಂದಿಗೆ ಹೊಂದಿಸಲು 3D ಕಾರ್ಡ್‌ಗಳನ್ನು ಫ್ಲಿಪ್ ಮಾಡಿ."
+            },
+            word_duel: {
+                title: "ವರ್ಡ್ ಡ್ಯುಯೆಲ್",
+                skill: "ವ್ಯಾಕರಣ & ಬಾಸ್ ಕದನ",
+                desc: "ಶ್ಯಾಡೋ ಬಾಸ್ ವಿರುದ್ಧ ಹೋರಾಡಿ! ಸರಿಯಾಗಿ ಉತ್ತರಿಸಿ ಪ್ರಬಲ ಹೊಡೆತಗಳನ್ನು ನೀಡಿ."
+            },
+            speed_round: {
+                title: "ಸ್ಪೀಡ್ ರೌಂಡ್",
+                skill: "ತ್ವರಿತ ಸ್ಮರಣೆ",
+                desc: "ಸಮಯ ಮುಗಿಯುವ ಮೊದಲು ವೇಗವಾಗಿ ಉತ್ತರಿಸಿ ಗುಣಕಗಳು ಮತ್ತು ಹೆಚ್ಚುವರಿ XP ಗಳಿಸಿ."
+            },
+            word_spin: {
+                title: "ವರ್ಡ್ ಸ್ಪಿನ್",
+                skill: "ಯಾದೃಚ್ಛಿಕ ಶಬ್ದಕೋಶ",
+                desc: "ಚಕ್ರವನ್ನು ತಿರುಗಿಸಿ ಯಾದೃಚ್ಛಿಕ ಪದಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ವ್ಯಾಖ್ಯಾನಗಳನ್ನು ಹೊಂದಿಸಿ."
+            }
+        },
+        te: {
+            word_tetris: {
+                title: "వర్డ్ టెట్రిస్",
+                skill: "పదజాలం & స్పెల్లింగ్",
+                desc: "గ్రిడ్ నిండకముందే అక్షరాల బ్లాక్‌లను ఉపయోగించి పదాలను నిర్మించండి."
+            },
+            memory_flip: {
+                title: "మెమరీ ఫ్లిప్",
+                skill: "అనువాదం & జ్ఞాపకశక్తి",
+                desc: "సమయ పరిమితిలో పదాలను వాటి అర్థాలతో సరిపోల్చడానికి కార్డ్‌లను తిప్పండి."
+            },
+            word_duel: {
+                title: "వర్డ్ డ్యుయల్",
+                skill: "వ్యాకరణం & బాస్ పోరాటం",
+                desc: "షాడో బాస్‌తో పోరాడండి! సరైన సమాధానాలు ఇచ్చి భారీ దెబ్బలు కొట్టండి."
+            },
+            speed_round: {
+                title: "స్పీడ్ రౌండ్",
+                skill: "వేగవంతమైన రీకాల్",
+                desc: "టైమర్ ముగిసేలోపు వేగంగా సమాధానమిచ్చి ఎక్కువ XP సంపాదించండి."
+            },
+            word_spin: {
+                title: "వర్డ్ స్పిన్",
+                skill: "యాదృచ్ఛిక పదజాలం",
+                desc: "రంగు చక్రం తిప్పి పదాలను ఎంచుకోండి మరియు అర్థాలను సరిపోల్చండి."
+            }
+        },
+        hi: {
+            word_tetris: {
+                title: "वर्ड टेट्रिस",
+                skill: "शब्दावली और वर्तनी",
+                desc: "ग्रिड भरने से पहले गिरते अक्षर ब्लॉकों का उपयोग करके शब्द बनाएं।"
+            },
+            memory_flip: {
+                title: "मेमोरी फ्लिप",
+                skill: "अनुवाद और स्मरण",
+                desc: "समय सीमा में शब्दों को उनके अर्थों से मिलाने के लिए 3D कार्ड पलटें।"
+            },
+            word_duel: {
+                title: "वर्ड ड्यूल",
+                skill: "व्याकरण और बॉस मुकाबला",
+                desc: "शैडो बॉस से मुकाबला करें! सटीक प्रहार करने के लिए सही उत्तर दें।"
+            },
+            speed_round: {
+                title: "स्पीड राउंड",
+                skill: "त्वरित स्मरण",
+                desc: "घटते समय के खिलाफ रेस करें! त्वरित उत्तर देकर अधिक XP अर्जित करें।"
+            },
+            word_spin: {
+                title: "वर्ड स्पिन",
+                skill: "यादृच्छिक शब्दावली",
+                desc: "कलर व्हील घुमाकर शब्द चुनें और परिभाषाओं का मिलान करें।"
+            }
+        },
+        ta: {
+            word_tetris: {
+                title: "வேர்ட் டெட்ரிஸ்",
+                skill: "சொற்களஞ்சியம் & எழுத்துப்பிழை",
+                desc: "கட்டங்கள் நிரம்புவதற்கு முன் எழுத்துத் தொகுதிகளைப் பயன்படுத்தி சொற்களை உருவாக்குங்கள்."
+            },
+            memory_flip: {
+                title: "மெமரி ஃபிளிப்",
+                skill: "மொழிபெயர்ப்பு & நினைவாற்றல்",
+                desc: "நேர அழுத்தத்தில் சொற்களை அவற்றின் அர்த்தங்களுடன் பொருத்த அட்டைகளைப் புரட்டுங்கள்."
+            },
+            word_duel: {
+                title: "வேர்ட் டூயல்",
+                skill: "இலக்கணம் & பாஸ் போர்",
+                desc: "ஷேடோ பாஸுடன் போரிடுங்கள்! பலத்த அடிகளைக் கொடுக்க சரியாகப் பதிலளிக்கவும்."
+            },
+            speed_round: {
+                title: "ஸ்பீட் ரவுண்ட்",
+                skill: "வேகமான நினைவுபடுத்தல்",
+                desc: "குறைந்து வரும் டைமருக்கு எதிராக பந்தயமிடுங்கள்! விரைவான பதில்கள் அதிக XP தரும்."
+            },
+            word_spin: {
+                title: "வேர்ட் ஸ்பின்",
+                skill: "சீரற்ற சொற்களஞ்சியம்",
+                desc: "சக்கரத்தை சுழற்றி சொற்களைத் தேர்ந்தெடுத்து விளக்கங்களைப் பொருத்துங்கள்."
+            }
+        },
+        ml: {
+            word_tetris: {
+                title: "വേഡ് ടെട്രിസ്",
+                skill: "പദാവലിയും അക്ഷരവിന്യാസവും",
+                desc: "ഗ്രിഡ് നിറയുന്നതിന് മുൻപ് അക്ഷരങ്ങൾ ഉപയോഗിച്ച് വാക്കുകൾ ഉണ്ടാക്കുക."
+            },
+            memory_flip: {
+                title: "മെമ്മറി ഫ്ലിപ്പ്",
+                skill: "വിവർത്തനവും ഓർമ്മയും",
+                desc: "സമയപരിധിക്കുള്ളിൽ വാക്കുകളെ അർത്ഥങ്ങളുമായി പൊരുത്തപ്പെടുത്താൻ കാർഡുകൾ മറിക്കുക."
+            },
+            word_duel: {
+                title: "വേഡ് ഡ്യുവൽ",
+                skill: "വ്യാകരണവും പോരാട്ടവും",
+                desc: "ഷാഡോ ബോസുമായി പോരാടുക! ശരിയായ ഉത്തരം നൽകി ആഞ്ഞടിക്കുക."
+            },
+            speed_round: {
+                title: "സ്പീഡ് റൗണ്ട്",
+                skill: "വേഗത്തിലുള്ള ഓർമ്മ",
+                desc: "സമയം തീരുന്നതിന് മുൻപ് വേഗത്തിൽ ഉത്തരം നൽകി കൂടുതൽ XP നേടുക."
+            },
+            word_spin: {
+                title: "വേഡ് സ്പിൻ",
+                skill: "ക്രമരഹിതമായ പദാവലി",
+                desc: "ചക്രം കറക്കി വാക്കുകൾ തിരഞ്ഞെടുത്ത് നിർവചനങ്ങൾ പൊരുത്തപ്പെടുത്തുക."
+            }
+        }
+    };
+
+    const localizedGames = ALL_GAMES.map(g => {
+        const trans = GAME_TRANSLATIONS[langKey]?.[g.key];
+        if (!trans) return g;
+        return {
+            ...g,
+            title: trans.title,
+            skillTrained: trans.skill,
+            description: trans.desc
+        };
+    });
+
     const [activeGame, setActiveGame] = useState<GameKey | null>(null);
     const [gameData, setGameData] = useState<GameContentResponse | null>(null);
     const [progressMap, setProgressMap] = useState<Record<string, any>>({});
@@ -154,8 +305,8 @@ export const PuzzlesAndGamesPage: React.FC = () => {
     const gameStreak = (profile as any)?.streak_days || 3;
 
     // Featured Game is Word Tetris (or recommended)
-    const featuredGame = ALL_GAMES[0];
-    const secondaryGames = ALL_GAMES.slice(1);
+    const featuredGame = localizedGames[0];
+    const secondaryGames = localizedGames.slice(1);
 
     if (loading) {
         return (

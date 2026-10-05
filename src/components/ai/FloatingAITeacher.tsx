@@ -4,6 +4,7 @@ import { aiTeacherService, ChatMessage } from '../../services/aiTeacherService';
 import { voiceService } from '../../services/voiceService';
 import { LingoBot } from '../common/LingoCharacters';
 import { useTranslation } from '../../utils/translations';
+import { getLocalizedName } from '../../utils/nameLocalization';
 import {
     Sparkles,
     X,
@@ -25,7 +26,9 @@ import {
 
 export const FloatingAITeacher: React.FC = () => {
     const { profile } = useAuth();
-    const { t } = useTranslation();
+    const { t, supportLangCode } = useTranslation();
+    const currentLang = (supportLangCode || 'en').toLowerCase().slice(0, 2);
+
     const [isOpen, setIsOpen] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
     const [inputMessage, setInputMessage] = useState('');
@@ -37,20 +40,78 @@ export const FloatingAITeacher: React.FC = () => {
     const targetLangName = profile?.target_language?.name || 'Hindi';
     const targetLangCode = profile?.target_language?.code || 'hi';
     const comfLangName = profile?.comfortable_language?.name || 'English';
-    const learnerName = profile?.full_name?.split(' ')[0] || 'Learner';
+    const rawLearnerName = profile?.full_name?.split(' ')[0] || 'Learner';
+    const learnerName = getLocalizedName(rawLearnerName, currentLang);
     const learnerLevel = (profile as any)?.proficiency?.overall_level || 'Beginner';
+
+    const CHIPS_BY_LANG: Record<string, string[]> = {
+        en: ["💡 Explain current lesson", "📝 Check my grammar", "🗣️ Practice a dialogue", "🔍 Explain my mistakes"],
+        kn: ["💡 ಪ್ರಸ್ತುತ ಪಾಠವನ್ನು ವಿವರಿಸಿ", "📝 ನನ್ನ ವ್ಯಾಕರಣ ಪರಿಶೀಲಿಸಿ", "🗣️ ಸಂಭಾಷಣೆ ಅಭ್ಯಾಸ ಮಾಡಿ", "🔍 ನನ್ನ ತಪ್ಪುಗಳನ್ನು ವಿವರಿಸಿ"],
+        te: ["💡 ప్రస్తుత పాఠాన్ని వివరించండి", "📝 నా వ్యాకరణాన్ని తనిఖీ చేయండి", "🗣️ సంభాషణ సాధన చేయండి", "🔍 నా తప్పులను వివరించండి"],
+        hi: ["💡 वर्तमान पाठ समझाएं", "📝 मेरा व्याकरण जांचें", "🗣️ संवाद अभ्यास करें", "🔍 मेरी गलतियां समझाएं"],
+        ta: ["💡 தற்போதைய பாடத்தை விளக்குங்கள்", "📝 என் இலக்கணத்தை சரிபார்க்கவும்", "🗣️ உரையாடல் பயிற்சி செய்யுங்கள்", "🔍 என் பிழைகளை விளக்குங்கள்"],
+        ml: ["💡 നിലവിലെ പാഠം വിശദീകരിക്കുക", "📝 എൻ്റെ വ്യാകരണം പരിശോധിക്കുക", "🗣️ സംഭാഷണം പരിശീലിക്കുക", "🔍 എൻ്റെ തെറ്റുകൾ വിശദീകരിക്കുക"]
+    };
+
+    const WELCOME_BY_LANG: Record<string, { text: string; audio: string }> = {
+        en: {
+            text: `Hello ${learnerName}! I am LingoBot, your AI Language Teacher. Ask me anything about ${targetLangName} grammar, vocabulary, or lesson exercises!`,
+            audio: `Hello ${learnerName}!`
+        },
+        kn: {
+            text: `ನಮಸ್ಕಾರ ${learnerName}! ನಾನು ಲಿಂಗೋಬೋಟ್, ನಿಮ್ಮ AI ಭಾಷಾ ಶಿಕ್ಷಕ. ${targetLangName} ವ್ಯಾಕರಣ, ಶಬ್ದಕೋಶ ಅಥವಾ ಪಾಠಗಳ ಬಗ್ಗೆ ಯಾವುದೇ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳಿ!`,
+            audio: `ನಮಸ್ಕಾರ ${learnerName}!`
+        },
+        te: {
+            text: `నమస్కారం ${learnerName}! నేను లింగోబోట్, మీ AI భాషా గురువును. ${targetLangName} వ్యాకరణం, పదజాలం లేదా పాఠాల గురించి నన్ను ఏదైనా అడగండి!`,
+            audio: `నమస్కారం ${learnerName}!`
+        },
+        hi: {
+            text: `नमस्ते ${learnerName}! मैं लिंगोबॉट हूँ, आपका AI भाषा शिक्षक। ${targetLangName} व्याकरण, शब्दावली या पाठों के बारे में मुझसे कुछ भी पूछें!`,
+            audio: `नमस्ते ${learnerName}!`
+        },
+        ta: {
+            text: `வணக்கம் ${learnerName}! நான் லிங்கோபோட், உங்கள் AI மொழி ஆசிரியர். ${targetLangName} இலக்கணம், சொல்லகராதி அல்லது பாடங்கள் குறித்து எதையும் கேட்கலாம்!`,
+            audio: `வணக்கம் ${learnerName}!`
+        },
+        ml: {
+            text: `നമസ്കാരം ${learnerName}! ഞാൻ ലിംഗോബോട്ട്, നിങ്ങളുടെ AI ഭാഷാ അധ്യാപകൻ. ${targetLangName} വ്യാകരണം, പദാവലി അല്ലെങ്കിൽ പാഠങ്ങളെക്കുറിച്ച് എന്തും ചോദിക്കൂ!`,
+            audio: `നമസ്കാരം ${learnerName}!`
+        }
+    };
+
+    const activeWelcome = WELCOME_BY_LANG[currentLang] || WELCOME_BY_LANG.en;
+    const activeChips = CHIPS_BY_LANG[currentLang] || CHIPS_BY_LANG.en;
 
     const [messages, setMessages] = useState<ChatMessage[]>([
         {
             id: 'init_1',
             sender: 'teacher',
-            text: t('ai_teacher_welcome_msg') || `Hello ${learnerName}! I am LingoBot, your AI Language Teacher. Ask me anything about ${targetLangName} grammar, vocabulary, or lesson exercises!`,
-            audioText: `Namaste ${learnerName}!`,
+            text: activeWelcome.text,
+            audioText: activeWelcome.audio,
             targetLang: targetLangName,
-            tips: ['Ask to explain your current lesson', 'Practice a dialogue', 'Check your grammar'],
+            tips: activeChips.slice(0, 3),
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
     ]);
+
+    // Reactively update initial welcome message when interface language changes
+    useEffect(() => {
+        setMessages(prev => {
+            if (prev.length === 1 && prev[0].id === 'init_1') {
+                return [{
+                    id: 'init_1',
+                    sender: 'teacher',
+                    text: activeWelcome.text,
+                    audioText: activeWelcome.audio,
+                    targetLang: targetLangName,
+                    tips: activeChips.slice(0, 3),
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                }];
+            }
+            return prev;
+        });
+    }, [currentLang, targetLangName, learnerName]);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -147,7 +208,15 @@ export const FloatingAITeacher: React.FC = () => {
         }
 
         const recognition = new SpeechRecognition();
-        recognition.lang = targetLangCode === 'hi' ? 'hi-IN' : (targetLangCode === 'te' ? 'te-IN' : 'en-US');
+        const langMap: Record<string, string> = {
+            hi: 'hi-IN',
+            te: 'te-IN',
+            kn: 'kn-IN',
+            ta: 'ta-IN',
+            ml: 'ml-IN',
+            en: 'en-US'
+        };
+        recognition.lang = langMap[targetLangCode] || langMap[currentLang] || 'en-US';
         recognition.interimResults = false;
 
         recognition.onstart = () => setIsListening(true);
@@ -162,12 +231,7 @@ export const FloatingAITeacher: React.FC = () => {
         recognition.start();
     };
 
-    const quickChips = [
-        "💡 Explain current lesson",
-        "📝 Check my grammar",
-        "🗣️ Practice a dialogue",
-        "🔍 Explain my repeated mistakes"
-    ];
+    const quickChips = activeChips;
 
     return (
         <div className="fixed bottom-6 right-6 z-50 font-sans antialiased">
@@ -302,7 +366,14 @@ export const FloatingAITeacher: React.FC = () => {
                                                     className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-teal-50 text-teal-700 hover:bg-teal-100 text-[10px] font-bold transition cursor-pointer"
                                                 >
                                                     <Volume2 className="w-3.5 h-3.5 text-teal-600" />
-                                                    <span>Listen in {targetLangName}</span>
+                                                    <span>
+                                                        {currentLang === 'kn' ? `${targetLangName} ನಲ್ಲಿ ಆಲಿಸಿ` :
+                                                         currentLang === 'te' ? `${targetLangName} లో వినండి` :
+                                                         currentLang === 'hi' ? `${targetLangName} में सुनें` :
+                                                         currentLang === 'ta' ? `${targetLangName} இல் கேளுங்கள்` :
+                                                         currentLang === 'ml' ? `${targetLangName}-ൽ കേൾക്കുക` :
+                                                         `Listen in ${targetLangName}`}
+                                                    </span>
                                                 </button>
                                             )}
 
@@ -331,7 +402,12 @@ export const FloatingAITeacher: React.FC = () => {
                                             <div className="w-2 h-2 rounded-full bg-brand-600 animate-bounce [animation-delay:0.4s]" />
                                         </div>
                                         <span className="text-[11px] font-bold text-brand-900">
-                                            🤖 LingoBot is thinking...
+                                            {currentLang === 'kn' ? '🤖 ಲಿಂಗೋಬೋಟ್ ಯೋಚಿಸುತ್ತಿದೆ...' :
+                                             currentLang === 'te' ? '🤖 లింగోబోట్ ఆలోచిస్తోంది...' :
+                                             currentLang === 'hi' ? '🤖 लिंगोबॉट सोच रहा है...' :
+                                             currentLang === 'ta' ? '🤖 லிங்கோபோட் சிந்திக்கிறது...' :
+                                             currentLang === 'ml' ? '🤖 ലിംഗോബോട്ട് ചിന്തിക്കുന്നു...' :
+                                             '🤖 LingoBot is thinking...'}
                                         </span>
                                     </div>
                                 )}
@@ -379,7 +455,23 @@ export const FloatingAITeacher: React.FC = () => {
                                     type="text"
                                     value={inputMessage}
                                     onChange={e => setInputMessage(e.target.value)}
-                                    placeholder={isLoading ? "LingoBot is thinking..." : t('ai_teacher_ask_placeholder')}
+                                    placeholder={
+                                        isLoading ? (
+                                            currentLang === 'kn' ? 'ಲಿಂಗೋಬೋಟ್ ಯೋಚಿಸುತ್ತಿದೆ...' :
+                                            currentLang === 'te' ? 'లింగోబోట్ ఆలోచిస్తోంది...' :
+                                            currentLang === 'hi' ? 'लिंगोबॉट सोच रहा है...' :
+                                            currentLang === 'ta' ? 'லிங்கோபோட் சிந்திக்கிறது...' :
+                                            currentLang === 'ml' ? 'ലിംഗോബോട്ട് ചിന്തിക്കുന്നു...' :
+                                            'LingoBot is thinking...'
+                                        ) : (
+                                            currentLang === 'kn' ? 'ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ ಅಥವಾ ಕಲಿಯುವ ಭಾಷೆಯಲ್ಲಿ ಪ್ರಶ್ನೆ ಕೇಳಿ...' :
+                                            currentLang === 'te' ? 'మీ భాషలో లేదా లక్ష్య భాషలో గురువును అడగండి...' :
+                                            currentLang === 'hi' ? 'अपनी भाषा या सीखने की भाषा में शिक्षक से पूछें...' :
+                                            currentLang === 'ta' ? 'உங்கள் மொழியில் அல்லது கற்கும் மொழியில் ஆசிரியரிடம் கேளுங்கள்...' :
+                                            currentLang === 'ml' ? 'നിങ്ങളുടെ ഭാഷയിലോ പഠന ഭാഷയിലോ അധ്യാപകനോട് ചോദിക്കൂ...' :
+                                            'Ask teacher in your language or target language...'
+                                        )
+                                    }
                                     disabled={isLoading}
                                     className="flex-1 text-xs px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 disabled:bg-slate-100 disabled:cursor-not-allowed"
                                 />
