@@ -120,7 +120,7 @@ export const LearningPathPage: React.FC = () => {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
                 <div className="w-12 h-12 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-                <p className="text-sm font-medium text-slate-600">Loading your personalized learning path...</p>
+                <p className="text-sm font-medium text-slate-600">{t('lp_loading')}</p>
             </div>
         );
     }
@@ -138,15 +138,15 @@ export const LearningPathPage: React.FC = () => {
                     onClick={() => navigate('/dashboard')}
                     className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-brand-600 bg-white hover:bg-brand-50 px-3.5 py-1.5 rounded-xl border border-slate-200 transition shadow-2xs cursor-pointer"
                 >
-                    <ArrowLeft className="w-4 h-4" /> Back to Home
+                    <ArrowLeft className="w-4 h-4" /> {t('lp_back_home')}
                 </button>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-                            <span>🌱</span> My Personalized Learning Journey
+                            <span>🌱</span> {t('lp_title')}
                         </h1>
                         <p className="text-xs md:text-sm text-slate-600 mt-1">
-                            A complete step-by-step master progression from beginner foundations to independent fluent communication.
+                            {t('lp_subtitle')}
                         </p>
                     </div>
                 </div>
@@ -182,7 +182,7 @@ export const LearningPathPage: React.FC = () => {
                     {/* Active Section Tracker */}
                     <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-teal-50 border border-teal-200/90 rounded-2xl text-teal-900 font-extrabold text-xs">
                         <Target className="w-4 h-4 text-teal-600" />
-                        <span>Stage {currentActiveUnit?.unit_number || 1} of {units.length}</span>
+                        <span>{t('lp_stage_of')} {currentActiveUnit?.unit_number || 1} / {units.length}</span>
                     </div>
                 </div>
             </div>
@@ -192,14 +192,14 @@ export const LearningPathPage: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
                     <div>
                         <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-teal-400">
-                            <Brain className="w-4 h-4 text-teal-400" /> Complete Curriculum Roadmap (6 Sections)
+                            <Brain className="w-4 h-4 text-teal-400" /> {t('lp_curriculum_roadmap')}
                         </div>
                         <p className="text-xs text-slate-300 mt-0.5">
-                            Track your exact milestone progress across foundational literacy, vocabulary, comprehension, and fluency.
+                            {t('lp_curriculum_desc')}
                         </p>
                     </div>
                     <span className="text-xs font-extrabold px-2.5 py-1 bg-white/10 rounded-xl text-teal-300 self-start sm:self-auto">
-                        Current: Section {currentActiveUnit?.unit_number || 1}
+                        {t('lp_current_badge')} {t('lp_section_label')} {currentActiveUnit?.unit_number || 1}
                     </span>
                 </div>
 
@@ -222,22 +222,22 @@ export const LearningPathPage: React.FC = () => {
                                             : 'bg-slate-900/50 border-slate-800 hover:border-slate-700'
                                 }`}
                             >
-                                <div className="space-y-2.5">
+                                    <div className="space-y-2.5">
                                     <div className="flex items-center justify-between">
                                         <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                                            Section {unit.unit_number}
+                                            {t('lp_section_label')} {unit.unit_number}
                                         </span>
                                         {isCompleted ? (
                                             <span className="text-[10px] font-extrabold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
-                                                <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Completed
+                                                <CheckCircle2 className="w-3 h-3 text-emerald-400" /> {t('lp_completed_badge')}
                                             </span>
                                         ) : isCurrent ? (
                                             <span className="text-[10px] font-extrabold text-amber-300 bg-amber-400/20 px-2 py-0.5 rounded-full flex items-center gap-1 animate-pulse">
-                                                <Play className="w-3 h-3 fill-amber-300" /> Current Section
+                                                <Play className="w-3 h-3 fill-amber-300" /> {t('lp_current_section_badge')}
                                             </span>
                                         ) : (
                                             <span className="text-[10px] font-bold text-slate-400 bg-white/5 px-2 py-0.5 rounded-full flex items-center gap-1">
-                                                <Lock className="w-3 h-3" /> Locked
+                                                <Lock className="w-3 h-3" /> {t('lp_locked_badge')}
                                             </span>
                                         )}
                                     </div>
@@ -249,7 +249,7 @@ export const LearningPathPage: React.FC = () => {
                                     {/* Progress Bar */}
                                     <div className="space-y-1">
                                         <div className="flex items-center justify-between text-[10px] font-bold text-slate-400">
-                                            <span>Progress</span>
+                                            <span>{t('lp_progress_label')}</span>
                                             <span className={isCompleted ? 'text-emerald-400' : isCurrent ? 'text-amber-300' : 'text-slate-400'}>
                                                 {pct}%
                                             </span>
@@ -288,7 +288,7 @@ export const LearningPathPage: React.FC = () => {
                                         className="mt-3 w-full py-1 px-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-[10px] font-bold text-teal-300 flex items-center justify-center gap-1 transition cursor-pointer"
                                     >
                                         <Eye className="w-3 h-3" />
-                                        <span>Preview Section Curriculum</span>
+                                        <span>{t('lp_preview_section_btn')}</span>
                                     </button>
                                 )}
                             </div>
@@ -324,19 +324,19 @@ export const LearningPathPage: React.FC = () => {
                                     <div className="space-y-2 max-w-xl">
                                         <div className="flex flex-wrap items-center gap-2">
                                             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-[10px] font-extrabold uppercase tracking-widest text-white">
-                                                <Award className="w-3.5 h-3.5 text-amber-300" /> Section {unit.unit_number}
+                                                <Award className="w-3.5 h-3.5 text-amber-300" /> {t('lp_section_label')} {unit.unit_number}
                                             </span>
                                             {isCompleted ? (
                                                 <span className="text-[10px] font-black uppercase text-emerald-200 bg-emerald-900/60 px-2.5 py-0.5 rounded-full border border-emerald-400/40">
-                                                    ✓ Completed (100%)
+                                                    {t('lp_completed_100')}
                                                 </span>
                                             ) : isCurrent ? (
                                                 <span className="text-[10px] font-black uppercase text-amber-200 bg-amber-900/60 px-2.5 py-0.5 rounded-full border border-amber-400/40 animate-pulse">
-                                                    → Current Section ({unit.completion_percentage ?? 0}%)
+                                                    → {t('lp_current_section_badge')} ({unit.completion_percentage ?? 0}%)
                                                 </span>
                                             ) : (
                                                 <span className="text-[10px] font-bold text-slate-200 bg-black/30 px-2.5 py-0.5 rounded-full border border-white/20">
-                                                    🔒 {unit.unlock_requirement || `Unlocks after Section ${unit.unit_number - 1}`}
+                                                    🔒 {unit.unlock_requirement || `${t('lp_unlocks_after')} ${unit.unit_number - 1}`}
                                                 </span>
                                             )}
                                         </div>
@@ -366,7 +366,7 @@ export const LearningPathPage: React.FC = () => {
                                                 leftIcon={<Eye className="w-3.5 h-3.5" />}
                                                 className="bg-white/20 hover:bg-white/30 text-white border-none text-xs font-bold"
                                             >
-                                                Preview Section
+                                                {t('lp_preview_btn_label')}
                                             </Button>
                                         ) : (
                                             <div className="p-4 bg-white/20 rounded-2xl backdrop-blur-md shadow-lg hidden sm:block">
@@ -418,7 +418,7 @@ export const LearningPathPage: React.FC = () => {
                                                 <div className="hidden sm:flex items-center gap-2 absolute -left-36 top-2 z-20 animate-float-subtle-1">
                                                     <LingoBot size="sm" expression="encouraging" />
                                                     <div className="bg-white/95 px-2.5 py-1.5 rounded-xl border border-brand-200 shadow-md text-[10px] font-bold text-brand-900 whitespace-nowrap">
-                                                        You are here! 🚀
+                                                        {t('lp_you_are_here')}
                                                     </div>
                                                 </div>
                                             )}
@@ -427,7 +427,7 @@ export const LearningPathPage: React.FC = () => {
                                             {node.node_type === 'milestone' && (
                                                 <div className="hidden sm:flex items-center gap-2 absolute -right-36 top-2 z-20 animate-float-subtle-2">
                                                     <div className="bg-white/95 px-2.5 py-1.5 rounded-xl border border-amber-200 shadow-md text-[10px] font-bold text-amber-900 whitespace-nowrap">
-                                                        Section Goal 🏆
+                                                        {t('lp_section_goal')}
                                                     </div>
                                                     <AtlasTraveler size="sm" />
                                                 </div>
@@ -463,7 +463,7 @@ export const LearningPathPage: React.FC = () => {
 
                                                 {isNodeUnlocked && (
                                                     <span className="absolute -top-3.5 bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-black text-[10px] px-3 py-1 rounded-full shadow-lg uppercase tracking-wider flex items-center gap-1.5 border border-amber-300 whitespace-nowrap animate-bounce">
-                                                        <Play className="w-3 h-3 fill-slate-950" /> START
+                                                        <Play className="w-3 h-3 fill-slate-950" /> {t('lp_start_label')}
                                                     </span>
                                                 )}
                                             </button>
@@ -481,7 +481,7 @@ export const LearningPathPage: React.FC = () => {
                                                     </span>
                                                     {isNodeCompleted && (
                                                         <span className="inline-flex items-center text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                                                            Mastered ✓
+                                                            {t('lp_mastered_label')}
                                                         </span>
                                                     )}
                                                 </div>
@@ -500,13 +500,13 @@ export const LearningPathPage: React.FC = () => {
                 <Modal
                     isOpen={!!previewUnit}
                     onClose={() => setPreviewUnit(null)}
-                    title={`Curriculum Preview: ${previewUnit.title}`}
+                    title={`${t('lp_preview_section_goal')}: ${previewUnit.title}`}
                 >
                     <div className="space-y-5 py-2">
                         <div className="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-100 space-y-2">
                             <div className="flex items-center gap-2 text-indigo-900 font-extrabold text-xs uppercase tracking-wider">
                                 <Compass className="w-4 h-4 text-indigo-600" />
-                                <span>Section {previewUnit.unit_number} Educational Goal</span>
+                                <span>{t('lp_section_label')} {previewUnit.unit_number} {t('lp_preview_section_goal')}</span>
                             </div>
                             <p className="text-xs text-slate-700 leading-relaxed font-medium">
                                 {previewUnit.description}
@@ -517,7 +517,7 @@ export const LearningPathPage: React.FC = () => {
                         {previewUnit.preview?.whatYouWillLearn && (
                             <div className="space-y-2">
                                 <h4 className="text-xs font-black uppercase text-slate-700 tracking-wider flex items-center gap-1.5">
-                                    <BookOpen className="w-3.5 h-3.5 text-brand-600" /> What You Will Learn:
+                                    <BookOpen className="w-3.5 h-3.5 text-brand-600" /> {t('lp_what_you_will_learn')}
                                 </h4>
                                 <ul className="space-y-1.5">
                                     {previewUnit.preview.whatYouWillLearn.map((item, idx) => (
@@ -534,7 +534,7 @@ export const LearningPathPage: React.FC = () => {
                         {previewUnit.preview?.whyItMatters && (
                             <div className="p-3 bg-amber-50 rounded-2xl border border-amber-200/80 text-xs text-amber-900 space-y-1">
                                 <span className="font-bold flex items-center gap-1 text-amber-800">
-                                    💡 Why It Matters:
+                                    {t('lp_why_it_matters')}
                                 </span>
                                 <p className="leading-relaxed">{previewUnit.preview.whyItMatters}</p>
                             </div>
@@ -543,7 +543,7 @@ export const LearningPathPage: React.FC = () => {
                         {/* How To Unlock */}
                         <div className="p-3 bg-slate-100 rounded-2xl text-xs text-slate-700 flex items-center justify-between">
                             <div>
-                                <span className="font-bold block text-slate-900">How to Unlock:</span>
+                                <span className="font-bold block text-slate-900">{t('lp_how_to_unlock')}</span>
                                 <span>{previewUnit.preview?.howToUnlock || previewUnit.unlock_requirement}</span>
                             </div>
                             <LingoBot size="sm" expression="encouraging" />
@@ -555,7 +555,7 @@ export const LearningPathPage: React.FC = () => {
                             onClick={() => setPreviewUnit(null)}
                             className="w-full bg-brand-600 hover:bg-brand-700 text-white font-extrabold"
                         >
-                            Got It, Let's Continue Learning! 🚀
+                            {t('lp_got_it_btn')}
                         </Button>
                     </div>
                 </Modal>
@@ -566,13 +566,13 @@ export const LearningPathPage: React.FC = () => {
                 <Modal
                     isOpen={isLessonModalOpen}
                     onClose={() => setIsLessonModalOpen(false)}
-                    title={`AI Teacher Lesson: ${activeNode.title}`}
+                    title={`${t('lp_ai_teacher_lesson')} ${activeNode.title}`}
                 >
                     <div className="space-y-6 py-2">
                         <div className="flex items-center justify-between p-3 bg-brand-50 rounded-2xl text-xs font-bold text-brand-900 border border-brand-200">
-                            <span>Activity: {activeNode.subtitle}</span>
+                            <span>{t('lp_activity_label')} {activeNode.subtitle}</span>
                             <span className="flex items-center gap-1 text-amber-600">
-                                <Star className="w-4 h-4 fill-amber-500" /> Reward: +{activeNode.xp_reward} XP
+                                <Star className="w-4 h-4 fill-amber-500" /> {t('lp_reward_label')} +{activeNode.xp_reward} XP
                             </span>
                         </div>
 
@@ -587,7 +587,7 @@ export const LearningPathPage: React.FC = () => {
                                 return (
                                     <div className="p-6 bg-slate-50 border border-slate-200 rounded-3xl space-y-5 text-center">
                                         <div className="p-2 bg-purple-50 border border-purple-200 rounded-xl text-xs font-semibold text-purple-900">
-                                            🎙️ <span className="font-bold">Real Teacher Voice Activity:</span> Listen to the phrase, then press the mic to speak in {targetName}!
+                                            🎙️ <span className="font-bold">{t('lp_speak_activity_hint')}</span> {targetName}!
                                         </div>
 
                                         <div className="p-4 bg-white rounded-2xl border border-brand-200 shadow-sm inline-flex items-center gap-3 px-8">
@@ -605,7 +605,7 @@ export const LearningPathPage: React.FC = () => {
                                         </div>
 
                                         <div className="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
-                                            <p className="text-xs font-bold text-slate-600">Click microphone & speak in {targetName}:</p>
+                                            <p className="text-xs font-bold text-slate-600">{t('lp_speak_click_mic')} {targetName}:</p>
                                             <button
                                                 onClick={() => {
                                                     voiceService.startSpeechToText(
@@ -623,7 +623,7 @@ export const LearningPathPage: React.FC = () => {
                                             >
                                                 <Mic className="w-8 h-8" />
                                             </button>
-                                            <p className="text-[11px] text-slate-400 font-medium">Using native Browser Web Speech STT API</p>
+                                            <p className="text-[11px] text-slate-400 font-medium">{t('lp_speak_stt_api')}</p>
                                         </div>
                                     </div>
                                 );
@@ -638,7 +638,7 @@ export const LearningPathPage: React.FC = () => {
                             return (
                                 <div className="space-y-4">
                                     <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl text-center space-y-1">
-                                        <p className="text-xs font-bold text-indigo-900">Select the correct translation or matching item:</p>
+                                        <p className="text-xs font-bold text-indigo-900">{t('lp_select_translation')}</p>
                                         <div className="text-2xl font-black text-slate-900">
                                             {activeNode.payload?.teachItem?.word || activeNode.payload?.teachItem?.symbol || activeNode.payload?.teachItem?.targetText || 'नमस्ते'}
                                         </div>
@@ -667,7 +667,7 @@ export const LearningPathPage: React.FC = () => {
 
                         <div className="pt-2 flex items-center justify-end gap-3">
                             <Button variant="outline" size="sm" onClick={() => setIsLessonModalOpen(false)}>
-                                Cancel
+                                {t('lp_cancel_btn')}
                             </Button>
                             <Button
                                 variant="primary"
@@ -676,7 +676,7 @@ export const LearningPathPage: React.FC = () => {
                                 onClick={handleCompleteLesson}
                                 className="bg-brand-600 hover:bg-brand-700 text-white font-extrabold"
                             >
-                                {isLessonSubmitted ? 'Submitting...' : 'Complete Activity ✓'}
+                                {isLessonSubmitted ? t('lp_submitting') : t('lp_complete_activity_btn')}
                             </Button>
                         </div>
                     </div>
@@ -688,15 +688,15 @@ export const LearningPathPage: React.FC = () => {
                 <Modal
                     isOpen={isCompletedModalOpen}
                     onClose={() => setIsCompletedModalOpen(false)}
-                    title="Lesson Mastered! 🎉"
+                    title={t('lp_lesson_mastered_title')}
                 >
                     <div className="text-center space-y-4 py-4">
                         <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
                             <Trophy className="w-8 h-8 text-emerald-600" />
                         </div>
-                        <h3 className="text-xl font-black text-slate-900">Outstanding Progress!</h3>
+                        <h3 className="text-xl font-black text-slate-900">{t('lp_outstanding_progress')}</h3>
                         <p className="text-xs text-slate-600 max-w-sm mx-auto">
-                            You earned +50 XP and unlocked the next milestone in your guided learning path.
+                            {t('lp_earned_xp')}
                         </p>
                         <div className="pt-2">
                             <Button
@@ -705,12 +705,13 @@ export const LearningPathPage: React.FC = () => {
                                 onClick={() => setIsCompletedModalOpen(false)}
                                 className="bg-brand-600 hover:bg-brand-700 text-white font-extrabold w-full"
                             >
-                                Continue Path 🚀
+                                {t('lp_continue_path_btn')}
                             </Button>
                         </div>
                     </div>
                 </Modal>
             )}
+
         </div>
     );
 };

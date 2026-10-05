@@ -249,7 +249,7 @@ export const LeaderboardPage: React.FC = () => {
                     {/* 2nd Place Silver */}
                     <div className="order-2 md:order-1 bg-slate-900/90 border border-slate-700 rounded-3xl p-6 text-center space-y-4 shadow-xl hover:border-slate-500 transition relative">
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-700 text-slate-200 border border-slate-500 font-extrabold px-3 py-0.5 rounded-full text-xs shadow-md">
-                            🥈 2nd Place
+                            {t('lp_2nd_place')}
                         </div>
                         <div className="relative inline-block mt-2">
                             <div className="w-20 h-20 rounded-full border-4 border-slate-400 overflow-hidden mx-auto shadow-md">
@@ -274,7 +274,7 @@ export const LeaderboardPage: React.FC = () => {
                                 <Star className="w-3.5 h-3.5 fill-teal-400" /> {filterPeriod === 'weekly' ? top2?.weekly_xp : top2?.total_xp} XP
                             </span>
                             <span className="px-3 py-1 bg-slate-800 text-amber-400 rounded-full border border-slate-700 flex items-center gap-1">
-                                <Flame className="w-3.5 h-3.5 fill-amber-400" /> {top2?.streak_days} Days
+                                <Flame className="w-3.5 h-3.5 fill-amber-400" /> {top2?.streak_days} {t('lb_days_label')}
                             </span>
                         </div>
                     </div>
@@ -282,7 +282,7 @@ export const LeaderboardPage: React.FC = () => {
                     {/* 1st Place Gold Champion */}
                     <div className="order-1 md:order-2 bg-gradient-to-b from-amber-950/80 via-slate-900 to-slate-900 border-2 border-amber-400/80 rounded-3xl p-7 text-center space-y-4 shadow-2xl relative transform -translate-y-2">
                         <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 font-black px-4 py-1 rounded-full text-xs shadow-lg flex items-center gap-1">
-                            <Crown className="w-4 h-4 text-slate-950" /> #1 Champion
+                            <Crown className="w-4 h-4 text-slate-950" /> {t('lp_1st_champion')}
                         </div>
                         <div className="relative inline-block mt-3">
                             <div className="w-24 h-24 rounded-full border-4 border-amber-400 overflow-hidden mx-auto shadow-xl ring-4 ring-amber-400/20">
@@ -307,7 +307,7 @@ export const LeaderboardPage: React.FC = () => {
                                 <Star className="w-4 h-4 fill-amber-400" /> {filterPeriod === 'weekly' ? top1?.weekly_xp : top1?.total_xp} XP
                             </span>
                             <span className="px-3.5 py-1.5 bg-amber-500/20 text-amber-400 rounded-full border border-amber-400/40 flex items-center gap-1">
-                                <Flame className="w-4 h-4 fill-amber-400" /> {top1?.streak_days} Days Streak
+                                <Flame className="w-4 h-4 fill-amber-400" /> {top1?.streak_days} {t('lp_days_streak_label2')}
                             </span>
                         </div>
                     </div>
@@ -315,7 +315,7 @@ export const LeaderboardPage: React.FC = () => {
                     {/* 3rd Place Bronze */}
                     <div className="order-3 bg-slate-900/90 border border-slate-700 rounded-3xl p-6 text-center space-y-4 shadow-xl hover:border-slate-500 transition relative">
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-800 text-amber-200 border border-amber-600 font-extrabold px-3 py-0.5 rounded-full text-xs shadow-md">
-                            🥉 3rd Place
+                            {t('lp_3rd_place')}
                         </div>
                         <div className="relative inline-block mt-2">
                             <div className="w-20 h-20 rounded-full border-4 border-amber-700 overflow-hidden mx-auto shadow-md">

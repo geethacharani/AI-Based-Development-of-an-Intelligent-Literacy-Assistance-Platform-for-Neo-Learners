@@ -502,6 +502,52 @@ export interface TranslationStrings {
     reg_age_group: string;
     reg_qualification: string;
     reg_loading: string;
+
+    // Learning Path Page
+    lp_back_home: string;
+    lp_title: string;
+    lp_subtitle: string;
+    lp_loading: string;
+    lp_section_label: string;
+    lp_completed_badge: string;
+    lp_current_section_badge: string;
+    lp_locked_badge: string;
+    lp_progress_label: string;
+    lp_preview_section_btn: string;
+    lp_you_are_here: string;
+    lp_section_goal: string;
+    lp_start_label: string;
+    lp_mastered_label: string;
+    lp_stage_of: string;
+    lp_curriculum_roadmap: string;
+    lp_curriculum_desc: string;
+    lp_current_badge: string;
+    lp_what_you_will_learn: string;
+    lp_why_it_matters: string;
+    lp_how_to_unlock: string;
+    lp_got_it_btn: string;
+    lp_preview_section_goal: string;
+    lp_ai_teacher_lesson: string;
+    lp_activity_label: string;
+    lp_reward_label: string;
+    lp_select_translation: string;
+    lp_cancel_btn: string;
+    lp_complete_activity_btn: string;
+    lp_submitting: string;
+    lp_lesson_mastered_title: string;
+    lp_outstanding_progress: string;
+    lp_earned_xp: string;
+    lp_continue_path_btn: string;
+    lp_completed_100: string;
+    lp_unlocks_after: string;
+    lp_preview_btn_label: string;
+    lp_speak_activity_hint: string;
+    lp_speak_click_mic: string;
+    lp_speak_stt_api: string;
+    lp_2nd_place: string;
+    lp_3rd_place: string;
+    lp_1st_champion: string;
+    lp_days_streak_label2: string;
 }
 
 export const translations: Record<string, TranslationStrings> = {
@@ -969,7 +1015,51 @@ export const translations: Record<string, TranslationStrings> = {
         reg_have_account: "Already have an account? Sign In",
         reg_age_group: "Age Group",
         reg_qualification: "Educational Qualification",
-        reg_loading: "Creating your profile..."
+        reg_loading: "Creating your profile...",
+        lp_back_home: "Back to Home",
+        lp_title: "My Personalized Learning Journey",
+        lp_subtitle: "A complete step-by-step progression from beginner foundations to fluent communication.",
+        lp_loading: "Loading your personalized learning path...",
+        lp_section_label: "Section",
+        lp_completed_badge: "Completed",
+        lp_current_section_badge: "Current Section",
+        lp_locked_badge: "Locked",
+        lp_progress_label: "Progress",
+        lp_preview_section_btn: "Preview Section Curriculum",
+        lp_you_are_here: "You are here! 🚀",
+        lp_section_goal: "Section Goal 🏆",
+        lp_start_label: "START",
+        lp_mastered_label: "Mastered ✓",
+        lp_stage_of: "Stage",
+        lp_curriculum_roadmap: "Complete Curriculum Roadmap (6 Sections)",
+        lp_curriculum_desc: "Track your exact milestone progress across foundational literacy, vocabulary, comprehension, and fluency.",
+        lp_current_badge: "Current:",
+        lp_what_you_will_learn: "What You Will Learn:",
+        lp_why_it_matters: "💡 Why It Matters:",
+        lp_how_to_unlock: "How to Unlock:",
+        lp_got_it_btn: "Got It, Let's Continue Learning! 🚀",
+        lp_preview_section_goal: "Educational Goal",
+        lp_ai_teacher_lesson: "AI Teacher Lesson:",
+        lp_activity_label: "Activity:",
+        lp_reward_label: "Reward:",
+        lp_select_translation: "Select the correct translation or matching item:",
+        lp_cancel_btn: "Cancel",
+        lp_complete_activity_btn: "Complete Activity ✓",
+        lp_submitting: "Submitting...",
+        lp_lesson_mastered_title: "Lesson Mastered! 🎉",
+        lp_outstanding_progress: "Outstanding Progress!",
+        lp_earned_xp: "You earned XP and unlocked the next milestone in your journey!",
+        lp_continue_path_btn: "Continue Path 🚀",
+        lp_completed_100: "✓ Completed (100%)",
+        lp_unlocks_after: "Unlocks after Section",
+        lp_preview_btn_label: "Preview Section",
+        lp_speak_activity_hint: "Real Teacher Voice Activity: Listen to the phrase, then press the mic to speak!",
+        lp_speak_click_mic: "Click microphone & speak:",
+        lp_speak_stt_api: "Using native Browser Web Speech STT API",
+        lp_2nd_place: "🥈 2nd Place",
+        lp_3rd_place: "🥉 3rd Place",
+        lp_1st_champion: "👑 #1 Champion",
+        lp_days_streak_label2: "Days Streak"
     },
 
     // ==========================================
@@ -1436,7 +1526,51 @@ export const translations: Record<string, TranslationStrings> = {
         reg_have_account: "ఇప్పటికే ఖాతా ఉందా? సైన్ ఇన్ చేయండి",
         reg_age_group: "వయస్సు సమూహం",
         reg_qualification: "విద్యార్హత",
-        reg_loading: "మీ ప్రొఫైల్ సృష్టిస్తోంది..."
+        reg_loading: "మీ ప్రొఫైల్ సృష్టిస్తోంది...",
+        lp_back_home: "హోమ్‌కి తిరిగి వెళ్ళు",
+        lp_title: "నా వ్యక్తిగతీకరించిన నేర్చుకునే ప్రయాణం",
+        lp_subtitle: "ప్రారంభ స్థాయి నుండి అనర్గళ సంభాషణ వరకు అడుగడుగూ ముందుకు సాగు.",
+        lp_loading: "మీ వ్యక్తిగత నేర్చుకునే మార్గాన్ని లోడ్ చేస్తోంది...",
+        lp_section_label: "విభాగం",
+        lp_completed_badge: "పూర్తయింది",
+        lp_current_section_badge: "ప్రస్తుత విభాగం",
+        lp_locked_badge: "లాక్ చేయబడింది",
+        lp_progress_label: "పురోగతి",
+        lp_preview_section_btn: "విభాగ పాఠ్యక్రమాన్ని చూడు",
+        lp_you_are_here: "మీరు ఇక్కడ ఉన్నారు! 🚀",
+        lp_section_goal: "విభాగ లక్ష్యం 🏆",
+        lp_start_label: "ప్రారంభించు",
+        lp_mastered_label: "నిపుణత పొందారు ✓",
+        lp_stage_of: "దశ",
+        lp_curriculum_roadmap: "పూర్తి పాఠ్యక్రమ మ్యాప్ (6 విభాగాలు)",
+        lp_curriculum_desc: "పునాది సాక్షరత, పదజాలం, అర్థగ్రహణం మరియు అనర్గళత అంతటా మీ ముఖ్యమైన పురోగతిని ట్రాక్ చేయండి.",
+        lp_current_badge: "ప్రస్తుతం:",
+        lp_what_you_will_learn: "మీరు ఏమి నేర్చుకుంటారు:",
+        lp_why_it_matters: "💡 ఇది ఎందుకు ముఖ్యమో:",
+        lp_how_to_unlock: "అన్‌లాక్ చేయడం ఎలా:",
+        lp_got_it_btn: "అర్థమైంది, నేర్చుకోవడం కొనసాగిద్దాం! 🚀",
+        lp_preview_section_goal: "విద్యా లక్ష్యం",
+        lp_ai_teacher_lesson: "AI టీచర్ పాఠం:",
+        lp_activity_label: "కార్యకలాపం:",
+        lp_reward_label: "బహుమతి:",
+        lp_select_translation: "సరైన అనువాదాన్ని ఎంచుకోండి:",
+        lp_cancel_btn: "రద్దు చేయు",
+        lp_complete_activity_btn: "కార్యకలాపం పూర్తి చేయు ✓",
+        lp_submitting: "సమర్పిస్తోంది...",
+        lp_lesson_mastered_title: "పాఠం నేర్చుకున్నారు! 🎉",
+        lp_outstanding_progress: "అద్భుతమైన పురోగతి!",
+        lp_earned_xp: "మీరు XP సంపాదించి మీ ప్రయాణంలో తదుపరి మైలురాయిని అన్‌లాక్ చేశారు!",
+        lp_continue_path_btn: "మార్గం కొనసాగించు 🚀",
+        lp_completed_100: "✓ పూర్తయింది (100%)",
+        lp_unlocks_after: "విభాగం తర్వాత అన్‌లాక్ అవుతుంది",
+        lp_preview_btn_label: "విభాగం చూడు",
+        lp_speak_activity_hint: "నిజమైన టీచర్ వాయిస్ కార్యకలాపం: వాక్యాన్ని వినండి, తర్వాత మైక్ నొక్కి మాట్లాడండి!",
+        lp_speak_click_mic: "మైక్రోఫోన్ నొక్కి మాట్లాడు:",
+        lp_speak_stt_api: "బ్రౌజర్ వెబ్ స్పీచ్ STT API ఉపయోగిస్తోంది",
+        lp_2nd_place: "🥈 2వ స్థానం",
+        lp_3rd_place: "🥉 3వ స్థానం",
+        lp_1st_champion: "👑 #1 చాంపియన్",
+        lp_days_streak_label2: "రోజుల స్ట్రీక్"
     },
 
     // ==========================================
@@ -1903,7 +2037,51 @@ export const translations: Record<string, TranslationStrings> = {
         reg_have_account: "ஏற்கனவே கணக்கு இருக்கிறதா? உள்நுழைக",
         reg_age_group: "வயது குழு",
         reg_qualification: "கல்வித் தகுதி",
-        reg_loading: "உங்கள் சுயவிவரம் உருவாக்கப்படுகிறது..."
+        reg_loading: "உங்கள் சுயவிவரம் உருவாக்கப்படுகிறது...",
+        lp_back_home: "முகப்புக்குத் திரும்பு",
+        lp_title: "என் தனிப்பயன் கற்றல் பயணம்",
+        lp_subtitle: "ஆரம்ப அடிப்படைகளிலிருந்து சரளமான தொடர்பு வரை படிப்படியான முன்னேற்றம்.",
+        lp_loading: "உங்கள் தனிப்பயன் கற்றல் பாதை ஏற்றப்படுகிறது...",
+        lp_section_label: "பகுதி",
+        lp_completed_badge: "முடிந்தது",
+        lp_current_section_badge: "தற்போதைய பகுதி",
+        lp_locked_badge: "பூட்டப்பட்டது",
+        lp_progress_label: "முன்னேற்றம்",
+        lp_preview_section_btn: "பகுதி பாடத்திட்டத்தை பார்க்கவும்",
+        lp_you_are_here: "நீங்கள் இங்கே இருக்கிறீர்கள்! 🚀",
+        lp_section_goal: "பகுதி இலக்கு 🏆",
+        lp_start_label: "தொடங்கு",
+        lp_mastered_label: "தேர்ச்சி பெற்றது ✓",
+        lp_stage_of: "நிலை",
+        lp_curriculum_roadmap: "முழு பாடத்திட்ட வரைபடம் (6 பகுதிகள்)",
+        lp_curriculum_desc: "அடிப்படை கல்வியறிவு, சொல்லகராதி, புரிதல் மற்றும் சரளத்தன்மை முழுவதும் உங்கள் முன்னேற்றத்தை கண்காணிக்கவும்.",
+        lp_current_badge: "தற்போது:",
+        lp_what_you_will_learn: "நீங்கள் என்ன கற்பீர்கள்:",
+        lp_why_it_matters: "💡 இது ஏன் முக்கியம்:",
+        lp_how_to_unlock: "திறப்பது எப்படி:",
+        lp_got_it_btn: "புரிந்தது, கற்றலை தொடர்வோம்! 🚀",
+        lp_preview_section_goal: "கல்வி இலக்கு",
+        lp_ai_teacher_lesson: "AI ஆசிரியர் பாடம்:",
+        lp_activity_label: "செயல்பாடு:",
+        lp_reward_label: "வெகுமதி:",
+        lp_select_translation: "சரியான மொழிபெயர்ப்பை தேர்ந்தெடுக்கவும்:",
+        lp_cancel_btn: "ரத்து செய்",
+        lp_complete_activity_btn: "செயல்பாட்டை முடி ✓",
+        lp_submitting: "சமர்ப்பிக்கப்படுகிறது...",
+        lp_lesson_mastered_title: "பாடம் தேர்ச்சி! 🎉",
+        lp_outstanding_progress: "அற்புதமான முன்னேற்றம்!",
+        lp_earned_xp: "நீங்கள் XP சம்பாதித்து உங்கள் பயணத்தில் அடுத்த மைல்கல்லை திறந்தீர்கள்!",
+        lp_continue_path_btn: "பாதையை தொடர்க 🚀",
+        lp_completed_100: "✓ முடிந்தது (100%)",
+        lp_unlocks_after: "பகுதிக்குப் பிறகு திறக்கப்படும்",
+        lp_preview_btn_label: "பகுதியை பார்க்கவும்",
+        lp_speak_activity_hint: "உண்மையான ஆசிரியர் குரல் செயல்பாடு: சொற்றொடரை கேளுங்கள், பின் மைக்கை அழுத்தி பேசுங்கள்!",
+        lp_speak_click_mic: "மைக்ரோஃபோனை அழுத்தி பேசு:",
+        lp_speak_stt_api: "உலாவி வலை பேச்சு STT API பயன்படுத்துகிறது",
+        lp_2nd_place: "🥈 2வது இடம்",
+        lp_3rd_place: "🥉 3வது இடம்",
+        lp_1st_champion: "👑 #1 சாம்பியன்",
+        lp_days_streak_label2: "நாட்கள் தொடர்ச்சி"
     },
 
     // ==========================================
@@ -2370,7 +2548,51 @@ export const translations: Record<string, TranslationStrings> = {
         reg_have_account: "पहले से खाता है? साइन इन करें",
         reg_age_group: "आयु समूह",
         reg_qualification: "शैक्षणिक योग्यता",
-        reg_loading: "आपका प्रोफ़ाइल बनाया जा रहा है..."
+        reg_loading: "आपका प्रोफ़ाइल बनाया जा रहा है...",
+        lp_back_home: "होम पर वापस जाएं",
+        lp_title: "मेरी व्यक्तिगत सीखने की यात्रा",
+        lp_subtitle: "शुरुआती बुनियाद से धाराप्रवाह संवाद तक चरण-दर-चरण प्रगति।",
+        lp_loading: "आपका व्यक्तिगत सीखने का मार्ग लोड हो रहा है...",
+        lp_section_label: "खंड",
+        lp_completed_badge: "पूर्ण",
+        lp_current_section_badge: "वर्तमान खंड",
+        lp_locked_badge: "बंद है",
+        lp_progress_label: "प्रगति",
+        lp_preview_section_btn: "खंड पाठ्यक्रम देखें",
+        lp_you_are_here: "आप यहाँ हैं! 🚀",
+        lp_section_goal: "खंड लक्ष्य 🏆",
+        lp_start_label: "शुरू करें",
+        lp_mastered_label: "महारत हासिल ✓",
+        lp_stage_of: "चरण",
+        lp_curriculum_roadmap: "पूर्ण पाठ्यक्रम रोडमैप (6 खंड)",
+        lp_curriculum_desc: "बुनियादी साक्षरता, शब्दावली, समझ और धाराप्रवाहता में आपकी प्रगति ट्रैक करें।",
+        lp_current_badge: "वर्तमान:",
+        lp_what_you_will_learn: "आप क्या सीखेंगे:",
+        lp_why_it_matters: "💡 यह क्यों महत्वपूर्ण है:",
+        lp_how_to_unlock: "अनलॉक कैसे करें:",
+        lp_got_it_btn: "समझ गया, सीखना जारी रखें! 🚀",
+        lp_preview_section_goal: "शैक्षिक लक्ष्य",
+        lp_ai_teacher_lesson: "AI शिक्षक पाठ:",
+        lp_activity_label: "गतिविधि:",
+        lp_reward_label: "पुरस्कार:",
+        lp_select_translation: "सही अनुवाद चुनें:",
+        lp_cancel_btn: "रद्द करें",
+        lp_complete_activity_btn: "गतिविधि पूरी करें ✓",
+        lp_submitting: "जमा हो रहा है...",
+        lp_lesson_mastered_title: "पाठ में महारत! 🎉",
+        lp_outstanding_progress: "शानदार प्रगति!",
+        lp_earned_xp: "आपने XP अर्जित किया और अपनी यात्रा में अगला पड़ाव अनलॉक किया!",
+        lp_continue_path_btn: "मार्ग जारी रखें 🚀",
+        lp_completed_100: "✓ पूर्ण (100%)",
+        lp_unlocks_after: "खंड के बाद अनलॉक होगा",
+        lp_preview_btn_label: "खंड देखें",
+        lp_speak_activity_hint: "वास्तविक शिक्षक आवाज़ गतिविधि: वाक्यांश सुनें, फिर माइक दबाकर बोलें!",
+        lp_speak_click_mic: "माइक्रोफ़ोन दबाएं और बोलें:",
+        lp_speak_stt_api: "ब्राउज़र वेब स्पीच STT API का उपयोग",
+        lp_2nd_place: "🥈 दूसरा स्थान",
+        lp_3rd_place: "🥉 तीसरा स्थान",
+        lp_1st_champion: "👑 #1 चैंपियन",
+        lp_days_streak_label2: "दिन की स्ट्रीक"
     },
 
     // ==========================================
@@ -2837,7 +3059,51 @@ export const translations: Record<string, TranslationStrings> = {
         reg_have_account: "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ? ಸೈನ್ ಇನ್ ಮಾಡಿ",
         reg_age_group: "ವಯಸ್ಸಿನ ಗುಂಪು",
         reg_qualification: "ಶೈಕ್ಷಣಿಕ ಅರ್ಹತೆ",
-        reg_loading: "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ರಚಿಸಲಾಗುತ್ತಿದೆ..."
+        reg_loading: "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ರಚಿಸಲಾಗುತ್ತಿದೆ...",
+        lp_back_home: "ಮನೆಗೆ ಹಿಂತಿರುಗಿ",
+        lp_title: "ನನ್ನ ವೈಯಕ್ತಿಕ ಕಲಿಕಾ ಪ್ರಯಾಣ",
+        lp_subtitle: "ಮೂಲ ಅಡಿಪಾಯದಿಂದ ಧಾರಾಳ ಸಂವಹನದವರೆಗೆ ಹಂತ-ಹಂತವಾದ ಪ್ರಗತಿ.",
+        lp_loading: "ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಕಲಿಕಾ ಮಾರ್ಗ ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+        lp_section_label: "ವಿಭಾಗ",
+        lp_completed_badge: "ಮುಗಿದಿದೆ",
+        lp_current_section_badge: "ಪ್ರಸ್ತುತ ವಿಭಾಗ",
+        lp_locked_badge: "ಲಾಕ್ ಆಗಿದೆ",
+        lp_progress_label: "ಪ್ರಗತಿ",
+        lp_preview_section_btn: "ವಿಭಾಗ ಪಠ್ಯಕ್ರಮ ನೋಡಿ",
+        lp_you_are_here: "ನೀವು ಇಲ್ಲಿದ್ದೀರಿ! 🚀",
+        lp_section_goal: "ವಿಭಾಗ ಗುರಿ 🏆",
+        lp_start_label: "ಪ್ರಾರಂಭಿಸಿ",
+        lp_mastered_label: "ಪ್ರವೀಣತೆ ಸಾಧಿಸಿದೆ ✓",
+        lp_stage_of: "ಹಂತ",
+        lp_curriculum_roadmap: "ಸಂಪೂರ್ಣ ಪಠ್ಯಕ್ರಮ ನಕ್ಷೆ (6 ವಿಭಾಗಗಳು)",
+        lp_curriculum_desc: "ಮೂಲ ಸಾಕ್ಷರತೆ, ಶಬ್ದಕೋಶ, ಗ್ರಹಿಕೆ ಮತ್ತು ಧಾರಾಳತೆಯಾದ್ಯಂತ ನಿಮ್ಮ ಪ್ರಗತಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ.",
+        lp_current_badge: "ಪ್ರಸ್ತುತ:",
+        lp_what_you_will_learn: "ನೀವು ಏನು ಕಲಿಯುವಿರಿ:",
+        lp_why_it_matters: "💡 ಇದು ಏಕೆ ಮುಖ್ಯ:",
+        lp_how_to_unlock: "ಅನ್‌ಲಾಕ್ ಮಾಡುವುದು ಹೇಗೆ:",
+        lp_got_it_btn: "ಅರ್ಥವಾಯಿತು, ಕಲಿಕೆ ಮುಂದುವರಿಸೋಣ! 🚀",
+        lp_preview_section_goal: "ಶೈಕ್ಷಣಿಕ ಗುರಿ",
+        lp_ai_teacher_lesson: "AI ಶಿಕ್ಷಕರ ಪಾಠ:",
+        lp_activity_label: "ಚಟುವಟಿಕೆ:",
+        lp_reward_label: "ಬಹುಮಾನ:",
+        lp_select_translation: "ಸರಿಯಾದ ಅನುವಾದ ಆಯ್ಕೆ ಮಾಡಿ:",
+        lp_cancel_btn: "ರದ್ದು ಮಾಡಿ",
+        lp_complete_activity_btn: "ಚಟುವಟಿಕೆ ಮುಗಿಸಿ ✓",
+        lp_submitting: "ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...",
+        lp_lesson_mastered_title: "ಪಾಠ ಕಲಿತಿದ್ದೀರಿ! 🎉",
+        lp_outstanding_progress: "ಅದ್ಭುತ ಪ್ರಗತಿ!",
+        lp_earned_xp: "ನೀವು XP ಗಳಿಸಿ ನಿಮ್ಮ ಪ್ರಯಾಣದಲ್ಲಿ ಮುಂದಿನ ಮೈಲಿಗಲ್ಲನ್ನು ತೆರೆದಿದ್ದೀರಿ!",
+        lp_continue_path_btn: "ಮಾರ್ಗ ಮುಂದುವರಿಸಿ 🚀",
+        lp_completed_100: "✓ ಮುಗಿದಿದೆ (100%)",
+        lp_unlocks_after: "ವಿಭಾಗದ ನಂತರ ಅನ್‌ಲಾಕ್ ಆಗುತ್ತದೆ",
+        lp_preview_btn_label: "ವಿಭಾಗ ನೋಡಿ",
+        lp_speak_activity_hint: "ನಿಜ ಶಿಕ್ಷಕ ಧ್ವನಿ ಚಟುವಟಿಕೆ: ಪದಗುಚ್ಛ ಕೇಳಿ, ನಂತರ ಮೈಕ್ ಒತ್ತಿ ಮಾತನಾಡಿ!",
+        lp_speak_click_mic: "ಮೈಕ್ರೋಫೋನ್ ಒತ್ತಿ ಮಾತನಾಡಿ:",
+        lp_speak_stt_api: "ಬ್ರೌಸರ್ ವೆಬ್ ಸ್ಪೀಚ್ STT API ಬಳಸುತ್ತಿದೆ",
+        lp_2nd_place: "🥈 2ನೇ ಸ್ಥಾನ",
+        lp_3rd_place: "🥉 3ನೇ ಸ್ಥಾನ",
+        lp_1st_champion: "👑 #1 ಚಾಂಪಿಯನ್",
+        lp_days_streak_label2: "ದಿನಗಳ ಸ್ಟ್ರೀಕ್"
     },
 
     // ==========================================
@@ -3304,7 +3570,51 @@ export const translations: Record<string, TranslationStrings> = {
         reg_have_account: "ഇതിനകം അക്കൗണ്ട് ഉണ്ടോ? സൈൻ ഇൻ ചെയ്യൂ",
         reg_age_group: "പ്രായ ഗ്രൂപ്പ്",
         reg_qualification: "വിദ്യാഭ്യാസ യോഗ്യത",
-        reg_loading: "നിങ്ങളുടെ പ്രൊഫൈൽ ഉണ്ടാക്കുന്നു..."
+        reg_loading: "നിങ്ങളുടെ പ്രൊഫൈൽ ഉണ്ടാക്കുന്നു...",
+        lp_back_home: "ഹോമിലേക്ക് മടങ്ങൂ",
+        lp_title: "എന്റെ വ്യക്തിഗത പഠന യാത്ര",
+        lp_subtitle: "ആരംഭ അടിത്തറ മുതൽ ഒഴുകുന്ന ആശയവിനിമയം വരെ ഘട്ടം ഘട്ടമായ പ്രഗതി.",
+        lp_loading: "നിങ്ങളുടെ വ്യക്തിഗത പഠന പാത ലോഡ് ചെയ്യുന്നു...",
+        lp_section_label: "വിഭാഗം",
+        lp_completed_badge: "പൂർത്തിയായി",
+        lp_current_section_badge: "നിലവിലെ വിഭാഗം",
+        lp_locked_badge: "ലോക്ക് ചെയ്തു",
+        lp_progress_label: "പ്രഗതി",
+        lp_preview_section_btn: "വിഭാഗ പാഠ്യക്രമം കാണൂ",
+        lp_you_are_here: "നിങ്ങൾ ഇവിടെ ഉണ്ട്! 🚀",
+        lp_section_goal: "വിഭാഗ ലക്ഷ്യം 🏆",
+        lp_start_label: "ആരംഭിക്കൂ",
+        lp_mastered_label: "നൈപുണ്യം നേടി ✓",
+        lp_stage_of: "ഘട്ടം",
+        lp_curriculum_roadmap: "പൂർണ്ണ പാഠ്യക്രമ ഭൂപടം (6 വിഭാഗങ്ങൾ)",
+        lp_curriculum_desc: "അടിസ്ഥാന സാക്ഷരത, പദസമ്പത്ത്, ഗ്രഹണം, ഒഴുക്ക് എന്നിവയിലുടനീളം നിങ്ങളുടെ പ്രഗതി ട്രാക്ക് ചെയ്യൂ.",
+        lp_current_badge: "നിലവിൽ:",
+        lp_what_you_will_learn: "നിങ്ങൾ എന്ത് പഠിക്കും:",
+        lp_why_it_matters: "💡 ഇത് എന്തുകൊണ്ട് പ്രധാനം:",
+        lp_how_to_unlock: "അൺലോക്ക് ചെയ്യുന്നത് എങ്ങനെ:",
+        lp_got_it_btn: "മനസ്സിലായി, പഠനം തുടരൂ! 🚀",
+        lp_preview_section_goal: "വിദ്യാഭ്യാസ ലക്ഷ്യം",
+        lp_ai_teacher_lesson: "AI അധ്യാപക പാഠം:",
+        lp_activity_label: "പ്രവർത്തനം:",
+        lp_reward_label: "പ്രതിഫലം:",
+        lp_select_translation: "ശരിയായ വിവർത്തനം തിരഞ്ഞെടുക്കൂ:",
+        lp_cancel_btn: "റദ്ദാക്കൂ",
+        lp_complete_activity_btn: "പ്രവർത്തനം പൂർത്തിയാക്കൂ ✓",
+        lp_submitting: "സമർപ്പിക്കുന്നു...",
+        lp_lesson_mastered_title: "പാഠം നൈപുണ്യം നേടി! 🎉",
+        lp_outstanding_progress: "മികച്ച പ്രഗതി!",
+        lp_earned_xp: "നിങ്ങൾ XP സമ്പാദിച്ചു, യാത്രയിൽ അടുത്ത നാഴികക്കല്ല് അൺലോക്ക് ചെയ്തു!",
+        lp_continue_path_btn: "പാത തുടരൂ 🚀",
+        lp_completed_100: "✓ പൂർത്തിയായി (100%)",
+        lp_unlocks_after: "വിഭാഗത്തിന് ശേഷം അൺലോക്ക് ആകും",
+        lp_preview_btn_label: "വിഭാഗം കാണൂ",
+        lp_speak_activity_hint: "യഥാർത്ഥ അധ്യാപക ശബ്ദ പ്രവർത്തനം: ഫ്രേസ് കേൾക്കൂ, പിന്നെ മൈക്ക് അമർത്തി സംസാരിക്കൂ!",
+        lp_speak_click_mic: "മൈക്രോഫോൺ അമർത്തി സംസാരിക്കൂ:",
+        lp_speak_stt_api: "ബ്രൗസർ വെബ് സ്പീച്ച് STT API ഉപയോഗിക്കുന്നു",
+        lp_2nd_place: "🥈 2-ാം സ്ഥാനം",
+        lp_3rd_place: "🥉 3-ാം സ്ഥാനം",
+        lp_1st_champion: "👑 #1 ചാമ്പ്യൻ",
+        lp_days_streak_label2: "ദിവസ സ്ട്രീക്ക്"
     }
 };
 
