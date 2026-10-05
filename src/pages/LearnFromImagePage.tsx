@@ -17,8 +17,11 @@ import {
     CheckCircle2
 } from 'lucide-react';
 
+import { useTranslation } from '../utils/translations';
+
 export const LearnFromImagePage: React.FC = () => {
     const { profile } = useAuth();
+    const { t } = useTranslation();
     const [selectedSample, setSelectedSample] = useState<string>('menu');
     const [ocrData, setOcrData] = useState<ImageOCRResponse | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -94,20 +97,20 @@ export const LearnFromImagePage: React.FC = () => {
             <div className="p-6 sm:p-8 bg-gradient-to-r from-blue-700 via-indigo-700 to-violet-700 text-white rounded-3xl shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
                 <div className="space-y-2 z-10">
                     <Badge variant="brand" size="sm" className="font-extrabold text-slate-950 bg-blue-300 border-none">
-                        📸 OCR & VISUAL LEARNING
+                        📸 {t('tool_ocr_badge')}
                     </Badge>
                     <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-                        Learn from Real-World Images
+                        {t('tool_ocr_title')}
                     </h1>
                     <p className="text-blue-100 text-sm sm:text-base font-medium max-w-xl">
-                        Upload or scan street boards, menus, packaging, and signboards to extract authentic <strong className="text-white font-bold">{targetLangName}</strong> vocabulary.
+                        {t('tool_ocr_desc')}
                     </p>
                 </div>
 
                 <div className="flex items-center gap-2 z-10">
                     <label className="cursor-pointer px-4 py-3 bg-white/15 hover:bg-white/20 backdrop-blur-md rounded-2xl border border-white/20 text-center flex items-center gap-2 transition text-xs font-bold text-white">
                         <Upload className="w-4 h-4 text-cyan-300" />
-                        <span>Upload Image</span>
+                        <span>{t('tool_ocr_btn')}</span>
                         <input
                             type="file"
                             accept="image/*"

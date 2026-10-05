@@ -3316,7 +3316,8 @@ export const getTranslation = (langCode: string | undefined, key: keyof Translat
 
 export const useTranslation = () => {
     const { profile, guestLanguage } = useAuth();
-    const supportLangCode = profile?.comfortable_language?.code || guestLanguage || (typeof window !== 'undefined' ? localStorage.getItem('lingo_interface_lang') : null) || 'en';
+    const storedLang = typeof window !== 'undefined' ? localStorage.getItem('lingo_interface_lang') : null;
+    const supportLangCode = guestLanguage || storedLang || profile?.comfortable_language?.code || 'en';
     const t = (key: keyof TranslationStrings): string => getTranslation(supportLangCode, key);
     return { t, supportLangCode };
 };

@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { BookOpen, Map, Gamepad2, Trophy, User } from 'lucide-react';
+import { useTranslation, TranslationStrings } from '../../utils/translations';
 
 interface NavItem {
-    label: string;
+    labelKey: keyof TranslationStrings;
+    defaultLabel: string;
     path: string;
     icon: React.ComponentType<{ className?: string }>;
     matchPaths: string[];
@@ -11,31 +13,36 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
     {
-        label: 'Learn',
+        labelKey: 'nav_learn',
+        defaultLabel: 'Learn',
         path: '/dashboard',
         icon: BookOpen,
         matchPaths: ['/dashboard', '/learn']
     },
     {
-        label: 'My Path',
+        labelKey: 'nav_learning_path',
+        defaultLabel: 'My Path',
         path: '/learning-path',
         icon: Map,
         matchPaths: ['/learning-path']
     },
     {
-        label: 'Games',
+        labelKey: 'nav_games',
+        defaultLabel: 'Games',
         path: '/games',
         icon: Gamepad2,
         matchPaths: ['/games']
     },
     {
-        label: 'League',
+        labelKey: 'nav_leaderboard',
+        defaultLabel: 'League',
         path: '/leaderboard',
         icon: Trophy,
         matchPaths: ['/leaderboard']
     },
     {
-        label: 'Profile',
+        labelKey: 'nav_profile',
+        defaultLabel: 'Profile',
         path: '/profile',
         icon: User,
         matchPaths: ['/profile']
@@ -44,6 +51,7 @@ const NAV_ITEMS: NavItem[] = [
 
 export const MobileBottomNav: React.FC = () => {
     const location = useLocation();
+    const { t } = useTranslation();
 
     return (
         <nav
@@ -54,6 +62,7 @@ export const MobileBottomNav: React.FC = () => {
                 {NAV_ITEMS.map((item) => {
                     const Icon = item.icon;
                     const isActive = item.matchPaths.some(p => location.pathname === p || (p !== '/dashboard' && location.pathname.startsWith(p)));
+                    const label = (t(item.labelKey) || item.defaultLabel).replace(/^[\p{Emoji}\u200d\uFE0F]+\s*/u, '');
 
                     return (
                         <NavLink
@@ -70,7 +79,7 @@ export const MobileBottomNav: React.FC = () => {
                             }`}>
                                 <Icon className="w-5 h-5" />
                             </div>
-                            <span className="text-[11px] mt-0.5 tracking-tight">{item.label}</span>
+                            <span className="text-[11px] mt-0.5 tracking-tight">{label}</span>
                         </NavLink>
                     );
                 })}

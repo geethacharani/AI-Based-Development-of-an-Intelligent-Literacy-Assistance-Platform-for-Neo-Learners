@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { aiTeacherService, ChatMessage } from '../../services/aiTeacherService';
+import { voiceService } from '../../services/voiceService';
 import { LingoBot } from '../common/LingoCharacters';
 import { useTranslation } from '../../utils/translations';
 import {
@@ -60,15 +61,7 @@ export const FloatingAITeacher: React.FC = () => {
     }, [messages, isOpen, isMinimized, isLoading]);
 
     const handleSpeak = (text: string) => {
-        if (!('speechSynthesis' in window)) return;
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.9;
-        if (targetLangCode === 'hi') utterance.lang = 'hi-IN';
-        else if (targetLangCode === 'te') utterance.lang = 'te-IN';
-        else if (targetLangCode === 'ta') utterance.lang = 'ta-IN';
-        else utterance.lang = 'en-US';
-        window.speechSynthesis.speak(utterance);
+        voiceService.speakText(text, targetLangCode, 0.9);
     };
 
     const handleCopy = (id: string, text: string) => {

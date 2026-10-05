@@ -28,8 +28,21 @@ export const VoiceLearningPage: React.FC = () => {
     const navigate = useNavigate();
     const { profile } = useAuth();
 
-    const targetLangCode = (profile?.target_language?.code || 'hi').toLowerCase();
-    const targetLangName = profile?.target_language?.name || 'Hindi';
+    const VOICE_LANGUAGES = [
+        { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳' },
+        { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
+        { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳' },
+        { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳' },
+        { code: 'ml', name: 'Malayalam', native: 'മലയാളം', flag: '🇮🇳' },
+        { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
+    ];
+
+    const initialLang = (profile?.target_language?.code || 'kn').toLowerCase();
+    const [selectedLang, setSelectedLang] = useState<string>(initialLang);
+
+    const activeLangObj = VOICE_LANGUAGES.find(l => l.code === selectedLang) || VOICE_LANGUAGES[0];
+    const targetLangCode = selectedLang;
+    const targetLangName = activeLangObj.name;
     const supportLangCode = profile?.comfortable_language?.code || 'en';
 
     const languagePhrases: Record<string, Array<{
@@ -77,7 +90,7 @@ export const VoiceLearningPage: React.FC = () => {
         ]
     };
 
-    const practicePhrases = languagePhrases[targetLangCode] || languagePhrases['hi'];
+    const practicePhrases = languagePhrases[targetLangCode] || languagePhrases['kn'];
 
     const [selectedPhraseIndex, setSelectedPhraseIndex] = useState(0);
     const [speechRate, setSpeechRate] = useState<number>(0.85); // 0.7 = Slow, 0.85 = Medium, 1.0 = Normal
@@ -175,6 +188,37 @@ export const VoiceLearningPage: React.FC = () => {
                 <p className="text-sm text-slate-600 max-w-lg mx-auto">
                     Listen to native TTS audio in <strong className="text-brand-700 font-bold">{targetLangName}</strong>, pronounce the sentence, and get AI pronunciation clarity feedback!
                 </p>
+            </div>
+
+            {/* Quick Practice Language Selector */}
+            <div className="bg-white p-3 rounded-2xl border-2 border-slate-200/90 shadow-sm flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2 text-xs font-black text-slate-800 px-1">
+                    <Sparkles className="w-4 h-4 text-amber-500" />
+                    <span>Select Language to Practice:</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                    {VOICE_LANGUAGES.map(l => (
+                        <button
+                            key={l.code}
+                            onClick={() => {
+                                setSelectedLang(l.code);
+                                setSelectedPhraseIndex(0);
+                                setRealtimeTranscription('');
+                                setEvaluationResult(null);
+                                setSttError(null);
+                            }}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                                selectedLang === l.code
+                                    ? 'bg-amber-400 text-slate-950 font-extrabold shadow-md ring-2 ring-amber-300 scale-105'
+                                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                            }`}
+                        >
+                            <span>{l.flag}</span>
+                            <span>{l.name}</span>
+                            <span className="opacity-75">({l.native})</span>
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {/* Phrase Selector Tabs */}

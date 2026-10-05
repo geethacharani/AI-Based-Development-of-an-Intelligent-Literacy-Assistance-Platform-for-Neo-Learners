@@ -260,8 +260,16 @@ export const Navbar: React.FC = () => {
                         )}
                     </div>
 
-                    {/* Mobile Menu Button */}
+                    {/* Mobile Menu Button & Language Switcher */}
                     <div className="flex md:hidden items-center space-x-2">
+                        <button
+                            onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-bold bg-slate-100 text-slate-800 rounded-xl border border-slate-200"
+                            title="Switch Interface Language"
+                        >
+                            <Globe className="w-3.5 h-3.5 text-brand-600" />
+                            <span>{currentLangObj.flag} {currentLangObj.code.toUpperCase()}</span>
+                        </button>
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="p-2.5 rounded-2xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
@@ -273,9 +281,57 @@ export const Navbar: React.FC = () => {
                 </div>
             </div>
 
+            {/* Mobile Language Dropdown Modal when tapped on mobile */}
+            {isLangDropdownOpen && (
+                <div className="md:hidden bg-slate-50 border-b border-slate-200 p-3 space-y-2 animate-fade-in shadow-inner">
+                    <p className="text-xs font-extrabold uppercase text-slate-500 tracking-wider px-1">
+                        Select Interface Language
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                        {supportLanguages.map(l => (
+                            <button
+                                key={l.code}
+                                onClick={() => handleLanguageSelect(l.code)}
+                                className={`flex items-center gap-2 p-2.5 rounded-xl text-xs font-bold transition text-left border ${
+                                    currentSupportLangCode === l.code
+                                        ? 'bg-brand-600 text-white border-brand-700 shadow-sm'
+                                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                                }`}
+                            >
+                                <span className="text-base">{l.flag}</span>
+                                <span>{l.name}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Mobile Drawer Menu */}
             {isMobileMenuOpen && (
                 <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 animate-fade-in shadow-xl">
+                    {/* Language Switcher inside drawer */}
+                    <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200/80 space-y-2">
+                        <div className="flex items-center gap-2 text-xs font-extrabold text-slate-700">
+                            <Globe className="w-4 h-4 text-brand-600" />
+                            <span>Interface Language:</span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-1.5">
+                            {supportLanguages.map(l => (
+                                <button
+                                    key={l.code}
+                                    onClick={() => handleLanguageSelect(l.code)}
+                                    className={`py-1.5 px-2 rounded-xl text-xs font-bold text-center border transition ${
+                                        currentSupportLangCode === l.code
+                                            ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
+                                            : 'bg-white text-slate-700 border-slate-200'
+                                    }`}
+                                >
+                                    {l.flag} {l.code.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     {!isAuthenticated ? (
                         <>
                             <a

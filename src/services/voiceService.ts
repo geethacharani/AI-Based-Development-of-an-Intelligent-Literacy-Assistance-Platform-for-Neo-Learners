@@ -14,26 +14,62 @@ export const voiceService = {
      * Text-To-Speech (TTS): Speaks text aloud in specified target language
      */
     speakText(text: string, lang: string = 'en-US', rate: number = 0.9): void {
+        const localeMap: Record<string, string> = {
+            'en': 'en-US',
+            'hi': 'hi-IN',
+            'te': 'te-IN',
+            'ta': 'ta-IN',
+            'kn': 'kn-IN',
+            'ml': 'ml-IN',
+        };
+        const targetLocale = localeMap[lang] || lang || 'en-US';
+        const langShort = (lang || 'en').slice(0, 2).toLowerCase();
+
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel(); // Stop any ongoing speech
             const utterance = new SpeechSynthesisUtterance(text);
-
-            // Map common language codes to speech synthesis locales
-            const localeMap: Record<string, string> = {
-                'en': 'en-US',
-                'hi': 'hi-IN',
-                'te': 'te-IN',
-                'ta': 'ta-IN',
-                'kn': 'kn-IN',
-                'ml': 'ml-IN',
-            };
-
-            utterance.lang = localeMap[lang] || lang || 'en-US';
+            utterance.lang = targetLocale;
             utterance.rate = rate; // Slightly slower for language learners
             utterance.pitch = 1.0;
+
+            const voices = window.speechSynthesis.getVoices();
+            const matchedVoice = voices.find(v =>
+                v.lang.toLowerCase().replace('_', '-').startsWith(targetLocale.toLowerCase()) ||
+                v.lang.toLowerCase().startsWith(langShort)
+            );
+            if (matchedVoice) {
+                utterance.voice = matchedVoice;
+            }
+
+            let didSpeak = false;
+            utterance.onstart = () => { didSpeak = true; };
+            utterance.onerror = () => {
+                voiceService.playAudioFallback(text, langShort);
+            };
+
             window.speechSynthesis.speak(utterance);
+
+            // Fallback for languages like Kannada or Malayalam if browser synthesis doesn't trigger
+            if (!matchedVoice && (langShort === 'kn' || langShort === 'ml' || langShort === 'te')) {
+                setTimeout(() => {
+                    if (!didSpeak && !window.speechSynthesis.speaking) {
+                        voiceService.playAudioFallback(text, langShort);
+                    }
+                }, 400);
+            }
         } else {
-            console.warn('Web Speech API (speechSynthesis) is not supported in this browser.');
+            voiceService.playAudioFallback(text, langShort);
+        }
+    },
+
+    playAudioFallback(text: string, langShort: string): void {
+        try {
+            const cleanText = text.replace(/["'“”]/g, '').trim().slice(0, 100);
+            const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${langShort}&q=${encodeURIComponent(cleanText)}`;
+            const audio = new Audio(audioUrl);
+            audio.play().catch(() => {});
+        } catch {
+            // ignore
         }
     },
 
