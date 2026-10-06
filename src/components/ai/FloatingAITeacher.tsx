@@ -160,6 +160,7 @@ export const FloatingAITeacher: React.FC = () => {
                 context: 'floating_teacher',
                 interfaceLang: comfLangName,
                 targetLang: targetLangName,
+                targetCode: targetLangCode,
                 proficiency: learnerLevel
             });
 
