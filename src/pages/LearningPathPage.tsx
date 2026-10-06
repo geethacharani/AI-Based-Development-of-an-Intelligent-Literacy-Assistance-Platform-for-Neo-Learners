@@ -193,7 +193,8 @@ export const LearningPathPage: React.FC = () => {
     };
 
     const getLocalizedNodeTitle = (title: string): string => {
-        if (/alphabet & characters/i.test(title)) {
+        // Section 1
+        if (/alphabet & characters|alphabet recognition/i.test(title)) {
             const tr: Record<string, string> = { en: 'Alphabet & Characters', ta: 'எழுத்துக்கள் & வடிவங்கள்', te: 'అక్షరాలు & లిపి', kn: 'ಅಕ್ಷರಗಳು & ರೂಪಗಳು', hi: 'वर्णमाला और अक्षर', ml: 'അക്ഷരങ്ങളും ലിപിയും' };
             return tr[lang] || tr['en'];
         }
@@ -201,30 +202,123 @@ export const LearningPathPage: React.FC = () => {
             const tr: Record<string, string> = { en: 'Basic Sounds & Phonics', ta: 'அடிப்படை ஒலிகள் & ஒலிப்பு', te: 'ప్రాథమిక శబ్దాలు & ఉచ్చారణ', kn: 'ಮೂಲ ಧ್ವನಿಗಳು & ಉಚ್ಚಾರಣೆ', hi: 'बुनियादी ध्वनियाँ और ध्वन्यात्मकता', ml: 'അടിസ്ഥാന ശബ്ദങ്ങൾ' };
             return tr[lang] || tr['en'];
         }
-        if (/pronunciation basics & greetings/i.test(title)) {
+        if (/pronunciation basics & greetings|greetings & pronunciation/i.test(title)) {
             const tr: Record<string, string> = { en: 'Greetings & Pronunciation', ta: 'வாழ்த்துக்கள் & உச்சரிப்பு', te: 'శుభాకాంక్షలు & ఉచ్చారణ', kn: 'ಶುಭಾಶಯಗಳು & ಉಚ್ಚಾರಣೆ', hi: 'अभिवादन और उच्चारण', ml: 'ആശംസകളും ഉച്ചാരണവും' };
             return tr[lang] || tr['en'];
         }
-        if (/numbers & very common words/i.test(title)) {
+        if (/numbers & very common words|numbers & common words/i.test(title)) {
             const tr: Record<string, string> = { en: 'Numbers & Common Words', ta: 'எண்கள் & பொதுச் சொற்கள்', te: 'సంఖ్యలు & సాధారణ పదాలు', kn: 'ಸಂಖ್ಯೆಗಳು & ಸಾಮಾನ್ಯ ಪದಗಳು', hi: 'संख्या और सामान्य शब्द', ml: 'സംഖ്യകളും പൊതുവാക്കുകളും' };
             return tr[lang] || tr['en'];
         }
-        if (/milestone check/i.test(title)) {
-            const tr: Record<string, string> = { en: 'Section Milestone Check', ta: 'மைல்கல் சோதனை', te: 'మైలురాయి పరీక్ష', kn: 'ಮೈಲಿಗಲ್ಲು ಪರೀಕ್ಷೆ', hi: 'माइलस्टोन परीक्षा', ml: 'നാഴികക്കല്ല് പരിശോധന' };
+        if (/foundations & script milestone/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Foundations & Script Milestone', ta: 'அடிப்படை & எழுத்து மைல்கல் சோதனை', te: 'పునాది & లిపి మైలురాయి పరీక్ష', kn: 'ಮೂಲ & ಲಿಪಿ ಮೈಲಿಗಲ್ಲು ಪರೀಕ್ಷೆ', hi: 'बुनियाद और लिपि माइलस्टोन परीक्षा', ml: 'അടിസ്ഥാന നാഴികക്കല്ല് പരിശോധന' };
             return tr[lang] || tr['en'];
         }
+
+        // Section 2
         if (/everyday vocabulary/i.test(title)) {
-            const tr: Record<string, string> = { en: 'Everyday Vocabulary', ta: 'அன்றாட சொற்களஞ்சியம்', te: 'రోజువారీ పదజాలం', kn: 'ದೈನಂದಿನ ಶಬ್ದಕೋಶ', hi: 'दैनिक शब्दावली', ml: 'ദൈനംദിന പദാവലി' };
+            const tr: Record<string, string> = { en: 'Everyday Vocabulary', ta: 'அன்றாட சொல்லகராதி', te: 'రోజువారీ పదజాలం', kn: 'ದೈನಂದಿನ ಶಬ್ದಕೋಶ', hi: 'दैनिक शब्दावली', ml: 'ദൈനംദിന പദാവലി' };
+            return tr[lang] || tr['en'];
+        }
+        if (/common actions & verbs|action words/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Common Actions & Verbs', ta: 'பொதுவான செயல்கள் & வினைகள்', te: 'సాధారణ పనులు & క్రియలు', kn: 'ಸಾಮಾನ್ಯ ಕ್ರಿಯಾಪದಗಳು', hi: 'सामान्य क्रियाएं और कार्य', ml: 'സാധാരണ ക്രിയകൾ' };
             return tr[lang] || tr['en'];
         }
         if (/sentence builder/i.test(title)) {
-            const tr: Record<string, string> = { en: 'Sentence Builder', ta: 'வாக்கிய அமைப்பு', te: 'వాక్యాల నిర్మాణం', kn: 'ವಾಕ್ಯ ರಚನೆಕಾರ', hi: 'वाक्य निर्माता', ml: 'വാക്യ നിർമ്മാണം' };
+            const tr: Record<string, string> = { en: 'Sentence Builder (SOV)', ta: 'வாக்கிய அமைப்பு (SOV)', te: 'వాక్యాల నిర్మాణం (SOV)', kn: 'ವಾಕ್ಯ ರಚನೆಕಾರ (SOV)', hi: 'वाक्य निर्माण (SOV)', ml: 'വാക്യ നിർമ്മാണം (SOV)' };
             return tr[lang] || tr['en'];
         }
         if (/questions & answers/i.test(title)) {
             const tr: Record<string, string> = { en: 'Questions & Answers', ta: 'கேள்விகள் & பதில்கள்', te: 'ప్రశ్నలు & సమాధానాలు', kn: 'ಪ್ರಶ್ನೆಗಳು & ಉತ್ತರಗಳು', hi: 'प्रश्न और उत्तर', ml: 'ചോദ്യങ്ങളും ഉത്തരങ്ങളും' };
             return tr[lang] || tr['en'];
         }
+        if (/core sentences milestone/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Core Sentences Milestone', ta: 'முக்கிய வாக்கியங்கள் மைல்கல் சோதனை', te: 'ముఖ్య వాక్యాల మైలురాయి పరీక్ష', kn: 'ಮುಖ್ಯ ವಾಕ್ಯಗಳ ಮೈಲಿಗಲ್ಲು ಪರೀಕ್ಷೆ', hi: 'मुख्य वाक्य माइलस्टोन परीक्षा', ml: 'പ്രധാന വാക്യങ്ങളുടെ നാഴികക്കല്ല്' };
+            return tr[lang] || tr['en'];
+        }
+
+        // Section 3
+        if (/word & sign reading|word reading/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Word & Sign Reading', ta: 'சொற்கள் & பலகைகள் வாசிப்பு', te: 'పదాలు & బోర్డుల పఠనం', kn: 'ಪದ ಮತ್ತು ಫಲಕಗಳ ಓದುವಿಕೆ', hi: 'शब्द और साइनबोर्ड पठन', ml: 'വാക്കുകളും ബോർഡുകളും വായിക്കൽ' };
+            return tr[lang] || tr['en'];
+        }
+        if (/sentence reading & comprehension|sentence comprehension/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Sentence Reading & Comprehension', ta: 'வாக்கிய வாசிப்பு & புரிதல்', te: 'వాక్య పఠనం & గ్రహణశక్తి', kn: 'ವಾಕ್ಯ ಓದುವಿಕೆ & ಗ್ರಹಿಕೆ', hi: 'वाक्य पठन और समझ', ml: 'വാക്യ വായനയും ഗ്രഹണവും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/short cultural stories/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Short Cultural Stories & Fables', ta: 'கலாச்சார கதைகள் & நீதிக்கதைகள்', te: 'సాంస్కృతిక చిన్న కథలు & నీతికథలు', kn: 'ಸಾಂಸ್ಕೃತಿಕ ಸಣ್ಣ ಕಥೆಗಳು & ನೀತಿಕಥೆಗಳು', hi: 'लघु सांस्कृतिक कहानियाँ और लोककथाएं', ml: 'ചെറിയ സംസ്കാരിക കഥകൾ' };
+            return tr[lang] || tr['en'];
+        }
+        if (/writing & spelling practice|spelling practice/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Writing & Spelling Practice', ta: 'எழுதுதல் & எழுத்துப் பயிற்சி', te: 'రాత & అక్షరక్రమ సాధన', kn: 'ಬರವಣಿಗೆ & ಕಾಗುಣಿತ ಅಭ್ಯಾಸ', hi: 'लेखन और वर्तनी अभ्यास', ml: 'എഴുത്തും അക്ഷരത്തെറ്റില്ലാത്ത പരിശീലനവും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/functional literacy milestone/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Functional Literacy Milestone', ta: 'பயன்பாட்டு எழுத்தறிவு மைல்கல்', te: 'కార్యాచరణ అక్షరాస్యత మైలురాయి', kn: 'ಕಾರ್ಯಾತ್ಮಕ ಸಾಕ್ಷರತಾ ಮೈಲಿಗಲ್ಲು', hi: 'कार्यात्मक साक्षरता माइलस्टोन', ml: 'പ്രവർത്തന സാക്ഷരത നാഴികക്കല്ല്' };
+            return tr[lang] || tr['en'];
+        }
+
+        // Section 4
+        if (/transit & directions|transit navigation/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Transit & Directions Inquiries', ta: 'போக்குவரத்து & வழிகாட்டல் வினவல்கள்', te: 'ప్రయాణం & దారి వివరాలు', kn: 'ಸಾರಿಗೆ & ಮಾರ್ಗದರ್ಶನ ವಿಚಾರಣೆ', hi: 'यातायात और दिशा-निर्देश', ml: 'യാത്രയും വഴികളും ചോദിക്കൽ' };
+            return tr[lang] || tr['en'];
+        }
+        if (/market.*bargaining|market.*dialogue|price bargaining/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Market & Price Bargaining', ta: 'சந்தை & பேரம் பேசுதல்', te: 'మార్కెట్ & బేరసారాల సంభాషణ', kn: 'ಮಾರುಕಟ್ಟೆ & ಚೌಕಾಶಿ ಸಂಭಾಷಣೆ', hi: 'बाज़ार और मोलभाव संवाद', ml: 'മാർക്കറ്റിലെ സാധനങ്ങൾ വാങ്ങലും വിലപേശലും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/asking for help|expressing needs/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Asking for Help & Expressing Needs', ta: 'உதவி கோருதல் & தேவைகள்', te: 'సహాయం కోరడం & అవసరాలు', kn: 'ಸಹಾಯ ಕೇಳುವುದು & ಅಗತ್ಯತೆಗಳು', hi: 'मदद मांगना और ज़रूरतें बताना', ml: 'സഹായം ചോദിക്കലും ആവശ്യങ്ങൾ പറയലും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/practical communication milestone/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Practical Communication Milestone', ta: 'நடைமுறை தொடர்பு மைல்கல்', te: 'ఆచరణాత్మక కమ్యూనికేషన్ మైలురాయి', kn: 'ಪ್ರಾಯೋಗಿಕ ಸಂವಹನ ಮೈಲಿಗಲ್ಲು', hi: 'व्यावहारिक संवाद माइलस्टोन', ml: 'പ്രായോഗിക ആശയവിനിമയ നാഴികക്കല്ല്' };
+            return tr[lang] || tr['en'];
+        }
+
+        // Section 5
+        if (/extended conversational dialogues|multi-turn conversation/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Extended Conversational Dialogues', ta: 'நீண்ட உரையாடல் விவாதங்கள்', te: 'విస్తరించిన సంభాషణలు', kn: 'ವಿಸ್ತೃತ ಸಂಭಾಷಣೆಗಳು', hi: 'विस्तृत बातचीत और संवाद', ml: 'വിപുലമായ സംഭാഷണങ്ങൾ' };
+            return tr[lang] || tr['en'];
+        }
+        if (/speaking fluency & pronunciation|pronunciation refinement/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Speaking Fluency & Refinement', ta: 'பேச்சு சரளம் & உச்சரிப்பு மேம்பாடு', te: 'మాట్లాడే సరళత & ఉచ్చారణ మెరుగుదల', kn: 'ಮಾತಿನ ನಿರರ್ಗಳತೆ & ಸುಧಾರಣೆ', hi: 'बोलने का प्रवाह और उच्चारण सुधार', ml: 'സംസാര ഒഴുക്കും ഉച്ചാരണ ശുദ്ധിയും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/expressing opinions|opinions & experiences/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Expressing Opinions & Experiences', ta: 'கருத்துக்கள் & அனுபவங்கள்', te: 'అభిప్రాయాలు & అనుభవాలు', kn: 'ಅಭಿಪ್ರಾಯಗಳು & ಅನುಭವಗಳು', hi: 'राय और अनुभव साझा करना', ml: 'അഭിപ്രായങ്ങളും അനുഭവങ്ങളും പങ്കിടൽ' };
+            return tr[lang] || tr['en'];
+        }
+        if (/fluency & storytelling milestone/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Fluency & Storytelling Milestone', ta: 'சரளம் & கதை சொல்லல் மைல்கல்', te: 'ధారాళత & కథనం మైలురాయి', kn: 'ನಿರರ್ಗಳತೆ & ಕಥೆ ಹೇಳುವ ಮೈಲಿಗಲ್ಲು', hi: 'धाराप्रवाह और कहानी वाचन माइलस्टोन', ml: 'ഒഴുക്കും കഥപറച്ചിലും നാഴികക്കല്ല്' };
+            return tr[lang] || tr['en'];
+        }
+
+        // Section 6
+        if (/advanced vocabulary & idioms|idiomatic expressions/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Advanced Vocabulary & Idioms', ta: 'மேம்பட்ட சொல்லகராதி & மரபுத்தொடர்கள்', te: 'ఉన్నత పదజాలం & జాతీయాలు', kn: 'ಸುಧಾರಿತ ಶಬ್ದಕೋಶ & ನುಡಿಗಟ್ಟುಗಳು', hi: 'उन्नत शब्दावली और मुहावरे', ml: 'ഉന്നത പദാവലിയും ശൈലികളും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/formal vs.*colloquial|register nuances/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Formal vs Colloquial Nuances', ta: 'முறைசார் vs நடைமுறை பேச்சு நுணுக்கங்கள்', te: 'మర్యాదపూర్వక vs సాధారణ భాషా శైలి', kn: 'ಔಪಚಾರಿಕ vs ಆಡುಮಾತಿನ ಭಾಷೆ', hi: 'औपचारिक बनाम अनौपचारिक भाषा शैली', ml: 'ഔദ്യോഗിക vs അനൗദ്യോഗിക സംഭാഷണം' };
+            return tr[lang] || tr['en'];
+        }
+        if (/real-world documents|news comprehension/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Documents & News Comprehension', ta: 'செய்திகள் & ஆவணங்கள் புரிதல்', te: 'పత్రాలు & వార్తల గ్రహణశక్తి', kn: 'ನೈಜ ದಾಖಲೆಗಳು & ವಾರ್ತೆಗಳ ಗ್ರಹಿಕೆ', hi: 'समाचार और दस्तावेज़ समझ', ml: 'വാർത്തകളും ഔദ്യോഗിക രേഖകളും വായിക്കൽ' };
+            return tr[lang] || tr['en'];
+        }
+        if (/summit of fluency|master certification/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Summit of Fluency & Master Certification', ta: 'முழு தேர்ச்சி உச்சி & சான்றிதழ்', te: 'భాషా ప్రావీణ్య శిఖరం & మాస్టర్ సర్టిఫికేషన్', kn: 'ಪ್ರವೀಣತೆಯ ಶಿಖರ & ಮಾಸ್ಟರ್ ಪ್ರಮಾಣಪತ್ರ', hi: 'धाराप्रवाह शिखर और मास्टर प्रमाणपत्र', ml: 'പൂർണ്ണ പ്രാവീണ്യവും മാസ്റ്റർ സർട്ടിഫിക്കറ്റും' };
+            return tr[lang] || tr['en'];
+        }
+
+        // Generic Milestone fallback
+        if (/milestone check|milestone/i.test(title)) {
+            const tr: Record<string, string> = { en: 'Section Milestone Check', ta: 'மைல்கல் சோதனை', te: 'మైలురాయి పరీక్ష', kn: 'ಮೈಲಿಗಲ್ಲು ಪರೀಕ್ಷೆ', hi: 'माइलस्टोन परीक्षा', ml: 'നാഴികക്കല്ല് പരിശോധന' };
+            return tr[lang] || tr['en'];
+        }
+
         return title;
     };
 
@@ -237,10 +331,107 @@ export const LearningPathPage: React.FC = () => {
             const tr: Record<string, string> = { en: 'Listen to native audio and match patterns', ta: 'ஆடியோவைக் கேட்டு சரியானதை ஒப்பிடுங்கள்', te: 'ఆడియోను విని సరిపోలించండి', kn: 'ಆಡಿಯೊ ಆಲಿಸಿ ಸರಿಯಾದ್ದನ್ನು ಹೊಂದಿಸಿ', hi: 'ऑडियो सुनें और सही मिलान करें', ml: 'ഓഡിയോ കേട്ട് ശരിയായത് തിരഞ്ഞെടുക്കുക' };
             return tr[lang] || tr['en'];
         }
-        if (/speak basic greetings/i.test(sub)) {
+        if (/speak basic greetings|speak greetings/i.test(sub)) {
             const tr: Record<string, string> = { en: 'Speak greetings aloud with teacher guidance', ta: 'ஆசிரியர் வழிகாட்டலுடன் உரக்கப் பேசுங்கள்', te: 'ఉపాధ్యాయుల మార్గదర్శకత్వంలో మాట్లాడండి', kn: 'ಶಿಕ್ಷಕರ ಮಾರ್ಗದರ್ಶನದಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ', hi: 'शिक्षक के मार्गदर्शन से बोलकर अभ्यास करें', ml: 'അധ്യാപകന്റെ സഹായത്തോടെ ഉറക്കെ സംസാരിക്കുക' };
             return tr[lang] || tr['en'];
         }
+        if (/1-10 counting|starter words/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Master 1-10 counting and vital starter words', ta: '1-10 எண்களையும் தொடக்கச் சொற்களையும் கற்கவும்', te: '1-10 సంఖ్యలు మరియు ముఖ్యమైన ప్రాథమిక పదాలు', kn: '1-10 ಎಣಿಕೆ ಮತ್ತು ಮುಖ್ಯ ಆರಂಭಿಕ ಪದಗಳು', hi: '1-10 गिनती और आवश्यक शुरुआती शब्द सीखें', ml: '1-10 സംഖ്യകളും അടിസ്ഥാന വാക്കുകളും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/character recognition and core sound/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Demonstrate character recognition and core sound mastery', ta: 'எழுத்து அடையாளம் மற்றும் ஒலி தேர்ச்சியை நிரூபிக்கவும்', te: 'అక్షరాలు మరియు శబ్దాల ప్రావీణ్యం చూపించండి', kn: 'ಅಕ್ಷರ ಗುರುತಿಸುವಿಕೆ ಮತ್ತು ಧ್ವನಿ ಪ್ರಾವೀಣ್ಯತೆಯನ್ನು ಪ್ರದರ್ಶಿಸಿ', hi: 'वर्ण पहचान और ध्वनि दक्षता साबित करें', ml: 'അക്ഷരങ്ങളും ശബ്ദങ്ങളും തിരിച്ചറിയുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/learn 50 essential nouns|nouns and daily objects/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Learn 50 essential nouns and daily objects', ta: '50 அன்றாட அத்தியாவசிய பெயர்களைக் கற்கவும்', te: '50 ముఖ్యమైన రోజువారీ వస్తువుల పేర్లు నేర్చుకోండి', kn: '50 ಅಗತ್ಯ ದೈನಂದಿನ ವಸ್ತುಗಳ ಹೆಸರುಗಳನ್ನು ಕಲಿಯಿರಿ', hi: '50 आवश्यक दैनिक वस्तुओं के नाम सीखें', ml: '50 അവശ്യ ദൈനംദിന പദങ്ങൾ പഠിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/frequent action verbs|action verbs/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Master frequent action verbs: go, come, eat, drink, read, and write', ta: 'முக்கிய செயல் வினைகளைத் தேர்ச்சி பெறுங்கள்: செல், வா, உண், குடி, படி, எழுது', te: 'ముఖ్యమైన క్రియా పదాలను నేర్చుకోండి: వెళ్ళు, రా, తిను, తాగు, చదువు, రాయి', kn: 'ಸಾಮಾನ್ಯ ಕ್ರಿಯಾಪದಗಳನ್ನು ಕರಗತ ಮಾಡಿಕೊಳ್ಳಿ: ಹೋಗು, ಬಾ, ತಿನ್ನು, ಕುಡಿ, ಓದು, ಬರೆ', hi: 'महत्वपूर्ण क्रियापदों पर महारत: जाना, आना, खाना, पीना, पढ़ना, लिखना', ml: 'പ്രധാന ക്രിയകൾ പരിശീലിക്കുക: പോകുക, വരിക, കഴിക്കുക, കുടിക്കുക, വായിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/arrange words into simple|subject-object-verb/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Arrange words into simple Subject-Object-Verb pattern sentences', ta: 'சொற்களை எளிய எழுவாய்-செயப்படுபொருள்-பயனிலை வாக்கியங்களாக அமையுங்கள்', te: 'పదాలను కర్త-కర్మ-క్రియ క్రమంలో సరళమైన వాక్యాలుగా అమర్చండి', kn: 'ಪದಗಳನ್ನು ಸರಳ ಕರ್ತೃ-ಕರ್ಮ-ಕ್ರಿಯೆ ಮಾದರಿಯ ವಾಕ್ಯಗಳಾಗಿ ಜೋಡಿಸಿ', hi: 'शब्दों को सरल कर्ता-कर्म-क्रिया (SOV) वाक्य में व्यवस्थित करें', ml: 'വാക്കുകൾ ചേർത്ത് ലളിതമായ വാക്യങ്ങൾ ഉണ്ടാക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/question markers|what, where/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Learn question markers: what, where, who, how much, and why', ta: 'கேள்விச் சொற்களைக் கற்கவும்: என்ன, எங்கே, யார், எவ்வளவு, ஏன்', te: 'ప్రశ్నల పదాలను నేర్చుకోండి: ఏమిటి, ఎక్కడ, ఎవరు, ఎంత, ఎందుకు', kn: 'ಪ್ರಶ್ನಾವಳಿ ಪದಗಳನ್ನು ಕಲಿಯಿರಿ: ಏನು, ಎಲ್ಲಿ, ಯಾರು, ಎಷ್ಟು, ಏಕೆ', hi: 'प्रश्नवाचक शब्द सीखें: क्या, कहाँ, कौन, कितना, और क्यों', ml: 'ചോദ്യ വാക്കുകൾ പഠിക്കുക: എന്താണ്, എവിടെ, ആര്, എത്ര, എന്ത് കൊണ്ട്' };
+            return tr[lang] || tr['en'];
+        }
+        if (/form 5 sentences|answer simple everyday questions/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Form 5 sentences and answer simple everyday questions accurately', ta: '5 வாக்கியங்களை உருவாக்கி அன்றாடக் கேள்விகளுக்கு துல்லியமாக பதிலளிக்கவும்', te: '5 వాక్యాలను నిర్మించి సాధారణ ప్రశ్నలకు ఖచ్చితంగా సమాధానం ఇవ్వండి', kn: '5 ವಾಕ್ಯಗಳನ್ನು ರಚಿಸಿ ದೈನಂದಿನ ಪ್ರಶ್ನೆಗಳಿಗೆ ನಿಖರವಾಗಿ ಉತ್ತರಿಸಿ', hi: '5 वाक्य बनाएं और दैनिक प्रश्नों के सटीक उत्तर दें', ml: '5 വാക്യങ്ങൾ ഉണ്ടാക്കി ലളിതമായ ചോദ്യങ്ങൾക്ക് ഉത്തരം നൽകുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/shop boards, street signs|word & sign/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Read everyday shop boards, street signs, and station notices', ta: 'கடைகளின் பெயர்ப் பலகைகள், வீதிப் பலகைகள் மற்றும் அறிவிப்புகளைப் படியுங்கள்', te: 'షాప్ బోర్డులు, వీధి బోర్డులు మరియు స్టేషన్ నోటీసులు చదవండి', kn: 'ಅಂಗಡಿ ಫಲಕಗಳು, ರಸ್ತೆ ಫಲಕಗಳು ಮತ್ತು ನಿಲ್ದಾಣದ ಸೂಚನೆಗಳನ್ನು ಓದಿ', hi: 'दुकान के बोर्ड, सड़क के संकेत और स्टेशन की सूचनाएं पढ़ें', ml: 'കടകളുടെ ബോർഡുകളും സ്റ്റേഷൻ അറിയിപ്പുകളും വായിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/3-4 sentence paragraphs|extract key information/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Read 3-4 sentence paragraphs and extract key information', ta: '3-4 வாக்கியப் பத்திகளை வாசித்து முக்கிய தகவல்களைப் பிரித்தறியுங்கள்', te: '3-4 వాక్యాల పేరాలను చదివి ముఖ్యమైన సమాచారాన్ని గ్రహించండి', kn: '3-4 ವಾಕ್ಯಗಳ ಪ್ಯಾರಾಗ್ರಾಫ್‌ಗಳನ್ನು ಓದಿ ಮುಖ್ಯ ಮಾಹಿತಿ ಗ್ರಹಿಸಿ', hi: '3-4 वाक्यों के अनुच्छेदों को पढ़कर मुख्य जानकारी समझें', ml: '3-4 വാക്യ ഖണ്ഡികകൾ വായിച്ച് വിവരങ്ങൾ മനസ്സിലാക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/folk tales|cultural stories|reading comprehension/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Immerse in bilingual folk tales with reading comprehension questions', ta: 'இருமொழி நீதிக்கதைகளை வாசித்து புரிதல் வினாக்களுக்கு விடையளியுங்கள்', te: 'ద్విభాషా జానపద కథలను చదివి గ్రహణశక్తి ప్రశ్నలకు సమాధానమివ్వండి', kn: 'ದ್ವಿಭಾಷಾ ಜಾನಪದ ಕಥೆಗಳನ್ನು ಓದಿ ಗ್ರಹಿಕೆಯ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ', hi: 'द्विभाषी लोककथाओं में डूबें और समझ आधारित प्रश्नों के उत्तर दें', ml: 'ദ്വിഭാഷാ നാടോടിക്കഥകൾ വായിച്ച് ചോദ്യങ്ങൾക്ക് ഉത്തരം നൽകുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/correct spellings|writing & spelling/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Write correct spellings and construct short written responses', ta: 'சரியான எழுத்துக்கூட்டலுடன் எழுதி சிறு பதில்களை அமையுங்கள்', te: 'సరైన అక్షరక్రమంతో రాస్తూ చిన్న సమాధానాలు రాయండి', kn: 'ಸರಿಯಾದ ಕಾಗುಣಿತ ಬರೆಯಿರಿ ಮತ್ತು ಸಣ್ಣ ಲಿಖಿತ ಉತ್ತರಗಳನ್ನು ರಚಿಸಿ', hi: 'सही वर्तनी लिखें और छोटे लिखित उत्तर तैयार करें', ml: 'ശരിയായ അക്ഷരത്തെറ്റില്ലാതെ എഴുതാൻ പരിശീലിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/functional comprehension of written text/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Demonstrate functional comprehension of written text and notices', ta: 'எழுத்துப்பூர்வ உரைகள் மற்றும் அறிவிப்புகளின் பயன்பாட்டுப் புரிதலை நிரூபிக்கவும்', te: 'రాతపూర్వక వచనం మరియు నోటీసుల ఆచరణాత్మక గ్రహణశక్తిని ప్రదర్శించండి', kn: 'ಲಿಖಿತ ವಿಷಯ ಮತ್ತು ಸೂಚನೆಗಳ ಕಾರ್ಯಾತ್ಮಕ ಗ್ರಹಿಕೆಯನ್ನು ಪ್ರದರ್ಶಿಸಿ', hi: 'लिखित पाठ और सार्वजनिक सूचनाओं की व्यावहारिक समझ सिद्ध करें', ml: 'എഴുതിയ വാചകങ്ങൾ മനസ്സിലാക്കാനുള്ള കഴിവ് തെളിയിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/buses, trains, autos|street directions clearly/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Ask for buses, trains, autos, and street directions clearly', ta: 'பேருந்துகள், ரயில்கள், ஆட்டோக்கள் மற்றும் திசைகளைத் தெளிவாகக் கேளுங்கள்', te: 'బస్సులు, రైళ్లు, ఆటోలు మరియు వీధి మార్గాలను స్పష్టంగా అడగండి', kn: 'ಬಸ್ಸು, ರೈಲು, ಆಟೋ ಮತ್ತು ಬೀದಿ ಮಾರ್ಗಗಳನ್ನು ಸ್ಪಷ್ಟವಾಗಿ ವಿಚಾರಿಸಿ', hi: 'बस, ट्रेन, ऑटो और रास्ते के दिशा-निर्देश स्पष्ट रूप से पूछें', ml: 'ബസ്സ്, ട്രെയിൻ, ഓട്ടോ, വഴികൾ എന്നിവ വ്യക്തമായി ചോദിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/ask prices, negotiate quantities|complete purchases/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Ask prices, negotiate quantities, and complete purchases', ta: 'விலைகளைக் கேட்கவும், அளவுகளைப் பேரம் பேசவும், கொள்முதலை முடிக்கவும்', te: 'ధరలు అడగండి, పరిమాణాలపై బేరసారాలు చేయండి మరియు కొనుగోలు పూర్తి చేయండి', kn: 'ಬೆಲೆ ವಿಚಾರಿಸಿ, ಪ್ರಮಾಣ ಚೌಕಾಶಿ ಮಾಡಿ ಖರೀದಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ', hi: 'दाम पूछें, मात्रा पर मोलभाव करें और खरीदारी पूरी करें', ml: 'വില ചോദിക്കലും അളവുകൾ വിലപേശലും വാങ്ങലും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/request assistance politely|emergency situations/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Request assistance politely in medical, travel, or emergency situations', ta: 'மருத்துவம், பயணம் அல்லது அவசர சூழ்நிலைகளில் பணிவுடன் உதவி கோருங்கள்', te: 'వైద్య, ప్రయాణ లేదా అత్యవసర పరిస్థితుల్లో మర్యాదగా సహాయం కోరండి', kn: 'ವೈದ್ಯಕೀಯ, ಪ್ರಯಾಣ ಅಥವಾ ತುರ್ತು ಸಂದರ್ಭಗಳಲ್ಲಿ ವಿನಮ್ರವಾಗಿ ಸಹಾಯ ಕೇಳಿ', hi: 'चिकित्सा, यात्रा या आपात स्थिति में विनम्रता से सहायता मांगें', ml: 'ആരോഗ്യ, യാത്രാ അല്ലെങ്കിൽ അടിയന്തര ഘട്ടങ്ങളിൽ സഹായം തേടുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/interactive dialogue missions/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Prepares you for Real-World interactive dialogue missions', ta: 'நடைமுறை ஊடாடும் உரையாடல் பணிகளுக்கு உங்களைத் தயார்படுத்துகிறது', te: 'నిజజీవిత పరస్పర సంభాషణల మిషన్లకు మిమ్మల్ని సిద్ధం చేస్తుంది', kn: 'ನೈಜ ಸಂವಾದಾತ್ಮಕ ಕಾರ್ಯಾಚರಣೆಗಳಿಗೆ ನಿಮ್ಮನ್ನು ಸಿದ್ಧಪಡಿಸುತ್ತದೆ', hi: 'आपको वास्तविक जीवन के संवादात्मक मिशनों के लिए तैयार करता है', ml: 'പ്രായോഗിക സംഭാഷണ ദൗത്യങ്ങൾക്ക് നിങ്ങളെ തയ്യാറാക്കുന്നു' };
+            return tr[lang] || tr['en'];
+        }
+        if (/multi-turn spoken discussions|hobbies, weather, and routines/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Engage in multi-turn spoken discussions on hobbies, weather, and routines', ta: 'விருப்பங்கள், வானிலை மற்றும் அன்றாடப் பழக்கங்கள் குறித்து கலந்துரையாடுங்கள்', te: 'హాబీలు, వాతావరణం మరియు దినచర్యలపై బహుళ-సంభాషణలు సాగించండి', kn: 'ಹವ್ಯಾಸಗಳು, ಹವಾಮಾನ ಮತ್ತು ದಿನಚರಿಯ ಕುರಿತು ಬಹುಮುಖಿ ಸಂಭಾಷಣೆ ನಡೆಸಿ', hi: 'शौक, मौसम और दिनचर्या पर बहु-चरणीय बातचीत में भाग लें', ml: 'വിവിധ വിഷയങ്ങളിൽ തുടർ സംഭാഷണങ്ങൾ നടത്തുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/refine intonation, syllable timing|speech rhythm/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Refine intonation, syllable timing, and speech rhythm with AI voice feedback', ta: 'AI பின்னூட்டத்துடன் ஒலி ஏற்ற இறக்கம், நேரக் கட்டுப்பாடு மற்றும் பேச்சு லயத்தை மேம்படுத்துங்கள்', te: 'AI ఫీడ్‌బ్యాక్‌తో ఉచ్చారణ శైలి, అక్షర సమయం మరియు మాటల లయను మెరుగుపరచండి', kn: 'AI ಪ್ರತಿಕ್ರಿಯೆಯೊಂದಿಗೆ ಧ್ವನಿ ಏರಿಳಿತ ಮತ್ತು ಮಾತಿನ ಲಯವನ್ನು ಉತ್ತಮಗೊಳಿಸಿ', hi: 'AI वॉइस फीडबैक से सुर, लय और उच्चारण का समय सुधारें', ml: 'AI സഹായത്തോടെ സംസാര ശൈലിയും ഒഴുക്കും മെച്ചപ്പെടുത്തുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/describe past events|explain personal viewpoints/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Describe past events, explain personal viewpoints, and compare preferences', ta: 'கடந்த நிகழ்வுகளை விவரிக்கவும், கருத்துக்களை விளக்கவும், விருப்பங்களை ஒப்பிடவும்', te: 'గత సంఘటనలను వివరించండి, వ్యక్తిగత అభిప్రాయాలు చెప్పండి మరియు ప్రాధాన్యతలను పోల్చండి', kn: 'ಹಿಂದಿನ ಘಟನೆಗಳನ್ನು ವಿವರಿಸಿ, ವೈಯಕ್ತಿಕ ದೃಷ್ಟಿಕೋನಗಳನ್ನು ಸ್ಪಷ್ಟಪಡಿಸಿ ಮತ್ತು ಹೋಲಿಸಿ', hi: 'पिछली घटनाओं का वर्णन करें, व्यक्तिगत दृष्टिकोण बताएं और तुलना करें', ml: 'കഴിഞ്ഞ കാര്യങ്ങൾ വിവരിക്കുകയും അഭിപ്രായങ്ങൾ പങ്കുവെക്കുകയും ചെയ്യുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/narrate a 1-minute personal story/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Narrate a 1-minute personal story in the target language', ta: 'இலக்கு மொழியில் 1 நிமிட சுய கதையைக் கூறுங்கள்', te: 'లక్ష్య భాషలో 1 నిమిషం వ్యక్తిగత కథను వివరించండి', kn: 'ಗುರಿ ಭಾಷೆಯಲ್ಲಿ 1 ನಿಮಿಷದ ವೈಯಕ್ತಿಕ ಕಥೆಯನ್ನು ನಿರೂಪಿಸಿ', hi: 'लक्षित भाषा में 1 मिनट की व्यक्तिगत कहानी सुनाएं', ml: 'പഠിക്കുന്ന ഭാഷയിൽ 1 മിനിറ്റ് കഥ പറയുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/nuanced adjectives, cultural metaphors|idiomatic phrases/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Nuanced adjectives, cultural metaphors, and idiomatic phrases', ta: 'நுட்பமான அடைமொழிகள், பண்பாட்டு உருவகங்கள் மற்றும் மரபுத்தொடர்கள்', te: 'సూక్ష్మ విశేషణాలు, సాంస్కృతిక రూపకాలు మరియు జాతీయాలు', kn: 'ಸೂಕ್ಷ್ಮ ಗುಣವಾಚಕಗಳು, ಸಾಂಸ್ಕೃತಿಕ ರೂಪಕಗಳು ಮತ್ತು ನುಡಿಗಟ್ಟುಗಳು', hi: 'गहन विशेषण, सांस्कृतिक रूपक और मुहावरेदार वाक्यांश', ml: 'സൂക്ഷ്മ വിശേഷണങ്ങളും സംസ്കാരിക രൂപകങ്ങളും ശൈലികളും' };
+            return tr[lang] || tr['en'];
+        }
+        if (/master polite honorifics|workplace conventions/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Master polite honorifics, workplace conventions, and casual peer slang', ta: 'மரியாதைச் சொற்கள், பணியிட மரபுகள் மற்றும் சக நண்பர்களின் பேச்சு பாணியைத் தேருங்கள்', te: 'గౌరవవాచకాలు, కార్యాలయ సంప్రదాయాలు మరియు స్నేహితుల మాటల తీరుపై పట్టు సాధించండి', kn: 'ಮರ್ಯಾದೆಯ ಪದಗಳು, ಕಚೇರಿ ಶಿಷ್ಟಾಚಾರ ಮತ್ತು ಸ್ನೇಹಿತರ ಆಡುಮಾತನ್ನು ಕರಗತ ಮಾಡಿಕೊಳ್ಳಿ', hi: 'आदरसूचक शब्द, कार्यस्थल की औपचारिकताएं और बोलचाल की भाषा सीखें', ml: 'ബഹുമാന സൂചകങ്ങളും തൊഴിലിട ശൈലികളും മനസ്സിലാക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/articles, official announcements|professional correspondence/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Read articles, official announcements, and professional correspondence', ta: 'கட்டுரைகள், உத்தியோகபூர்வ அறிவிப்புகள் மற்றும் தொழில்சார் கடிதங்களைப் படியுங்கள்', te: 'వ్యాసాలు, అధికారిక ప్రకటనలు మరియు వృత్తిపరమైన ఉత్తరప్రత్యుత్తరాలు చదవండి', kn: 'ಲೇಖನಗಳು, ಅಧಿಕೃತ ಪ್ರಕಟಣೆಗಳು ಮತ್ತು ವೃತ್ತಿಪರ ಪತ್ರವ್ಯವಹಾರಗಳನ್ನು ಓದಿ', hi: 'लेख, आधिकारिक घोषणाएं और व्यावसायिक पत्र-व्यवहार पढ़ें', ml: 'ലേഖനങ്ങളും ഔദ്യോഗിക അറിയിപ്പുകളും വായിക്കുക' };
+            return tr[lang] || tr['en'];
+        }
+        if (/capstone assessment demonstrating independent bilingual mastery/i.test(sub)) {
+            const tr: Record<string, string> = { en: 'Comprehensive capstone assessment demonstrating independent bilingual mastery', ta: 'முழுமையான இருமொழி தேர்ச்சியை நிரூபிக்கும் இறுதி மதிப்பீடு', te: 'స్వతంత్ర ద్విభాషా ప్రావీణ్యాన్ని నిరూపించే సమగ్ర తుది పరీక్ష', kn: 'ಸ್ವತಂತ್ರ ದ್ವಿಭಾಷಾ ಪಾಂಡಿತ್ಯವನ್ನು ಪ್ರದರ್ಶಿಸುವ ಸಮಗ್ರ ಅಂತಿಮ ಮೌಲ್ಯಮಾಪನ', hi: 'स्वतंत्र द्विभाषी दक्षता प्रदर्शित करने वाला व्यापक अंतिम मूल्यांकन', ml: 'സ്വതന്ത്ര ദ്വിഭാഷാ വൈദഗ്ദ്ധ്യം തെളിയിക്കുന്ന സമഗ്ര പരീക്ഷ' };
+            return tr[lang] || tr['en'];
+        }
+
         return sub;
     };
 
@@ -699,7 +890,7 @@ export const LearningPathPage: React.FC = () => {
                 <Modal
                     isOpen={!!previewUnit}
                     onClose={() => setPreviewUnit(null)}
-                    title={`${t('lp_preview_section_goal')}: ${previewUnit.title}`}
+                    title={`${t('lp_preview_section_goal')}: ${getLocalizedSectionTitle(previewUnit.unit_number, previewUnit.title)}`}
                 >
                     <div className="space-y-5 py-2">
                         <div className="p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl border border-indigo-100 space-y-2">
@@ -708,7 +899,7 @@ export const LearningPathPage: React.FC = () => {
                                 <span>{t('lp_section_label')} {previewUnit.unit_number} {t('lp_preview_section_goal')}</span>
                             </div>
                             <p className="text-xs text-slate-700 leading-relaxed font-medium">
-                                {previewUnit.description}
+                                {getLocalizedSectionDesc(previewUnit.unit_number, previewUnit.description)}
                             </p>
                         </div>
 

@@ -10,10 +10,44 @@ declare global {
 }
 
 export const voiceService = {
+    detectLanguageFromText(text: string): string {
+        if (/[\u0C80-\u0CFF]/.test(text)) return 'kn'; // Kannada
+        if (/[\u0C00-\u0C7F]/.test(text)) return 'te'; // Telugu
+        if (/[\u0B80-\u0BFF]/.test(text)) return 'ta'; // Tamil
+        if (/[\u0D00-\u0D7F]/.test(text)) return 'ml'; // Malayalam
+        if (/[\u0900-\u097F]/.test(text)) return 'hi'; // Hindi
+        return 'en';
+    },
+
+    async playAudioBlob(text: string, langShort: string): Promise<boolean> {
+        try {
+            const cleanText = text.replace(/[*_#"'“”]/g, '').trim().slice(0, 150);
+            if (!cleanText) return false;
+            const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${langShort}&q=${encodeURIComponent(cleanText)}`;
+            const response = await fetch(ttsUrl, { referrerPolicy: 'no-referrer' });
+            if (!response.ok) return false;
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const audio = new Audio(blobUrl);
+            audio.onended = () => { URL.revokeObjectURL(blobUrl); };
+            await audio.play();
+            return true;
+        } catch {
+            return false;
+        }
+    },
+
     /**
      * Text-To-Speech (TTS): Speaks text aloud in specified target language
      */
-    speakText(text: string, lang: string = 'en-US', rate: number = 0.9): void {
+    async speakText(text: string, lang: string = 'en-US', rate: number = 0.9): Promise<void> {
+        if (!text) return;
+
+        // Auto-detect language if text has clear Indian regional script
+        const detected = voiceService.detectLanguageFromText(text);
+        const effectiveLang = (detected !== 'en' ? detected : (lang || 'en')).toLowerCase();
+        const langShort = effectiveLang.slice(0, 2);
+
         const localeMap: Record<string, string> = {
             'en': 'en-US',
             'hi': 'hi-IN',
@@ -22,14 +56,18 @@ export const voiceService = {
             'kn': 'kn-IN',
             'ml': 'ml-IN',
         };
-        const targetLocale = localeMap[lang] || lang || 'en-US';
-        const langShort = (lang || 'en').slice(0, 2).toLowerCase();
+        const targetLocale = localeMap[langShort] || lang || 'en-US';
 
+        // Tier 1: Try high-fidelity native audio blob first
+        const played = await voiceService.playAudioBlob(text, langShort);
+        if (played) return;
+
+        // Tier 2: Fallback to browser SpeechSynthesis
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel(); // Stop any ongoing speech
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = targetLocale;
-            utterance.rate = rate; // Slightly slower for language learners
+            utterance.rate = rate;
             utterance.pitch = 1.0;
 
             const voices = window.speechSynthesis.getVoices();
@@ -39,38 +77,17 @@ export const voiceService = {
             );
             if (matchedVoice) {
                 utterance.voice = matchedVoice;
+            } else {
+                const indianVoice = voices.find(v => v.lang.toLowerCase().includes('en-in') || v.lang.toLowerCase().includes('hi-in'));
+                if (indianVoice) utterance.voice = indianVoice;
             }
-
-            let didSpeak = false;
-            utterance.onstart = () => { didSpeak = true; };
-            utterance.onerror = () => {
-                voiceService.playAudioFallback(text, langShort);
-            };
 
             window.speechSynthesis.speak(utterance);
-
-            // Fallback for languages like Kannada or Malayalam if browser synthesis doesn't trigger
-            if (!matchedVoice && (langShort === 'kn' || langShort === 'ml' || langShort === 'te')) {
-                setTimeout(() => {
-                    if (!didSpeak && !window.speechSynthesis.speaking) {
-                        voiceService.playAudioFallback(text, langShort);
-                    }
-                }, 400);
-            }
-        } else {
-            voiceService.playAudioFallback(text, langShort);
         }
     },
 
     playAudioFallback(text: string, langShort: string): void {
-        try {
-            const cleanText = text.replace(/["'“”]/g, '').trim().slice(0, 100);
-            const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${langShort}&q=${encodeURIComponent(cleanText)}`;
-            const audio = new Audio(audioUrl);
-            audio.play().catch(() => {});
-        } catch {
-            // ignore
-        }
+        voiceService.playAudioBlob(text, langShort);
     },
 
     stopSpeaking(): void {

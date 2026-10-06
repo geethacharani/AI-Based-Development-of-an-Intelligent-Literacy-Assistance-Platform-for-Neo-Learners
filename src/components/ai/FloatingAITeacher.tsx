@@ -121,8 +121,8 @@ export const FloatingAITeacher: React.FC = () => {
         }
     }, [messages, isOpen, isMinimized, isLoading]);
 
-    const handleSpeak = (text: string) => {
-        voiceService.speakText(text, targetLangCode, 0.9);
+    const handleSpeak = (text: string, langCode?: string) => {
+        voiceService.speakText(text, langCode || targetLangCode, 0.9);
     };
 
     const handleCopy = (id: string, text: string) => {
@@ -168,6 +168,8 @@ export const FloatingAITeacher: React.FC = () => {
                 sender: 'teacher',
                 text: res.reply,
                 audioText: res.audio_text,
+                targetLang: res.target_language,
+                targetCode: res.target_code,
                 tips: res.tips,
                 correction: res.correction,
                 vocabulary: res.vocabulary,
@@ -176,7 +178,7 @@ export const FloatingAITeacher: React.FC = () => {
             setMessages(prev => [...prev, teacherMsg]);
 
             if (res.audio_text) {
-                handleSpeak(res.audio_text);
+                handleSpeak(res.audio_text, res.target_code);
             }
         } catch (err: any) {
             console.error('AI Teacher Chat Error:', err);
@@ -362,17 +364,17 @@ export const FloatingAITeacher: React.FC = () => {
                                             {msg.audioText && !msg.isError && (
                                                 <button
                                                     type="button"
-                                                    onClick={() => handleSpeak(msg.audioText!)}
+                                                    onClick={() => handleSpeak(msg.audioText!, msg.targetCode || voiceService.detectLanguageFromText(msg.audioText!))}
                                                     className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-teal-50 text-teal-700 hover:bg-teal-100 text-[10px] font-bold transition cursor-pointer"
                                                 >
                                                     <Volume2 className="w-3.5 h-3.5 text-teal-600" />
                                                     <span>
-                                                        {currentLang === 'kn' ? `${targetLangName} ನಲ್ಲಿ ಆಲಿಸಿ` :
-                                                         currentLang === 'te' ? `${targetLangName} లో వినండి` :
-                                                         currentLang === 'hi' ? `${targetLangName} में सुनें` :
-                                                         currentLang === 'ta' ? `${targetLangName} இல் கேளுங்கள்` :
-                                                         currentLang === 'ml' ? `${targetLangName}-ൽ കേൾക്കുക` :
-                                                         `Listen in ${targetLangName}`}
+                                                        {currentLang === 'kn' ? `${msg.targetLang || targetLangName} ನಲ್ಲಿ ಆಲಿಸಿ` :
+                                                         currentLang === 'te' ? `${msg.targetLang || targetLangName} లో వినండి` :
+                                                         currentLang === 'hi' ? `${msg.targetLang || targetLangName} में सुनें` :
+                                                         currentLang === 'ta' ? `${msg.targetLang || targetLangName} இல் கேளுங்கள்` :
+                                                         currentLang === 'ml' ? `${msg.targetLang || targetLangName}-ൽ കേൾക്കുക` :
+                                                         `Listen in ${msg.targetLang || targetLangName}`}
                                                     </span>
                                                 </button>
                                             )}

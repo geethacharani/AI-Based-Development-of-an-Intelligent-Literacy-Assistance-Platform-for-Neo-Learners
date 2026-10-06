@@ -367,6 +367,14 @@ export const DressLingoBotPage: React.FC = () => {
                 hi: 'विद्वान वेस्ट (Scholar Vest)',
                 ml: 'പണ്ഡിത കുപ്പായം (Scholar Vest)'
             },
+            detective_coat: {
+                en: 'Detective Trench',
+                ta: 'துப்பறியும் கோட் (Detective Trench)',
+                te: 'డిటెక్టివ్ కోటు (Detective Trench)',
+                kn: 'ಪತ್ತೇದಾರಿ ಕೋಟ್ (Detective Trench)',
+                hi: 'जासूसी कोट (Detective Trench)',
+                ml: 'ഡിറ്റക്ടീവ് കോട്ട് (Detective Trench)'
+            },
             detective_trench: {
                 en: 'Detective Trench',
                 ta: 'துப்பறியும் கோட் (Detective Trench)',
@@ -374,6 +382,14 @@ export const DressLingoBotPage: React.FC = () => {
                 kn: 'ಪತ್ತೇದಾರಿ ಕೋಟ್ (Detective Trench)',
                 hi: 'जासूसी कोट (Detective Trench)',
                 ml: 'ഡിറ്റക്ടീവ് കോട്ട് (Detective Trench)'
+            },
+            traditional_kurta: {
+                en: 'Festive Kurta',
+                ta: 'பண்டிகை குர்தா (Festive Kurta)',
+                te: 'పండుగ కుర్తా (Festive Kurta)',
+                kn: 'ಹಬ್ಬದ ಕುರ್ತಾ (Festive Kurta)',
+                hi: 'उत्सवी कुर्ता (Festive Kurta)',
+                ml: 'ഉത്സവ കുർത്ത (Festive Kurta)'
             },
             festive_kurta: {
                 en: 'Festive Kurta',
@@ -383,10 +399,18 @@ export const DressLingoBotPage: React.FC = () => {
                 hi: 'उत्सवी कुर्ता (Festive Kurta)',
                 ml: 'ഉത്സവ കുർത്ത (Festive Kurta)'
             },
-            lingo_street_hoodie: {
+            casual_hoodie: {
                 en: 'Lingo Street Hoodie',
                 ta: 'லிங்கோ ஹூடி (Lingo Street Hoodie)',
                 te: 'లింగో స్ట్రీట్ హూడీ (Lingo Street Hoodie)',
+                kn: 'ಲಿಂಗೋ ಹುಡಿ (Lingo Street Hoodie)',
+                hi: 'लिंगो स्ट्रीट हूडी (Lingo Street Hoodie)',
+                ml: 'ലിംഗോ സ്ട്രീറ്റ് ഹൂഡി (Lingo Street Hoodie)'
+            },
+            lingo_street_hoodie: {
+                en: 'Lingo Street Hoodie',
+                ta: 'லிங்கோ ஹூடி (Lingo Street Hoodie)',
+                te: 'లింగோ స్ట్రీట్ హూడీ (Lingo Street Hoodie)',
                 kn: 'ಲಿಂಗೋ ಹುಡಿ (Lingo Street Hoodie)',
                 hi: 'लिंगो स्ट्रीट हूडी (Lingo Street Hoodie)',
                 ml: 'ലിംഗോ സ്ട്രീറ്റ് ഹൂഡി (Lingo Street Hoodie)'
@@ -399,6 +423,14 @@ export const DressLingoBotPage: React.FC = () => {
                 hi: 'जासूसी टोपी (Detective Fedora)',
                 ml: 'ഡിറ്റക്ടീവ് തൊപ്പി (Detective Fedora)'
             },
+            grad_cap: {
+                en: 'Graduation Cap',
+                ta: 'பட்டமளிப்பு தொப்பி (Graduation Cap)',
+                te: 'పట్టభద్రుల టోపీ (Graduation Cap)',
+                kn: 'ಪದವಿ ಪ್ರದಾನ ಟೋಪಿ (Graduation Cap)',
+                hi: 'दीक्षांत टोपी (Graduation Cap)',
+                ml: 'ബിരുദദാന തൊപ്പി (Graduation Cap)'
+            },
             graduation_cap: {
                 en: 'Graduation Cap',
                 ta: 'பட்டமளிப்பு தொப்பி (Graduation Cap)',
@@ -407,7 +439,7 @@ export const DressLingoBotPage: React.FC = () => {
                 hi: 'दीक्षांत टोपी (Graduation Cap)',
                 ml: 'ബിരുദദാന തൊപ്പി (Graduation Cap)'
             },
-            language_monarch_crown: {
+            royal_crown: {
                 en: 'Language Monarch Crown',
                 ta: 'மொழி அரசர் கிரீடம் (Monarch Crown)',
                 te: 'భాషా రారాజు కిరీటం (Monarch Crown)',
@@ -415,8 +447,24 @@ export const DressLingoBotPage: React.FC = () => {
                 hi: 'भाषा सम्राट मुकुट (Monarch Crown)',
                 ml: 'ഭാഷാ രാജ കിരീടം (Monarch Crown)'
             },
+            language_monarch_crown: {
+                en: 'Language Monarch Crown',
+                ta: 'மொழி அரசர் கிரீடம் (Monarch Crown)',
+                te: 'భాషా రారాజు కిరీటం (Monarch Crown)',
+                kn: 'ಭಾಷಾ ರಾಜ ಕಿರೀಟ (Monarch Crown)',
+                hi: 'भाषा सम्राट मुकुट (Monarch Crown)',
+                ml: 'ഭാഷಾ രാജ കിരീടം (Monarch Crown)'
+            },
+            professor_specs: {
+                en: 'Professor Round Specs',
+                ta: 'படிப்பு கண்ணாடி (Reading Glasses)',
+                te: 'చదువు కళ్ళద్దాలు (Reading Glasses)',
+                kn: 'ಓದುವ ಕನ್ನಡಕ (Reading Glasses)',
+                hi: 'पठन चश्मा (Reading Glasses)',
+                ml: 'വായനാ കണ്ണട (Reading Glasses)'
+            },
             smart_reading_glasses: {
-                en: 'Smart Reading Glasses',
+                en: 'Professor Round Specs',
                 ta: 'படிப்பு கண்ணாடி (Reading Glasses)',
                 te: 'చదువు కళ్ళద్దాలు (Reading Glasses)',
                 kn: 'ಓದುವ ಕನ್ನಡಕ (Reading Glasses)',
@@ -431,23 +479,39 @@ export const DressLingoBotPage: React.FC = () => {
                 hi: 'मोनोकल (Monocle)',
                 ml: 'മോണോക്കിൾ (Monocle)'
             },
-            sunglasses_cool: {
-                en: 'Neon Sunglasses',
+            cool_sunglasses: {
+                en: 'Celebrity Sunglasses',
                 ta: 'சூரிய கண்ணாடி (Sunglasses)',
                 te: 'సన్ గ్లాసెస్ (Sunglasses)',
                 kn: 'ಸನ್ ಗ್ಲಾಸ್ (Sunglasses)',
                 hi: 'धूप का चश्मा (Sunglasses)',
                 ml: 'സൺഗ്ലാസ് (Sunglasses)'
             },
-            scholar_satchel: {
-                en: 'Scholar Satchel',
+            sunglasses_cool: {
+                en: 'Celebrity Sunglasses',
+                ta: 'சூரிய கண்ணாடி (Sunglasses)',
+                te: 'సన్ గ్లాసెస్ (Sunglasses)',
+                kn: 'ಸನ್ ಗ್ಲಾಸ್ (Sunglasses)',
+                hi: 'धूप का चश्मा (Sunglasses)',
+                ml: 'സൺഗ്ലാസ് (Sunglasses)'
+            },
+            leather_satchel: {
+                en: 'Leather Book Satchel',
                 ta: 'படிப்பு பை (Scholar Satchel)',
                 te: 'పుస్తకాల సంచి (Scholar Satchel)',
                 kn: 'ಪುಸ್ತಕದ ಚೀಲ (Scholar Satchel)',
                 hi: 'विद्वान थैला (Scholar Satchel)',
                 ml: 'പുസ്തക സഞ്ചി (Scholar Satchel)'
             },
-            explorer_backpack: {
+            scholar_satchel: {
+                en: 'Leather Book Satchel',
+                ta: 'படிப்பு பை (Scholar Satchel)',
+                te: 'పుస్తకాల సంచి (Scholar Satchel)',
+                kn: 'ಪುಸ್ತಕದ ಚೀಲ (Scholar Satchel)',
+                hi: 'विद्वान थैला (Scholar Satchel)',
+                ml: 'പുസ്തക സഞ്ചി (Scholar Satchel)'
+            },
+            adventure_pack: {
                 en: 'Explorer Backpack',
                 ta: 'பயண பை (Backpack)',
                 te: 'యాత్రా బ్యాక్‌ప్యాక్ (Backpack)',
@@ -455,8 +519,24 @@ export const DressLingoBotPage: React.FC = () => {
                 hi: 'यात्री बैग (Backpack)',
                 ml: 'യാത്രാ ബാഗ് (Backpack)'
             },
+            explorer_backpack: {
+                en: 'Explorer Backpack',
+                ta: 'பயண பை (Backpack)',
+                te: 'యాత్రా బ్యాక్‌ప్యాక్ (Backpack)',
+                kn: 'ಪ್ರಯಾಣ ಬೆನ್ನುಚೀಲ (Backpack)',
+                hi: 'यात्री बैग (Backpack)',
+                ml: 'യാത്രാ ಬാഗ್ (Backpack)'
+            },
+            magic_quill: {
+                en: 'Golden Feather Quill',
+                ta: 'தங்க இறகு பேனா (Golden Quill)',
+                te: 'బంగారు కలం (Golden Quill)',
+                kn: 'ಚಿನ್ನದ ಗರಿ ಲೇಖನಿ (Golden Quill)',
+                hi: 'सुनहरी कलम (Golden Quill)',
+                ml: 'സ്വർണ്ണ തൂവൽ പേന (Golden Quill)'
+            },
             golden_quill: {
-                en: 'Golden Quill',
+                en: 'Golden Feather Quill',
                 ta: 'தங்க இறகு பேனா (Golden Quill)',
                 te: 'బంగారు కలం (Golden Quill)',
                 kn: 'ಚಿನ್ನದ ಗರಿ ಲೇಖನಿ (Golden Quill)',
@@ -464,12 +544,20 @@ export const DressLingoBotPage: React.FC = () => {
                 ml: 'സ്വർണ്ണ തൂവൽ പേന (Golden Quill)'
             },
             magnifying_glass: {
-                en: 'Magnifying Glass',
+                en: 'Detective Magnifier',
                 ta: 'பூதக்கண்ணாடி (Magnifying Glass)',
                 te: 'భూతద్దం (Magnifying Glass)',
                 kn: 'ಭೂತಗನ್ನಡಿ (Magnifying Glass)',
                 hi: 'आवर्धक लेंस (Magnifying Glass)',
                 ml: 'ഭൂതക്കണ്ണാടി (Magnifying Glass)'
+            },
+            star_sparkles: {
+                en: 'Stardust Sparkles',
+                ta: 'விண்மீன் ஒளி (Stardust Sparkles)',
+                te: 'నక్షత్ర కాంతులు (Stardust Sparkles)',
+                kn: 'ನಕ್ಷತ್ರದ ಮಿಂಚು (Stardust Sparkles)',
+                hi: 'तारों की चमक (Stardust Sparkles)',
+                ml: 'നക്ഷത്ര തിളക്കം (Stardust Sparkles)'
             }
         };
 
@@ -486,12 +574,19 @@ export const DressLingoBotPage: React.FC = () => {
             'hat / fedora': { en: 'Hat / Fedora', ta: 'தொப்பி (Hat / Fedora)', te: 'టోపీ (Fedora)', kn: 'ಟೋಪಿ (Fedora)', hi: 'टोपी (Fedora)', ml: 'തൊപ്പി (Fedora)' },
             'graduation cap / mortarboard': { en: 'Graduation Cap', ta: 'பட்டமளிப்பு தொப்பி (Graduation Cap)', te: 'పట్టభద్రుల టోపీ', kn: 'ಪದವಿ ಟೋಪಿ', hi: 'दीक्षांत टोपी', ml: 'ബിരുദദാന തൊപ്പി' },
             'crown / tiara': { en: 'Crown / Tiara', ta: 'கிரீடம் (Crown)', te: 'కిరీటం (Crown)', kn: 'ಕಿರೀಟ (Crown)', hi: 'मुकुट / ताज (Crown)', ml: 'കിരീടം (Crown)' },
-            'glasses / spectacles': { en: 'Glasses / Spectacles', ta: 'கண்ணாடி (Glasses)', te: 'కళ్ళద్దాలు', kn: 'ಕನ್ನಡಕ', hi: 'चश्मा (Glasses)', ml: 'കണ്ണട (Glasses)' },
+            'spectacles / glasses': { en: 'Spectacles / Glasses', ta: 'கண்ணாடி (Glasses)', te: 'కళ్ళద్దాలు', kn: 'ಕನ್ನಡಕ', hi: 'चश्मा (Glasses)', ml: 'കണ്ണട (Glasses)' },
+            'glasses / spectacles': { en: 'Glasses / Spectacles', ta: 'கண்ணாடி (Glasses)', te: 'కళ్ళద్దాలు', kn: 'ಕನ್ನಡಕ', hi: 'चश्मा (Glasses)', ml: 'ಕണ്ണട (Glasses)' },
+            'sunglasses / shades': { en: 'Sunglasses / Shades', ta: 'சூரிய கண்ணாடி (Sunglasses)', te: 'సన్ గ్లాసెస్', kn: 'ಸನ್ ಗ್ಲಾಸ್', hi: 'धूप का चश्मा', ml: 'സൺഗ്ലാസ്' },
             'monocle / single lens': { en: 'Monocle', ta: 'ஒற்றை லென்ஸ் (Monocle)', te: 'మోనోకిల్', kn: 'ಏಕ ನೇತ್ರ ಮಸೂರ', hi: 'एक आँख का चश्मा', ml: 'മോണോക്കിൾ' },
+            'satchel / bag': { en: 'Satchel / Bag', ta: 'தோள்பை (Satchel)', te: 'సంచి / బ్యాగ్', kn: 'ಚೀಲ (Satchel)', hi: 'थैला / बैग', ml: 'സഞ്ചി / ബാഗ്' },
             'bag / satchel': { en: 'Bag / Satchel', ta: 'தோள்பை (Satchel)', te: 'సంచి / బ్యాగ్', kn: 'ಚೀಲ (Satchel)', hi: 'थैला / बैग', ml: 'സഞ്ചി / ബാഗ്' },
+            'backpack / rucksack': { en: 'Backpack / Rucksack', ta: 'முதுகுப்பை (Backpack)', te: 'బ్యాక్‌ప్యాక్', kn: 'ಬೆನ್ನುಚೀಲ', hi: 'पीठ का बैग (Backpack)', ml: 'ബാക്ക്‌പാക്ക്' },
             'backpack': { en: 'Backpack', ta: 'முதுகுப்பை (Backpack)', te: 'బ్యాక్‌ప్యాక్', kn: 'ಬೆನ್ನುಚೀಲ', hi: 'पीठ का बैग (Backpack)', ml: 'ബാക്ക്‌പാക്ക്' },
+            'quill / feather pen': { en: 'Quill / Feather Pen', ta: 'எழுதுகோல் / பேனா (Quill)', te: 'కలం / పెన్ను', kn: 'ಲೇಖನಿ / ಪೆನ್ನು', hi: 'कलम / पंख', ml: 'തൂവൽ പേന' },
             'pen / quill': { en: 'Pen / Quill', ta: 'எழுதுகோல் / பேனா (Quill)', te: 'కలం / పెన్ను', kn: 'ಲೇಖನಿ / ಪೆನ್ನು', hi: 'कलम / पंख', ml: 'തൂവൽ പേന' },
-            'lens / magnifier': { en: 'Magnifier', ta: 'பூதக்கண்ணாடி (Magnifier)', te: 'భూతద్దం', kn: 'ಭೂತಗನ್ನಡಿ', hi: 'आवर्धक लेंस', ml: 'ഭൂതക്കണ്ണാടി' }
+            'magnifying glass': { en: 'Magnifying Glass', ta: 'பூதக்கண்ணாடி (Magnifier)', te: 'భూతద్దం', kn: 'ಭೂತಗನ್ನಡಿ', hi: 'आवर्धक लेंस', ml: 'ഭൂതക്കണ്ണാടി' },
+            'lens / magnifier': { en: 'Magnifier', ta: 'பூதக்கண்ணாடி (Magnifier)', te: 'భూతద్దం', kn: 'ಭೂತಗನ್ನಡಿ', hi: 'आवर्धक लेंस', ml: 'ഭൂതക്കണ്ണാടി' },
+            'star / sparkle': { en: 'Star / Sparkle', ta: 'நட்சத்திரம் (Star)', te: 'నక్షత్రం', kn: 'ನಕ್ಷತ್ರ', hi: 'सितारा / तारा', ml: 'നക്ഷത്രം' }
         };
 
         const key = targetWord.toLowerCase().trim();
@@ -720,7 +815,7 @@ export const DressLingoBotPage: React.FC = () => {
                                 </div>
 
                                 <div className="text-xs text-slate-500 font-semibold italic">
-                                    [{entry.phonetic}] • Concept: <span className="text-slate-800 font-bold">{entry.targetWord}</span>
+                                    [{entry.phonetic}] • Concept: <span className="text-slate-800 font-bold">{getLocalizedConcept(entry.targetWord)}</span>
                                 </div>
 
                                 <p className="text-xs text-slate-700 font-medium">
@@ -1034,7 +1129,7 @@ export const DressLingoBotPage: React.FC = () => {
                 <Modal
                     isOpen={Boolean(activeUnlockModalItem)}
                     onClose={() => setActiveUnlockModalItem(null)}
-                    title={`🔓 ${cur.unlock_modal_title} — ${activeUnlockModalItem.name}`}
+                    title={`🔓 ${cur.unlock_modal_title} — ${getLocalizedItemName(activeUnlockModalItem)}`}
                     className="max-w-xl"
                 >
                     <div className="space-y-5">

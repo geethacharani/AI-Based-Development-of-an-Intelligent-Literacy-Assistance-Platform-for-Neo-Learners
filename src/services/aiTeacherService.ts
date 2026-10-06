@@ -6,6 +6,7 @@ export interface ChatMessage {
     text: string;
     audioText?: string;
     targetLang?: string;
+    targetCode?: string;
     tips?: string[];
     correction?: string;
     vocabulary?: { word: string; phonetics?: string; meaning?: string }[];
