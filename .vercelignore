@@ -1,0 +1,11 @@
+manage.py
+backend/
+*.py
+requirements.txt
+venv/
+.venv/
+env/
+.env*
+db.sqlite3
+media/
+staticfiles/

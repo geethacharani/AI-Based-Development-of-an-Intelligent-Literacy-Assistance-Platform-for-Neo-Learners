@@ -26,8 +26,27 @@ import {
 
 export const DiagnosticAssessmentPage: React.FC = () => {
     const navigate = useNavigate();
-    const { profile } = useAuth();
+    const { profile, updateTargetLanguage } = useAuth();
     const { t, supportLangCode } = useTranslation();
+
+    const ASSESSMENT_TARGET_LANGUAGES = [
+        { code: 'hi', name: 'Hindi', native: 'हिन्दी', flag: '🇮🇳' },
+        { code: 'te', name: 'Telugu', native: 'తెలుగు', flag: '🇮🇳' },
+        { code: 'kn', name: 'Kannada', native: 'ಕನ್ನಡ', flag: '🇮🇳' },
+        { code: 'ta', name: 'Tamil', native: 'தமிழ்', flag: '🇮🇳' },
+        { code: 'ml', name: 'Malayalam', native: 'മലയാളം', flag: '🇮🇳' },
+        { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
+    ];
+
+    const initialTargetLang = (profile?.target_language?.code || 'hi').toLowerCase();
+    const [selectedTargetLang, setSelectedTargetLang] = useState<string>(initialTargetLang);
+    const comfortLangCode = (profile?.comfortable_language?.code || supportLangCode || 'en').toLowerCase();
+
+    useEffect(() => {
+        if (profile?.target_language?.code) {
+            setSelectedTargetLang(profile.target_language.code.toLowerCase());
+        }
+    }, [profile?.target_language?.code]);
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -44,8 +63,10 @@ export const DiagnosticAssessmentPage: React.FC = () => {
         const loadQuestions = async () => {
             setIsLoading(true);
             try {
-                const qList = await assessmentService.getDiagnosticQuestions();
+                const qList = await assessmentService.getDiagnosticQuestions(selectedTargetLang, comfortLangCode);
                 setQuestions(qList);
+                setCurrentIndex(0);
+                setSelectedAnswer(null);
             } catch (err) {
                 console.error('Error loading questions', err);
             } finally {
@@ -53,7 +74,7 @@ export const DiagnosticAssessmentPage: React.FC = () => {
             }
         };
         loadQuestions();
-    }, [supportLangCode]);
+    }, [selectedTargetLang, comfortLangCode]);
 
     const currentQ = questions[currentIndex];
 
@@ -75,8 +96,9 @@ export const DiagnosticAssessmentPage: React.FC = () => {
         );
     }
 
-    const comfortableLangName = profile?.comfortable_language?.name || 'Support Language';
-    const targetLangName = profile?.target_language?.name || 'Target Language';
+    const activeTargetObj = ASSESSMENT_TARGET_LANGUAGES.find(l => l.code === selectedTargetLang) || ASSESSMENT_TARGET_LANGUAGES[0];
+    const targetLangName = activeTargetObj.name;
+    const comfortableLangName = profile?.comfortable_language?.name || supportLangCode.toUpperCase();
 
     const handleSelectOption = (index: number) => {
         setSelectedAnswer(index);
@@ -130,7 +152,7 @@ export const DiagnosticAssessmentPage: React.FC = () => {
     };
 
     const handlePlayAudio = (text: string) => {
-        voiceService.speakText(text);
+        voiceService.speakText(text, selectedTargetLang, 0.85);
     };
 
     const handleNext = async () => {
@@ -170,6 +192,37 @@ export const DiagnosticAssessmentPage: React.FC = () => {
                     <Badge variant="brand" size="md" className="font-bold gap-1 bg-brand-100 text-brand-800">
                         <Sparkles className="w-3.5 h-3.5" /> {t('diagnostic_title')}
                     </Badge>
+                </div>
+            </div>
+
+            {/* Target Language Selection Bar */}
+            <div className="bg-white p-3 rounded-2xl border-2 border-indigo-100 shadow-sm flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-800 px-1">
+                    <Sparkles className="w-4 h-4 text-brand-600" />
+                    <span>Learning / Assessment Language:</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                    {ASSESSMENT_TARGET_LANGUAGES.map(l => (
+                        <button
+                            key={l.code}
+                            type="button"
+                            onClick={async () => {
+                                setSelectedTargetLang(l.code);
+                                if (updateTargetLanguage) {
+                                    await updateTargetLanguage(l.code);
+                                }
+                            }}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+                                selectedTargetLang === l.code
+                                    ? 'bg-brand-600 text-white font-extrabold shadow-md ring-2 ring-brand-300 scale-105'
+                                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                            }`}
+                        >
+                            <span>{l.flag}</span>
+                            <span>{l.name}</span>
+                            <span className="opacity-75">({l.native})</span>
+                        </button>
+                    ))}
                 </div>
             </div>
 

@@ -110,6 +110,7 @@ export interface TranslationStrings {
 
     // Daily AI Challenge Card
     daily_challenge_badge: string;
+    daily_focus_mastery_booster: string;
     bonus_xp_tag: string;
     micro_quest_time: string;
     challenge_desc_prefix: string;
@@ -647,6 +648,7 @@ export const translations: Record<string, TranslationStrings> = {
         focus_matras_conjuncts: "Focus: Matras & Conjuncts",
         view_full_ai_analysis_btn: "View Full AI Analysis",
         daily_challenge_badge: "TODAY'S AI CHALLENGE",
+        daily_focus_mastery_booster: "Daily Focus: 3-Minute Mastery Booster",
         bonus_xp_tag: "XP BONUS",
         micro_quest_time: "~3 min micro-quest",
         challenge_desc_prefix: "Personalized challenge targeting your active learning pace in",
@@ -1158,6 +1160,7 @@ export const translations: Record<string, TranslationStrings> = {
         focus_matras_conjuncts: "దృష్టి: గుణింతాలు & ఒత్తులు",
         view_full_ai_analysis_btn: "పూర్తి AI విశ్లేషణను చూడండి",
         daily_challenge_badge: "నేటి AI ఛాలెంజ్",
+        daily_focus_mastery_booster: "రోజువారీ ఫోకస్: 3-నిమిషాల నైపుణ్య బూస్టర్",
         bonus_xp_tag: "XP బోనస్",
         micro_quest_time: "~3 నిమిషాల మైక్రో-టాస్క్",
         challenge_desc_prefix: "మీ అభ్యాస వేగానికి అనుగుణంగా రూపొందించిన టాస్క్:",
@@ -1669,6 +1672,7 @@ export const translations: Record<string, TranslationStrings> = {
         focus_matras_conjuncts: "கவனம்: குறில்-நெடில் & கூட்டெழுத்துக்கள்",
         view_full_ai_analysis_btn: "முழு AI பகுப்பாய்வைக் காண்க",
         daily_challenge_badge: "இன்றைய AI சவால்",
+        daily_focus_mastery_booster: "தினசரி கவனம்: 3-நிமிட தேர்ச்சி ஊக்கி",
         bonus_xp_tag: "XP போனஸ்",
         micro_quest_time: "~3 நிமிட நுண்-பணி",
         challenge_desc_prefix: "உங்கள் கற்றல் வேகத்திற்கு ஏற்ப வடிவமைக்கப்பட்ட தனிப்பட்ட சவால்:",
@@ -2180,6 +2184,7 @@ export const translations: Record<string, TranslationStrings> = {
         focus_matras_conjuncts: "ध्यान: मात्राएँ और संयुक्ताक्षर",
         view_full_ai_analysis_btn: "पूर्ण AI विश्लेषण देखें",
         daily_challenge_badge: "आज की AI चुनौती",
+        daily_focus_mastery_booster: "दैनिक फोकस: 3-मिनट मास्टरी बूस्टर",
         bonus_xp_tag: "XP बोनस",
         micro_quest_time: "~3 मिनट का कार्य",
         challenge_desc_prefix: "आपकी सीखने की गति के अनुसार तैयार किया गया कार्य:",
@@ -2691,6 +2696,7 @@ export const translations: Record<string, TranslationStrings> = {
         focus_matras_conjuncts: "ಗಮನ: ಗುಣಿತಾಕ್ಷರ ಮತ್ತು ಒತ್ತಕ್ಷರಗಳು",
         view_full_ai_analysis_btn: "ಸಂಪೂರ್ಣ AI ವಿಶ್ಲೇಷಣೆ ನೋಡಿ",
         daily_challenge_badge: "ಇಂದಿನ AI ಸವಾಲು",
+        daily_focus_mastery_booster: "ದೈನಂದಿನ ಗಮನ: 3-ನಿಮಿಷಗಳ ಮಾಸ್ಟರಿ ಬೂಸ್ಟರ್",
         bonus_xp_tag: "XP ಬೋನಸ್",
         micro_quest_time: "~3 ನಿಮಿಷದ ಮೈಕ್ರೋ-ಟಾಸ್ಕ್",
         challenge_desc_prefix: "ನಿಮ್ಮ ಕಲಿಕೆಯ ವೇಗಕ್ಕೆ ಅನುಗುಣವಾಗಿ ರೂಪಿಸಲಾದ ಸವಾಲು:",
@@ -3202,6 +3208,7 @@ export const translations: Record<string, TranslationStrings> = {
         focus_matras_conjuncts: "ശ്രദ്ധ: ചിഹ്നങ്ങളും കൂട്ടക്ഷരങ്ങളും",
         view_full_ai_analysis_btn: "മുഴുവൻ AI വിശകലനം കാണുക",
         daily_challenge_badge: "ഇന്നത്തെ AI വെല്ലുവിളി",
+        daily_focus_mastery_booster: "പ്രതിദിന ഫോക്കസ്: 3-മിനിറ്റ് മാസ്റ്ററി ബൂസ്റ്റർ",
         bonus_xp_tag: "XP ബോണസ്",
         micro_quest_time: "~3 മിനിറ്റ് ടാസ്ക്",
         challenge_desc_prefix: "നിങ്ങളുടെ പഠന വേഗതയ്ക്കനുസരിച്ച് രൂപകൽപ്പന ചെയ്ത ടാസ്ക്:",

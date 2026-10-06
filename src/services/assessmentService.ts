@@ -3,498 +3,723 @@ import { StorageService } from './mockData';
 import { Question, AILearnerInsight } from '../types';
 
 export const assessmentService = {
-    async getDiagnosticQuestions(): Promise<Question[]> {
+    async getDiagnosticQuestions(targetLangParam?: string, comfortLangParam?: string): Promise<Question[]> {
+        const profile = StorageService.getProfile();
+        const storedTarget = profile?.target_language?.code || profile?.target_language?.name || 'hi';
+        const storedComfort = profile?.comfortable_language?.code || profile?.comfortable_language?.name || 'en';
+
+        const rawTarget = (targetLangParam || storedTarget || 'hi').toLowerCase();
+        const rawComfort = (comfortLangParam || storedComfort || 'en').toLowerCase();
+
+        let target = 'Hindi';
+        if (rawTarget.includes('te') || rawTarget.includes('telugu')) target = 'Telugu';
+        else if (rawTarget.includes('kn') || rawTarget.includes('kannada')) target = 'Kannada';
+        else if (rawTarget.includes('ta') || rawTarget.includes('tamil')) target = 'Tamil';
+        else if (rawTarget.includes('ml') || rawTarget.includes('malayalam')) target = 'Malayalam';
+        else if (rawTarget.includes('en') || rawTarget.includes('english')) target = 'English';
+        else target = 'Hindi';
+
+        let comfort = 'en';
+        if (rawComfort.includes('te') || rawComfort.includes('telugu')) comfort = 'te';
+        else if (rawComfort.includes('kn') || rawComfort.includes('kannada')) comfort = 'kn';
+        else if (rawComfort.includes('ta') || rawComfort.includes('tamil')) comfort = 'ta';
+        else if (rawComfort.includes('ml') || rawComfort.includes('malayalam')) comfort = 'ml';
+        else if (rawComfort.includes('hi') || rawComfort.includes('hindi')) comfort = 'hi';
+        else comfort = 'en';
+
         try {
-            const response = await apiClient.get<{ questions: Question[] }>('/assessment/questions/');
-            return response.questions;
-        } catch (err: any) {
-            const profile = StorageService.getProfile();
-            const comfLang = profile?.comfortable_language?.name || 'Telugu';
-            const targetLang = profile?.target_language?.name || 'English';
-
-            // Fallback seed questions if backend is offline
-            if (targetLang === 'Hindi' || targetLang === 'hi') {
-                return [
-                    {
-                        id: 'q1',
-                        skill: 'Alphabet & Reading',
-                        question_type: 'reading_passage',
-                        prompt: 'गद्यांश पढ़कर "पानी" शब्द का सही अर्थ चुनें:',
-                        passage: 'रवि हर सुबह पानी पीता है और पुस्तकालय जाता है। उसे पढ़ना बहुत पसंद है।',
-                        highlight_word: 'पानी',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'పాఠ్యాంశాన్ని చదివి "पानी" (మంచి నీరు) పదానికి సరిపోయే అర్థాన్ని ఎంచుకోండి:' : 'गद्यांश पढ़कर "पानी" शब्द का सही अर्थ चुनें:',
-                        options: [
-                            { id: 1, text: 'जल (Water)', is_correct: true },
-                            { id: 2, text: 'घर (Ghar)', is_correct: false },
-                            { id: 3, text: 'किताब (Kitab)', is_correct: false },
-                            { id: 4, text: 'खाना (Khana)', is_correct: false },
-                        ],
-                        explanation: "'पानी' का अर्थ जल होता है।"
-                    },
-                    {
-                        id: 'q2',
-                        skill: 'Vocabulary',
-                        question_type: 'match_words',
-                        prompt: '"अवसर" शब्द के लिए सही पर्याय चुनें:',
-                        highlight_word: 'अवसर',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'లక్ష్య పదం "अवसर" (అవకాశం) కి సరిపోయే అర్థాన్ని ఎంచుకోండి:' : 'सही पर्याय चुनें:',
-                        options: [
-                            { id: 1, text: 'शुभ समय / अनुकूल मौका', is_correct: true },
-                            { id: 2, text: 'कठिन बाधा या विलंब', is_correct: false },
-                            { id: 3, text: 'लिखने की गलती', is_correct: false },
-                            { id: 4, text: 'पुराना ग्रंथ', is_correct: false },
-                        ],
-                        explanation: "'अवसर' का अर्थ अनुकूल मौका होता है।"
-                    },
-                    {
-                        id: 'q3',
-                        skill: 'Sentence Structure',
-                        question_type: 'arrange_words',
-                        prompt: 'सही हिंदी वाक्य बनाने के लिए शब्दों को क्रमबद्ध करें:',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'సరియైన వాక్య నిర్మాణాన్ని ఎంచుకోండి:' : 'सही क्रम चुनें:',
-                        options: [
-                            { id: 1, text: 'वह हर दिन हिंदी सीखता है।', is_correct: true },
-                            { id: 2, text: 'हिंदी वह सीखता है हर दिन।', is_correct: false },
-                            { id: 3, text: 'हर दिन सीखता हिंदी वह है।', is_correct: false },
-                            { id: 4, text: 'सीखता है हर दिन वह हिंदी।', is_correct: false },
-                        ],
-                        explanation: 'कर्ता + समय + कर्म + क्रिया।'
-                    },
-                    {
-                        id: 'q4',
-                        skill: 'Comprehension & Context',
-                        question_type: 'fill_blank',
-                        prompt: 'सफलता पाने के लिए प्रतिदिन _____ करना आवश्यक है।',
-                        passage: 'सफलता पाने के लिए प्रतिदिन _____ करना आवश्यक है।',
-                        highlight_word: '_____',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'సరిపోయే పదంతో ఖాళీని భర్తీ చేయండి:' : 'सही शब्द चुनें:',
-                        options: [
-                            { id: 1, text: 'अभ्यास', is_correct: true },
-                            { id: 2, text: 'आलस्य', is_correct: false },
-                            { id: 3, text: 'भूल', is_correct: false },
-                            { id: 4, text: 'क्रोध', is_correct: false },
-                        ],
-                        explanation: "'अभ्यास' वाक्य को सही अर्थ देता है।"
-                    },
-                    {
-                        id: 'q5',
-                        skill: 'Voice & Pronunciation',
-                        question_type: 'voice_speaking',
-                        prompt: 'वाक्य को जोर से बोलें:',
-                        target_phrase: 'नमस्ते! मैं लिंगोपथ से हिंदी सीख रहा हूँ।',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'ఈ వాక్యాన్ని బిగ్గరగా చదివి రికార్డ్ చేయండి:' : 'वाक्य को जोर से बोलें:',
-                        options: [],
-                        explanation: 'स्पष्ट उच्चारण करें।'
-                    },
-                    {
-                        id: 'q6',
-                        skill: 'Grammar Basics',
-                        question_type: 'fill_blank',
-                        prompt: 'सही सर्वनाम चुनें:',
-                        passage: '_____ एक परिश्रमी छात्र है।',
-                        highlight_word: '_____',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'సరిపోయే పదాన్ని ఎంచుకోండి:' : 'सही सर्वनाम चुनें:',
-                        options: [
-                            { id: 1, text: 'वह', is_correct: true },
-                            { id: 2, text: 'हम', is_correct: false },
-                            { id: 3, text: 'वे', is_correct: false },
-                            { id: 4, text: 'आप', is_correct: false },
-                        ],
-                        explanation: "एकवचन के लिए 'वह' प्रयुक्त होता है।"
-                    },
-                    {
-                        id: 'q7',
-                        skill: 'Advanced Sentence Building',
-                        question_type: 'arrange_words',
-                        prompt: 'शब्दों को सही क्रम में रखें:',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'సరియైన వాక్యాన్ని రూపొందించడానికి పదాలను అమర్చండి:' : 'शब्दों का सही क्रम चुनें:',
-                        options: [
-                            { id: 1, text: 'मैं हर सुबह ताजे फल खाता हूँ।', is_correct: true },
-                            { id: 2, text: 'फल खाता मैं सुबह हर ताजे हूँ।', is_correct: false },
-                            { id: 3, text: 'सुबह हर खाता मैं ताजे फल हूँ।', is_correct: false },
-                            { id: 4, text: 'खाता हूँ ताजे फल हर सुबह मैं।', is_correct: false },
-                        ],
-                        explanation: 'कर्ता + काल + विशेषण + कर्म + क्रिया।'
-                    },
-                    {
-                        id: 'q8',
-                        skill: 'Contextual Vocabulary',
-                        question_type: 'match_words',
-                        prompt: '"मित्र" शब्द का सही अर्थ चुनें:',
-                        highlight_word: 'मित्र',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'సరియైన అర్థాన్ని ఎంచుకోండి:' : 'सही अर्थ चुनें:',
-                        options: [
-                            { id: 1, text: 'सखा / साथी', is_correct: true },
-                            { id: 2, text: 'शत्रु / विरोधी', is_correct: false },
-                            { id: 3, text: 'शिक्षक / गुरु', is_correct: false },
-                            { id: 4, text: 'अजनबी / अनजान', is_correct: false },
-                        ],
-                        explanation: "'मित्र' का अर्थ सखा या साथी है।"
-                    },
-                    {
-                        id: 'q9',
-                        skill: 'Reading Comprehension',
-                        question_type: 'reading_passage',
-                        prompt: 'गद्यांश पढ़कर मीना की रुचि चुनें:',
-                        passage: 'मीना को शाम को पार्क में घूमना और नई भाषाएँ सीखना पसंद है।',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'పాఠ్యాంశాన్ని చదివి సరైన సమాధానాన్ని ఎంచుకోండి:' : 'पढ़कर सही उत्तर चुनें:',
-                        options: [
-                            { id: 1, text: 'नई भाषाएँ सीखना और पार्क में घूमना', is_correct: true },
-                            { id: 2, text: 'दिन भर बिस्तर पर सोना', is_correct: false },
-                            { id: 3, text: 'डरावनी फ़िल्में देखना', is_correct: false },
-                            { id: 4, text: 'खाना बनाना', is_correct: false },
-                        ],
-                        explanation: 'गद्यांश में मीना की रुचि का वर्णन है।'
-                    },
-                    {
-                        id: 'q10',
-                        skill: 'Speaking Confidence',
-                        question_type: 'voice_speaking',
-                        prompt: 'वाक्य को स्पष्ट रूप से बोलें:',
-                        target_phrase: 'मुझे नई भाषाएँ सीखना और बोलना बहुत पसंद है।',
-                        comfortable_bridge: comfLang === 'Telugu' ? 'ఈ వాక్యాన్ని బిగ్గరగా చదివి రికార్డ్ చేయండి:' : 'स्पष्ट रूप से बोलें:',
-                        options: [],
-                        explanation: 'स्पष्ट उच्चारण करें।'
-                    }
-                ];
-            } else if (targetLang === 'Telugu' || targetLang === 'te') {
-                return [
-                    {
-                        id: 'q1',
-                        skill: 'Alphabet & Reading',
-                        question_type: 'reading_passage',
-                        prompt: 'పాఠ్యాంశాన్ని చదివి "పుస్తకం" అనే పదానికి సరైన అర్థాన్ని ఎంచుకోండి:',
-                        passage: 'రవి పాఠశాలలో పుస్తకం చదువుతున్నాడు.',
-                        highlight_word: 'పుస్తకం',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'गद्यांश पढ़कर "పుస్తకం" शब्द का अर्थ चुनें:' : 'పాఠ్యాంశాన్ని చదివి అర్థాన్ని ఎంచుకోండి:',
-                        options: [
-                            { id: 1, text: 'గ్రంథం / పుస్తకము', is_correct: true },
-                            { id: 2, text: 'నీరు / జలము', is_correct: false },
-                            { id: 3, text: 'ఇల్లు / గృహము', is_correct: false },
-                            { id: 4, text: 'అన్నం / ఆహారము', is_correct: false },
-                        ],
-                        explanation: "'పుస్తకం' అనగా చదివే గ్రంథము."
-                    },
-                    {
-                        id: 'q2',
-                        skill: 'Vocabulary',
-                        question_type: 'match_words',
-                        prompt: '"అవకాశం" అనే పదానికి సరైన అర్థాన్ని ఎంచుకోండి:',
-                        highlight_word: 'అవకాశం',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'शब्द "అవకాశం" का अर्थ चुनें:' : 'సరైన అర్థాన్ని ఎంచుకోండి:',
-                        options: [
-                            { id: 1, text: 'మంచి తరుణం / శుభ సమయం', is_correct: true },
-                            { id: 2, text: 'పెద్ద ఆటంకం లేదా ఆలస్యం', is_correct: false },
-                            { id: 3, text: 'రాతలో దొర్లిన పొరపాటు', is_correct: false },
-                            { id: 4, text: 'పాత కాలపు కథ', is_correct: false },
-                        ],
-                        explanation: "'అవకాశం' అంటే అనుకూలమైన సమయం."
-                    },
-                    {
-                        id: 'q3',
-                        skill: 'Sentence Structure',
-                        question_type: 'arrange_words',
-                        prompt: 'సరియైన తెలుగు వాక్యాన్ని అమర్చండి:',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'सही वाक्य क्रम चुनें:' : 'సరియైన వాక్య క్రమాన్ని ఎంచుకోండి:',
-                        options: [
-                            { id: 1, text: 'నేను ప్రతీ రోజూ తెలుగు నేర్చుకుంటాను.', is_correct: true },
-                            { id: 2, text: 'తెలుగు నేను నేర్చుకుంటాను రోజూ.', is_correct: false },
-                            { id: 3, text: 'రోజూ నేర్చుకుంటాను తెలుగు నేను.', is_correct: false },
-                            { id: 4, text: 'నేర్చుకుంటాను నేను తెలుగు రోజూ.', is_correct: false },
-                        ],
-                        explanation: 'కర్త + కాలము + కర్మ + క్రియ.'
-                    },
-                    {
-                        id: 'q4',
-                        skill: 'Comprehension & Context',
-                        question_type: 'fill_blank',
-                        prompt: 'విజయానికి నిరంతర _____ అవసరం.',
-                        passage: 'విజయానికి నిరంతర _____ అవసరం.',
-                        highlight_word: '_____',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'सही शब्द से वाक्य पूरा करें:' : 'సరైన పదంతో ఖాళీని భర్తీ చేయండి:',
-                        options: [
-                            { id: 1, text: 'సాధన', is_correct: true },
-                            { id: 2, text: 'నిద్ర', is_correct: false },
-                            { id: 3, text: 'ఆలస్యం', is_correct: false },
-                            { id: 4, text: 'కోపం', is_correct: false },
-                        ],
-                        explanation: "'సాధన' అనగా అభ్యాసము."
-                    },
-                    {
-                        id: 'q5',
-                        skill: 'Voice & Pronunciation',
-                        question_type: 'voice_speaking',
-                        prompt: 'ఈ వాక్యాన్ని బిగ్గరగా చదవండి:',
-                        target_phrase: 'నమస్కారం! నేను లింగోపాత్ తో తెలుగు చదవడం నేర్చుకుంటున్నాను.',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'इस वाक्य को स्पष्ट रूप से बोलें:' : 'ఈ వాక్యాన్ని బిగ్గరగా చదవండి:',
-                        options: [],
-                        explanation: 'స్పష్టమైన ఉచ్ఛారణతో చదవండి.'
-                    },
-                    {
-                        id: 'q6',
-                        skill: 'Grammar Basics',
-                        question_type: 'fill_blank',
-                        prompt: 'సరైన పదాన్ని ఎంచుకోండి:',
-                        passage: 'శుభ _____! మీ రోజు ప్రశాంతంగా ఉండాలి.',
-                        highlight_word: '_____',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'सही शब्द चुनें:' : 'సరైన పదాన్ని ఎంచుకోండి:',
-                        options: [
-                            { id: 1, text: 'ఉదయం', is_correct: true },
-                            { id: 2, text: 'రాత్రి', is_correct: false },
-                            { id: 3, text: 'కలం', is_correct: false },
-                            { id: 4, text: 'దారి', is_correct: false },
-                        ],
-                        explanation: "'శుభ ఉదయం' అనగా వేకువ వేళల శుభాకాంక్ష."
-                    },
-                    {
-                        id: 'q7',
-                        skill: 'Advanced Sentence Building',
-                        question_type: 'arrange_words',
-                        prompt: 'పదాలను సక్రమమైన వరుసలో అమర్చండి:',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'शब्दों को सही क्रम में रखें:' : 'సరియైన వరుసలో అమర్చండి:',
-                        options: [
-                            { id: 1, text: 'మనం కలిసి కొత్త భాషలు నేర్చుకుందాం.', is_correct: true },
-                            { id: 2, text: 'భాషలు మనం నేర్చుకుందాం కలిసి కొత్త.', is_correct: false },
-                            { id: 3, text: 'కొత్త నేర్చుకుందాం కలిసి మనం భాషలు.', is_correct: false },
-                            { id: 4, text: 'నేర్చుకుందాం కొత్త భాషలు మనం కలిసి.', is_correct: false },
-                        ],
-                        explanation: 'సరియైన వాక్య నిర్మాణం.'
-                    },
-                    {
-                        id: 'q8',
-                        skill: 'Contextual Vocabulary',
-                        question_type: 'match_words',
-                        prompt: '"స్నేహితుడు" అనే పదానికి అర్థాన్ని ఎంచుకోండి:',
-                        highlight_word: 'స్నేహితుడు',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'सही अर्थ चुनें:' : 'సరైన అర్థాన్ని ఎంచుకోండి:',
-                        options: [
-                            { id: 1, text: 'మిత్రుడు / సహచరుడు', is_correct: true },
-                            { id: 2, text: 'అపరిచితుడు', is_correct: false },
-                            { id: 3, text: 'ఉపాధ్యాయుడు', is_correct: false },
-                            { id: 4, text: 'శత్రువు', is_correct: false },
-                        ],
-                        explanation: "'స్నేహితుడు' అనగా మిత్రుడు."
-                    },
-                    {
-                        id: 'q9',
-                        skill: 'Reading Comprehension',
-                        question_type: 'reading_passage',
-                        prompt: 'పాఠ్యాంశాన్ని చదివి గీతకు ఏమి ఇష్టమో ఎంచుకోండి:',
-                        passage: 'గీత ప్రతిరోజూ ఉదయాన్నే లేచి పుస్తకాలు చదువుతుంది.',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'गद्यांश पढ़कर सही उत्तर चुनें:' : 'చదివి సరైన సమాధానం ఎంచుకోండి:',
-                        options: [
-                            { id: 1, text: 'ఉదయాన్నే పుస్తకాలు చదవడం', is_correct: true },
-                            { id: 2, text: 'రోజంతా టీవీ చూడటం', is_correct: false },
-                            { id: 3, text: 'ఫోన్ లో ఆటలు ఆడటం', is_correct: false },
-                            { id: 4, text: 'మధ్యాహ్నం వరకు నిద్రపోవడం', is_correct: false },
-                        ],
-                        explanation: 'గీత ఉదయాన్నే పుస్తకాలు చదువుతుంది.'
-                    },
-                    {
-                        id: 'q10',
-                        skill: 'Speaking Practice',
-                        question_type: 'voice_speaking',
-                        prompt: 'ఈ వాక్యాన్ని స్పష్టంగా మాట్లాడండి:',
-                        target_phrase: 'నాకు చదవడం మరియు వ్రాయడం చాలా ఇష్టం.',
-                        comfortable_bridge: comfLang === 'Hindi' ? 'स्पष्ट रूप से बोलें:' : 'స్పష్టంగా మాట్లాడండి:',
-                        options: [],
-                        explanation: 'స్పష్టమైన ఉచ్ఛారణతో చెప్పండి.'
-                    }
-                ];
+            const response = await apiClient.get<{ questions: Question[] }>(`/assessment/questions/?target_language=${target}&comfortable_language=${comfort}`);
+            if (response && response.questions && response.questions.length > 0) {
+                return response.questions;
             }
+        } catch {
+            // Intelligent on-device fallback when remote API is unreachable
+        }
 
-            // Default English Target Language Set
+        // Bridge helper returning native instruction in the learner's comfortable language
+        const getBridge = (targetWord: string, meaningMap: Record<string, string>): string => {
+            const localizedMeaning = meaningMap[comfort] || meaningMap['en'] || targetWord;
+            switch (comfort) {
+                case 'kn':
+                    return `ಪಾಠ್ಯಾಂಶವನ್ನು ಓದಿ "${targetWord}" (${localizedMeaning}) ಪದದ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:`;
+                case 'te':
+                    return `పాఠ్యాంశాన్ని చదివి "${targetWord}" (${localizedMeaning}) పదానికి సరిపోయే అర్థాన్ని ఎంచుకోండి:`;
+                case 'ta':
+                    return `பத்தியைப் படித்து "${targetWord}" (${localizedMeaning}) என்ற சொல்லின் சரியான பொருளைத் தேர்ந்தெடுக்கவும்:`;
+                case 'ml':
+                    return `വാക്യം വായിച്ച് "${targetWord}" (${localizedMeaning}) എന്ന വാക്കിന്റെ ശരിയായ അർത്ഥം തിരഞ്ഞെടുക്കുക:`;
+                case 'hi':
+                    return `गद्यांश पढ़कर "${targetWord}" (${localizedMeaning}) शब्द का सही अर्थ चुनें:`;
+                default:
+                    return `Read the passage and select the correct meaning of "${targetWord}" (${localizedMeaning}):`;
+            }
+        };
+
+        const getGenericBridge = (instructionMap: Record<string, string>): string => {
+            return instructionMap[comfort] || instructionMap['en'] || instructionMap['hi'] || '';
+        };
+
+        // 1. Target = Hindi
+        if (target === 'Hindi') {
             return [
                 {
                     id: 'q1',
-                    skill: 'Reading Passage',
+                    skill: 'Alphabet & Reading',
                     question_type: 'reading_passage',
-                    prompt: `Read the passage and select the correct meaning of 'excited':`,
-                    passage: `Ravi was excited to visit the library every morning. He loved reading stories about different countries.`,
-                    highlight_word: 'excited',
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'క్రింది వాక్యాన్ని చదివి "excited" అనే పదానికి సరిపోయే అర్థాన్ని ఎంచుకోండి:'
-                        : comfLang === 'Hindi'
-                            ? 'गद्यांश पढ़कर "excited" शब्द का सही अर्थ चुनें:'
-                            : `Read passage & select correct meaning for 'excited':`,
+                    prompt: 'गद्यांश पढ़कर "पानी" शब्द का सही अर्थ चुनें:',
+                    passage: 'रवि हर सुबह पानी पीता है और पुस्तकालय जाता है। उसे पढ़ना बहुत पसंद है।',
+                    highlight_word: 'पानी',
+                    comfortable_bridge: getBridge('पानी', {
+                        en: 'Water',
+                        kn: 'ನೀರು',
+                        te: 'మంచి నీరు',
+                        ta: 'தண்ணீர்',
+                        ml: 'വെള്ളം',
+                        hi: 'जल'
+                    }),
                     options: [
-                        { id: 1, text: 'Enthusiastic and keen', is_correct: true },
-                        { id: 2, text: 'Uninterested and bored', is_correct: false },
-                        { id: 3, text: 'Fearful and hesitant', is_correct: false },
-                        { id: 4, text: 'Tired and sleepy', is_correct: false },
+                        { id: 1, text: 'जल (Water)', is_correct: true },
+                        { id: 2, text: 'घर (Ghar)', is_correct: false },
+                        { id: 3, text: 'किताब (Kitab)', is_correct: false },
+                        { id: 4, text: 'खाना (Khana)', is_correct: false },
                     ],
-                    explanation: '"Excited" means eager and enthusiastic.'
+                    explanation: "'पानी' का अर्थ जल होता है।"
                 },
                 {
                     id: 'q2',
-                    skill: 'Vocabulary Matching',
+                    skill: 'Vocabulary',
                     question_type: 'match_words',
-                    prompt: `Select the option that best matches the meaning of 'Opportunity'.`,
-                    highlight_word: 'Opportunity',
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? '"Opportunity" (అవకాశం) కి సరిపోయే అర్థాన్ని ఎంచుకోండి:'
-                        : comfLang === 'Hindi'
-                            ? '"Opportunity" (अवसर) का सही पर्याय चुनें:'
-                            : `Select closest meaning:`,
+                    prompt: '"अवसर" शब्द के लिए सही पर्याय चुनें:',
+                    highlight_word: 'अवसर',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Select the correct synonym for "अवसर" (Opportunity):',
+                        kn: '"अवसर" (ಅವಕಾಶ) ಪದಕ್ಕೆ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                        te: '"अवसर" (అవకాశం) కి సరిపోయే అర్థాన్ని ఎంచుకోండి:',
+                        ta: '"अवसर" (வாய்ப்பு) என்பதன் சரியான பொருளைத் தேர்ந்தெடுக்கவும்:',
+                        ml: '"अवसर" (അവസരം) എന്ന വാക്കിന്റെ ശരിയായ അർത്ഥം തിരഞ്ഞെടുക്കുക:',
+                        hi: '"अवसर" शब्द का सही अर्थ चुनें:'
+                    }),
                     options: [
-                        { id: 1, text: 'A favorable time or chance for progress', is_correct: true },
-                        { id: 2, text: 'A sudden obstacle or error', is_correct: false },
-                        { id: 3, text: 'A heavy tool used in building', is_correct: false },
-                        { id: 4, text: 'An old story or fable', is_correct: false },
+                        { id: 1, text: 'शुभ समय / अनुकूल मौका', is_correct: true },
+                        { id: 2, text: 'कठिन बाधा या विलंब', is_correct: false },
+                        { id: 3, text: 'लिखने की गलती', is_correct: false },
+                        { id: 4, text: 'पुराना ग्रंथ', is_correct: false },
                     ],
-                    explanation: 'Opportunity refers to a favorable chance.'
+                    explanation: "'अवसर' का अर्थ अनुकूल मौका होता है।"
                 },
                 {
                     id: 'q3',
-                    skill: 'Sentence Construction',
+                    skill: 'Sentence Structure',
                     question_type: 'arrange_words',
-                    prompt: `Arrange the words into a complete, correct sentence.`,
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'సరియైన వాక్య నిర్మాణాన్ని ఎంచుకోండి:'
-                        : comfLang === 'Hindi'
-                            ? 'सही वाक्य क्रम चुनें:'
-                            : `Select grammatically correct sentence order:`,
+                    prompt: 'सही हिंदी वाक्य बनाने के लिए शब्दों को क्रमबद्ध करें:',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Arrange the words to form a correct Hindi sentence:',
+                        kn: 'ಸರಿಯಾದ ವಾಕ್ಯ ರಚನೆಗಾಗಿ ಪದಗಳನ್ನು ಜೋಡಿಸಿ:',
+                        te: 'సరియైన వాక్య నిర్మాణం కోసం పదాలను అమర్చండి:',
+                        ta: 'சரியான வாக்கியத்தை உருவாக்க சொற்களை வரிசைப்படுத்துங்கள்:',
+                        ml: 'ശരിയായ വാക്യം നിർമ്മിക്കാൻ വാക്കുകൾ ക്രമീകരിക്കുക:',
+                        hi: 'सही वाक्य क्रम चुनें:'
+                    }),
                     options: [
-                        { id: 1, text: 'I practice reading English every single morning.', is_correct: true },
-                        { id: 2, text: 'Reading morning every single English practice I.', is_correct: false },
-                        { id: 3, text: 'Every morning English practice reading I single.', is_correct: false },
-                        { id: 4, text: 'Practice I English single morning reading every.', is_correct: false },
+                        { id: 1, text: 'वह हर दिन हिंदी सीखता है।', is_correct: true },
+                        { id: 2, text: 'हिंदी वह सीखता है हर दिन।', is_correct: false },
+                        { id: 3, text: 'हर दिन सीखता हिंदी वह है।', is_correct: false },
+                        { id: 4, text: 'सीखता है हर दिन वह हिंदी।', is_correct: false },
                     ],
-                    explanation: 'Subject + Verb + Object + Time modifier.'
+                    explanation: 'कर्ता + समय + कर्म + क्रिया।'
                 },
                 {
                     id: 'q4',
                     skill: 'Comprehension & Context',
                     question_type: 'fill_blank',
-                    prompt: `Choose the correct word to fill in the blank.`,
-                    passage: `To build a strong habit, it is important to practice _____ every single day.`,
+                    prompt: 'सफलता पाने के लिए प्रतिदिन _____ करना आवश्यक है।',
+                    passage: 'सफलता पाने के लिए प्रतिदिन _____ करना आवश्यक है।',
                     highlight_word: '_____',
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'సరిపోయే పదంతో ఖాళీని భర్తీ చేయండి:'
-                        : comfLang === 'Hindi'
-                            ? 'सही शब्द से रिक्त स्थान भरें:'
-                            : `Complete the sentence:`,
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Fill in the blank with the most appropriate word:',
+                        kn: 'ಸರಿಯಾದ ಪದದಿಂದ ಖಾಲಿ ಜಾಗವನ್ನು ತುಂಬಿರಿ:',
+                        te: 'సరిపోయే పదంతో ఖాళీని భర్తీ చేయండి:',
+                        ta: 'சரியான சொல்லால் கோடிட்ட இடத்தை நிரப்புக:',
+                        ml: 'ശരിയായ വാക്ക് ഉപയോഗിച്ച് വിടവ് നികത്തുക:',
+                        hi: 'सही शब्द से खाली स्थान भरें:'
+                    }),
                     options: [
-                        { id: 1, text: 'consistently', is_correct: true },
-                        { id: 2, text: 'rarely', is_correct: false },
-                        { id: 3, text: 'never', is_correct: false },
-                        { id: 4, text: 'accidentally', is_correct: false },
+                        { id: 1, text: 'अभ्यास', is_correct: true },
+                        { id: 2, text: 'आलस्य', is_correct: false },
+                        { id: 3, text: 'भूल', is_correct: false },
+                        { id: 4, text: 'क्रोध', is_correct: false },
                     ],
-                    explanation: '"Consistently" fits the sentence.'
+                    explanation: "'अभ्यास' वाक्य को सही अर्थ देता है।"
                 },
                 {
                     id: 'q5',
                     skill: 'Voice & Pronunciation',
                     question_type: 'voice_speaking',
-                    prompt: `Speak the sentence aloud into your microphone.`,
-                    target_phrase: `Welcome to LingoPath AI. I am excited to practice speaking!`,
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'ఈ వాక్యాన్ని బిగ్గరగా చదివి రికార్డ్ చేయండి:'
-                        : comfLang === 'Hindi'
-                            ? 'इस वाक्य को स्पष्ट रूप से बोलें:'
-                            : `Record your voice speaking this sentence:`,
+                    prompt: 'वाक्य को जोर से बोलें:',
+                    target_phrase: 'नमस्ते! मैं लिंगोपथ से हिंदी सीख रहा हूँ।',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Speak this sentence aloud into the microphone:',
+                        kn: 'ಈ ವಾಕ್ಯವನ್ನು ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಓದಿ:',
+                        te: 'ఈ వాక్యాన్ని బిగ్గరగా చదివి రికార్డ్ చేయండి:',
+                        ta: 'இந்த வாக்கியத்தை சத்தமாகப் படித்து பதிவு செய்யுங்கள்:',
+                        ml: 'ഈ വാക്യം വ്യക്തമായി സംസാരിക്കുക:',
+                        hi: 'वाक्य को जोर से बोलें:'
+                    }),
                     options: [],
-                    explanation: 'Focus on clear pronunciation.'
+                    explanation: 'स्पष्ट उच्चारण करें।'
                 },
                 {
                     id: 'q6',
                     skill: 'Grammar Basics',
                     question_type: 'fill_blank',
-                    prompt: `Choose the correct article to fill in the blank.`,
-                    passage: `She wants to buy _____ umbrella before it starts raining.`,
+                    prompt: 'सही सर्वनाम चुनें:',
+                    passage: '_____ एक परिश्रमी छात्र है।',
                     highlight_word: '_____',
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'సరిపోయే ఆర్టికల్ ఎంచుకోండి:'
-                        : comfLang === 'Hindi'
-                            ? 'सही सर्वनाम / अनुच्छेद चुनें:'
-                            : `Select correct article:`,
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Choose the correct pronoun to complete the sentence:',
+                        kn: 'ಸರಿಯಾದ ಸರ್ವನಾಮವನ್ನು ಆರಿಸಿ:',
+                        te: 'సరియైన సర్వనామాన్ని ఎంచుకోండి:',
+                        ta: 'சரியான பிரதிப்பெயரைத் தேர்ந்தெடுக்கவும்:',
+                        ml: 'ശരിയായ സർവ്വനാമം തിരഞ്ഞെടുക്കുക:',
+                        hi: 'सही सर्वनाम चुनें:'
+                    }),
                     options: [
-                        { id: 1, text: 'an', is_correct: true },
-                        { id: 2, text: 'a', is_correct: false },
-                        { id: 3, text: 'the', is_correct: false },
-                        { id: 4, text: 'no article', is_correct: false },
+                        { id: 1, text: 'वह', is_correct: true },
+                        { id: 2, text: 'हम', is_correct: false },
+                        { id: 3, text: 'वे', is_correct: false },
+                        { id: 4, text: 'तुम', is_correct: false },
                     ],
-                    explanation: "Use 'an' before words beginning with a vowel sound."
+                    explanation: "'वह' एकवचन पुल्लिंग के लिए उपयुक्त है।"
                 },
                 {
                     id: 'q7',
                     skill: 'Advanced Sentence Building',
                     question_type: 'arrange_words',
-                    prompt: `Arrange the words into a complete, correct sentence.`,
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'సరియైన వాక్యాన్ని అమర్చండి:'
-                        : comfLang === 'Hindi'
-                            ? 'शब्दों को सही क्रम में रखें:'
-                            : `Arrange words into correct order:`,
+                    prompt: 'शब्दों को सही क्रम में रखें:',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Put the words in correct order to make a fluent sentence:',
+                        kn: 'ಅರ್ಥಪೂರ್ಣ ವಾಕ್ಯಕ್ಕಾಗಿ ಪದಗಳನ್ನು ಸರಿಯಾದ ಕ್ರಮದಲ್ಲಿ ಇರಿಸಿ:',
+                        te: 'సరైన క్రమంలో అమర్చండి:',
+                        ta: 'பொருத்தமான வாக்கியமாக அமைய சொற்களை ஒழுங்குபடுத்துங்கள்:',
+                        ml: 'വാക്കുകൾ ശരിയായ ക്രമത്തിൽ വെക്കുക:',
+                        hi: 'शब्दों को सही क्रम में रखें:'
+                    }),
                     options: [
-                        { id: 1, text: 'We enjoy learning new languages together every morning.', is_correct: true },
-                        { id: 2, text: 'Learning languages together we enjoy morning every.', is_correct: false },
-                        { id: 3, text: 'Every morning together learning new languages we enjoy.', is_correct: false },
-                        { id: 4, text: 'Languages new learning we enjoy together morning every.', is_correct: false },
+                        { id: 1, text: 'हम सब मिलकर नई भाषा सीखते हैं।', is_correct: true },
+                        { id: 2, text: 'भाषा नई सीखते हैं मिलकर हम सब।', is_correct: false },
+                        { id: 3, text: 'सीखते हैं हम सब मिलकर भाषा नई।', is_correct: false },
+                        { id: 4, text: 'सब मिलकर नई हम भाषा सीखते हैं।', is_correct: false },
                     ],
-                    explanation: 'Subject + Verb + Object + Time.'
+                    explanation: 'सटीक वाक्य विन्यास।'
                 },
                 {
                     id: 'q8',
                     skill: 'Contextual Vocabulary',
                     question_type: 'match_words',
-                    prompt: `Select the closest meaning for 'Abundant'.`,
-                    highlight_word: 'Abundant',
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'సమృద్ధిగా (Meaning Bridge)'
-                        : comfLang === 'Hindi'
-                            ? 'प्रचुर / प्रचुर मात्रा (Meaning Bridge)'
-                            : `Select closest meaning:`,
+                    prompt: '"मित्र" शब्द का सही अर्थ चुनें:',
+                    highlight_word: 'मित्र',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Choose the correct meaning of "मित्र" (Friend):',
+                        kn: '"मित्र" (ಸ್ನೇಹಿತ) ಪದದ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                        te: '"मित्र" (స్నేహితుడు) కి సరైన అర్థాన్ని ఎంచుకోండి:',
+                        ta: '"मित्र" (நண்பர்) என்ற சொல்லின் பொருளைத் தேர்ந்தெடுக்கவும்:',
+                        ml: '"मित्र" (സുഹൃത്ത്) എന്ന വാക്കിന്റെ അർത്ഥം തിരഞ്ഞെടുക്കുക:',
+                        hi: 'सही अर्थ चुनें:'
+                    }),
                     options: [
-                        { id: 1, text: 'Existing or available in large quantities', is_correct: true },
-                        { id: 2, text: 'Extremely rare and hard to find', is_correct: false },
-                        { id: 3, text: 'Damaged or broken beyond repair', is_correct: false },
-                        { id: 4, text: 'Quiet and silent', is_correct: false },
+                        { id: 1, text: 'सखा / साथी', is_correct: true },
+                        { id: 2, text: 'शत्रु / विरोधी', is_correct: false },
+                        { id: 3, text: 'शिक्षक / गुरु', is_correct: false },
+                        { id: 4, text: 'अजनबी / अनजान', is_correct: false },
                     ],
-                    explanation: "'Abundant' means plentiful."
+                    explanation: "'मित्र' का अर्थ सखा या साथी है।"
                 },
                 {
                     id: 'q9',
                     skill: 'Reading Comprehension',
                     question_type: 'reading_passage',
-                    prompt: `Read the passage and select why Ananya felt confident.`,
-                    passage: `Ananya felt confident during her presentation because she practiced speaking aloud in front of the mirror every day.`,
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'పాఠ్యాంశాన్ని చదివి సమాధానాన్ని ఎంచుకోండి:'
-                        : comfLang === 'Hindi'
-                            ? 'गद्यांश पढ़कर सही उत्तर चुनें:'
-                            : `Read passage & select correct answer:`,
+                    prompt: 'गद्यांश पढ़कर मीना की रुचि चुनें:',
+                    passage: 'मीना को शाम को पार्क में घूमना और नई भाषाएँ सीखना पसंद है।',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Read the short passage and identify what Meena loves doing:',
+                        kn: 'ಚಿಕ್ಕ ವಾಕ್ಯವನ್ನು ಓದಿ ಮೀನಾಗೆ ಏನು ಇಷ್ಟ ಎಂದು ಗುರುತಿಸಿ:',
+                        te: 'పాఠ్యాంశాన్ని చదివి మీనాకు ఏమి ఇష్టమో ఎంచుకోండి:',
+                        ta: 'பத்தியைப் படித்து மீனாவுக்கு என்ன பிடிக்கும் எனக் கண்டறியவும்:',
+                        ml: 'വാക്യം വായിച്ച് മീനക്ക് എന്താണ് ഇഷ്ടമെന്ന് കണ്ടെത്തുക:',
+                        hi: 'पढ़कर सही उत्तर चुनें:'
+                    }),
                     options: [
-                        { id: 1, text: 'She practiced speaking aloud every day', is_correct: true },
-                        { id: 2, text: 'She read a book right before speaking', is_correct: false },
-                        { id: 3, text: 'The presentation was very short', is_correct: false },
-                        { id: 4, text: 'She guessed all the answers', is_correct: false },
+                        { id: 1, text: 'नई भाषाएँ सीखना और पार्क में घूमना', is_correct: true },
+                        { id: 2, text: 'दिन भर बिस्तर पर सोना', is_correct: false },
+                        { id: 3, text: 'डरावनी फ़िल्में देखना', is_correct: false },
+                        { id: 4, text: 'खाना बनाना', is_correct: false },
                     ],
-                    explanation: 'She practiced speaking aloud every day.'
+                    explanation: 'गद्यांश में मीना की रुचि का वर्णन है।'
                 },
                 {
                     id: 'q10',
-                    skill: 'Speaking Fluency',
+                    skill: 'Speaking Confidence',
                     question_type: 'voice_speaking',
-                    prompt: `Speak this sentence aloud into your microphone.`,
-                    target_phrase: `Consistency and daily practice lead to fluency and confidence.`,
-                    comfortable_bridge: comfLang === 'Telugu'
-                        ? 'ఈ వాక్యాన్ని బిగ్గరగా చదివి రికార్డ్ చేయండి:'
-                        : comfLang === 'Hindi'
-                            ? 'इस वाक्य को स्पष्ट रूप से बोलें:'
-                            : `Speak this sentence into microphone:`,
+                    prompt: 'वाक्य को स्पष्ट रूप से बोलें:',
+                    target_phrase: 'मुझे नई भाषाएँ सीखना और बोलना बहुत पसंद है।',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Speak this sentence into the microphone with confidence:',
+                        kn: 'ಈ ವಾಕ್ಯವನ್ನು ಆತ್ಮವಿಶ್ವಾಸದಿಂದ ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಮಾತನಾಡಿ:',
+                        te: 'ఈ వాక్యాన్ని బిగ్గరగా చదివి రికార్డ్ చేయండి:',
+                        ta: 'இந்த வாக்கியத்தை நம்பிக்கையுடன் ஒலிவாங்கியில் பேசவும்:',
+                        ml: 'ഈ വാക്യം വ്യക്തമായി ഉച്ചരിക്കുക:',
+                        hi: 'स्पष्ट रूप से बोलें:'
+                    }),
                     options: [],
-                    explanation: 'Focus on clear pronunciation.'
+                    explanation: 'स्पष्ट उच्चारण करें।'
                 }
             ];
         }
+
+        // 2. Target = Telugu
+        if (target === 'Telugu') {
+            return [
+                {
+                    id: 'q1',
+                    skill: 'Alphabet & Reading',
+                    question_type: 'reading_passage',
+                    prompt: 'పాఠ్యాంశాన్ని చదివి "పుస్తకం" అనే పదానికి సరైన అర్థాన్ని ఎంచుకోండి:',
+                    passage: 'రవి పాఠశాలలో పుస్తకం చదువుతున్నాడు.',
+                    highlight_word: 'పుస్తకం',
+                    comfortable_bridge: getBridge('పుస్తకం', {
+                        en: 'Book',
+                        kn: 'ಪುಸ್ತಕ',
+                        hi: 'किताब',
+                        ta: 'புத்தகம்',
+                        ml: 'പുസ്തകം',
+                        te: 'గ్రంథం'
+                    }),
+                    options: [
+                        { id: 1, text: 'గ్రంథం / పుస్తకము', is_correct: true },
+                        { id: 2, text: 'నీరు / జలము', is_correct: false },
+                        { id: 3, text: 'ఇల్లు / గృహము', is_correct: false },
+                        { id: 4, text: 'అన్నం / ఆహారము', is_correct: false },
+                    ],
+                    explanation: "'పుస్తకం' అనగా చదివే గ్రంథము."
+                },
+                {
+                    id: 'q2',
+                    skill: 'Vocabulary',
+                    question_type: 'match_words',
+                    prompt: '"అవకాశం" అనే పదానికి సరైన అర్థాన్ని ఎంచుకోండి:',
+                    highlight_word: 'అవకాశం',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Select the right meaning of "అవకాశం" (Opportunity):',
+                        kn: '"ಅವಕಾಶ" ಪದಕ್ಕೆ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                        hi: '"అవకాశం" (अवसर) का सही अर्थ चुनें:',
+                        ta: '"அవకాశం" (வாய்ப்பு) என்பதன் பொருளைத் தேர்ந்தெடுக்கவும்:',
+                        ml: '"అవకాశం" (അവസരം) എന്ന വാക്കിന്റെ അർത്ഥം തിരഞ്ഞെടുക്കുക:',
+                        te: 'సరైన అర్థాన్ని ఎంచుకోండి:'
+                    }),
+                    options: [
+                        { id: 1, text: 'మంచి తరుణం / శుభ సమయం', is_correct: true },
+                        { id: 2, text: 'పెద్ద ఆటంకం లేదా ఆలస్యం', is_correct: false },
+                        { id: 3, text: 'రాతలో దొర్లిన పొరపాటు', is_correct: false },
+                        { id: 4, text: 'పాత కాలపు కథ', is_correct: false },
+                    ],
+                    explanation: "'అవకాశం' అంటే అనుకూలమైన సమయం."
+                },
+                {
+                    id: 'q3',
+                    skill: 'Sentence Structure',
+                    question_type: 'arrange_words',
+                    prompt: 'సరియైన తెలుగు వాక్యాన్ని అమర్చండి:',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Arrange the words to form a correct Telugu sentence:',
+                        kn: 'ಸರಿಯಾದ ವಾಕ್ಯಕ್ಕಾಗಿ ಪದಗಳನ್ನು ಜೋಡಿಸಿ:',
+                        hi: 'सही तेलुगु वाक्य क्रम चुनें:',
+                        ta: 'சொற்களை வரிசைப்படுத்தி சரியான வாக்கியத்தை அமைக்கவும்:',
+                        ml: 'വാക്കുകൾ ക്രമീകരിക്കുക:',
+                        te: 'సరియైన వాక్య క్రమాన్ని ఎంచుకోండి:'
+                    }),
+                    options: [
+                        { id: 1, text: 'నేను ప్రతీ రోజూ తెలుగు నేర్చుకుంటాను.', is_correct: true },
+                        { id: 2, text: 'తెలుగు నేను నేర్చుకుంటాను రోజూ.', is_correct: false },
+                        { id: 3, text: 'రోజూ నేర్చుకుంటాను తెలుగు నేను.', is_correct: false },
+                        { id: 4, text: 'నేర్చుకుంటాను నేను తెలుగు రోజూ.', is_correct: false },
+                    ],
+                    explanation: 'కర్త + కాలము + కర్మ + క్రియ.'
+                },
+                {
+                    id: 'q4',
+                    skill: 'Comprehension & Context',
+                    question_type: 'fill_blank',
+                    prompt: 'విజయానికి నిరంతర _____ అవసరం.',
+                    passage: 'విజయానికి నిరంతర _____ అవసరం.',
+                    highlight_word: '_____',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Fill in the blank with the correct word:',
+                        kn: 'ಸರಿಯಾದ ಪದದಿಂದ ಖಾಲಿ ಜಾಗವನ್ನು ತುಂಬಿರಿ:',
+                        hi: 'सही शब्द से वाक्य पूरा करें:',
+                        ta: 'கோடிட்ட இடத்தை நிரப்பவும்:',
+                        ml: 'ശരിയായ വാക്ക് തിരഞ്ഞെടുക്കുക:',
+                        te: 'సరైన పదంతో ఖాళీని భర్తీ చేయండి:'
+                    }),
+                    options: [
+                        { id: 1, text: 'సాధన', is_correct: true },
+                        { id: 2, text: 'నిద్ర', is_correct: false },
+                        { id: 3, text: 'ఆలస్యం', is_correct: false },
+                        { id: 4, text: 'కోపం', is_correct: false },
+                    ],
+                    explanation: "'సాధన' అనగా అభ్యాసము."
+                },
+                {
+                    id: 'q5',
+                    skill: 'Voice & Pronunciation',
+                    question_type: 'voice_speaking',
+                    prompt: 'ఈ వాక్యాన్ని బిగ్గరగా చదవండి:',
+                    target_phrase: 'నమస్కారం! నేను లింగోపాత్ తో తెలుగు చదవడం నేర్చుకుంటున్నాను.',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Speak this sentence aloud into the microphone:',
+                        kn: 'ಈ ವಾಕ್ಯವನ್ನು ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ:',
+                        hi: 'इस वाक्य को स्पष्ट रूप से बोलें:',
+                        ta: 'இந்த வாக்கியத்தை சத்தமாகப் பேசுங்கள்:',
+                        ml: 'ഈ വാക്യം വ്യക്തമായി സംസാരിക്കുക:',
+                        te: 'ఈ వాక్యాన్ని బిగ్గరగా చదవండి:'
+                    }),
+                    options: [],
+                    explanation: 'స్పష్టమైన ఉచ్ఛారణతో చదవండి.'
+                },
+                {
+                    id: 'q6',
+                    skill: 'Grammar Basics',
+                    question_type: 'fill_blank',
+                    prompt: 'సరైన పదాన్ని ఎంచుకోండి:',
+                    passage: 'శుభ _____! మీ రోజు ప్రశాంతంగా ఉండాలి.',
+                    highlight_word: '_____',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Choose the correct greeting word:',
+                        kn: 'ಸರಿಯಾದ ಪದವನ್ನು ಆರಿಸಿ:',
+                        hi: 'सही शब्द चुनें:',
+                        ta: 'சரியான சொல்லைத் தேர்ந்தெடுக்கவும்:',
+                        ml: 'ശരിയായ വാക്ക് തിരഞ്ഞെടുക്കുക:',
+                        te: 'సరైన పదాన్ని ఎంచుకోండి:'
+                    }),
+                    options: [
+                        { id: 1, text: 'ఉదయం', is_correct: true },
+                        { id: 2, text: 'రాత్రి', is_correct: false },
+                        { id: 3, text: 'కలం', is_correct: false },
+                        { id: 4, text: 'దారి', is_correct: false },
+                    ],
+                    explanation: "'శుభ ఉదయం' అనగా వేకువ వేళల శుభాకాంక్ష."
+                },
+                {
+                    id: 'q7',
+                    skill: 'Advanced Sentence Building',
+                    question_type: 'arrange_words',
+                    prompt: 'పదాలను సక్రమమైన వరుసలో అమర్చండి:',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Arrange the words to form a coherent sentence:',
+                        kn: 'ಪದಗಳನ್ನು ಸರಿಯಾದ ಕ್ರಮದಲ್ಲಿ ಇರಿಸಿ:',
+                        hi: 'शब्दों को सही क्रम में रखें:',
+                        ta: 'சொற்களை வரிசைப்படுத்துங்கள்:',
+                        ml: 'വാക്കുകൾ ശരിയായ ക്രമത്തിൽ വെക്കുക:',
+                        te: 'సరియైన వరుసలో అమర్చండి:'
+                    }),
+                    options: [
+                        { id: 1, text: 'మనం కలిసి కొత్త భాషలు నేర్చుకుందాం.', is_correct: true },
+                        { id: 2, text: 'భాషలు మనం నేర్చుకుందాం కలిసి కొత్త.', is_correct: false },
+                        { id: 3, text: 'కొత్త నేర్చుకుందాం కలిసి మనం భాషలు.', is_correct: false },
+                        { id: 4, text: 'నేర్చుకుందాం కొత్త భాషలు మనం కలిసి.', is_correct: false },
+                    ],
+                    explanation: 'సరియైన వాక్య నిర్మాణం.'
+                },
+                {
+                    id: 'q8',
+                    skill: 'Contextual Vocabulary',
+                    question_type: 'match_words',
+                    prompt: '"స్నేహితుడు" అనే పదానికి అర్థాన్ని ఎంచుకోండి:',
+                    highlight_word: 'స్నేహితుడు',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Select the synonym for "స్నేహితుడు" (Friend):',
+                        kn: '"స్నేహితుడు" (ಸ್ನೇಹಿತ) ಪದದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                        hi: 'सही अर्थ चुनें:',
+                        ta: 'சரியான பொருளைத் தேர்ந்தெடுக்கவும்:',
+                        ml: 'ശരിയായ അർത്ഥം കണ്ടെത്തുക:',
+                        te: 'సరైన అర్థాన్ని ఎంచుకోండి:'
+                    }),
+                    options: [
+                        { id: 1, text: 'మిత్రుడు / సహచరుడు', is_correct: true },
+                        { id: 2, text: 'అపరిచితుడు', is_correct: false },
+                        { id: 3, text: 'ఉపాధ్యాయుడు', is_correct: false },
+                        { id: 4, text: 'శత్రువు', is_correct: false },
+                    ],
+                    explanation: "'స్నేహితుడు' అనగా మిత్రుడు."
+                },
+                {
+                    id: 'q9',
+                    skill: 'Reading Comprehension',
+                    question_type: 'reading_passage',
+                    prompt: 'పాఠ్యాంశాన్ని చదివి గీతకు ఏమి ఇష్టమో ఎంచుకోండి:',
+                    passage: 'గీత ప్రతిరోజూ ఉదయాన్నే లేచి పుస్తకాలు చదువుతుంది.',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Read the sentence and pick what Geetha likes:',
+                        kn: 'ವಾಕ್ಯವನ್ನು ಓದಿ ಗೀತಾಗೆ ಏನು ಇಷ್ಟ ಎಂದು ಗುರುತಿಸಿ:',
+                        hi: 'गद्यांश पढ़कर सही उत्तर चुनें:',
+                        ta: 'படித்து சரியான விடையைத் தேர்ந்தெடுக்கவும்:',
+                        ml: 'ശരിയായ ഉത്തരം തിരഞ്ഞെടുക്കുക:',
+                        te: 'చదివి సరైన సమాధానం ఎంచుకోండి:'
+                    }),
+                    options: [
+                        { id: 1, text: 'ఉదయాన్నే పుస్తకాలు చదవడం', is_correct: true },
+                        { id: 2, text: 'రోజంతా టీవీ చూడటం', is_correct: false },
+                        { id: 3, text: 'ఫోన్ లో ఆటలు ఆడటం', is_correct: false },
+                        { id: 4, text: 'మధ్యాహ్నం వరకు నిద్రపోవడం', is_correct: false },
+                    ],
+                    explanation: 'గీత ఉదయాన్నే పుస్తకాలు చదువుతుంది.'
+                },
+                {
+                    id: 'q10',
+                    skill: 'Speaking Practice',
+                    question_type: 'voice_speaking',
+                    prompt: 'ఈ వాక్యాన్ని స్పష్టంగా మాట్లాడండి:',
+                    target_phrase: 'నాకు చదవడం మరియు వ్రాయడం చాలా ఇష్టం.',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Speak this phrase clearly into microphone:',
+                        kn: 'ಈ ವಾಕ್ಯವನ್ನು ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ:',
+                        hi: 'स्पष्ट रूप से बोलें:',
+                        ta: 'தெளிவாகப் பேசுங்கள்:',
+                        ml: 'വ്യക്തമായി സംസാരിക്കുക:',
+                        te: 'స్పష్టంగా మాట్లాడండి:'
+                    }),
+                    options: [],
+                    explanation: 'స్పష్టమైన ఉచ్ఛారణతో చెప్పండి.'
+                }
+            ];
+        }
+
+        // 3. Target = Kannada
+        if (target === 'Kannada') {
+            return [
+                {
+                    id: 'q1',
+                    skill: 'Alphabet & Reading',
+                    question_type: 'reading_passage',
+                    prompt: 'ವಾಕ್ಯವನ್ನು ಓದಿ "ಪುಸ್ತಕ" ಪದದ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                    passage: 'ರವಿ ಪ್ರತಿದಿನ ಶಾಲೆಯಲ್ಲಿ ಪುಸ್ತಕ ಓದುತ್ತಾನೆ.',
+                    highlight_word: 'ಪುಸ್ತಕ',
+                    comfortable_bridge: getBridge('ಪುಸ್ತಕ', {
+                        en: 'Book',
+                        hi: 'किताब',
+                        te: 'పుస్తకం',
+                        ta: 'புத்தகம்',
+                        ml: 'പുസ്തകം',
+                        kn: 'ಗ್ರಂಥ'
+                    }),
+                    options: [
+                        { id: 1, text: 'ಗ್ರಂಥ / ಪುಸ್ತಕ', is_correct: true },
+                        { id: 2, text: 'ನೀರು / ಜಲ', is_correct: false },
+                        { id: 3, text: 'ಮನೆ / ಭವನ', is_correct: false },
+                        { id: 4, text: 'ಆಹಾರ / ಊಟ', is_correct: false },
+                    ],
+                    explanation: "'ಪುಸ್ತಕ' ಎಂದರೆ ಓದುವ ಗ್ರಂಥ."
+                },
+                {
+                    id: 'q2',
+                    skill: 'Vocabulary',
+                    question_type: 'match_words',
+                    prompt: '"ಅವಕಾಶ" ಪದಕ್ಕೆ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                    highlight_word: 'ಅವಕಾಶ',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Select the right synonym for "ಅವಕಾಶ" (Opportunity):',
+                        hi: '"ಅವಕಾಶ" (अवसर) का सही अर्थ चुनें:',
+                        te: '"అవకాశం" కి సరిపోయే అర్థాన్ని ఎంచుకోండి:',
+                        ta: 'சரியான பொருளைத் தேர்ந்தெடுக்கவும்:',
+                        ml: 'ശരിയായ അർത്ഥം കണ്ടെത്തുക:',
+                        kn: 'ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:'
+                    }),
+                    options: [
+                        { id: 1, text: 'ಒಳ್ಳೆಯ ಸಮಯ / ಅನುಕೂಲ', is_correct: true },
+                        { id: 2, text: 'ದೊಡ್ಡ ಅಡಚಣೆ', is_correct: false },
+                        { id: 3, text: 'ಬರಹದ ತಪ್ಪು', is_correct: false },
+                        { id: 4, text: 'ಹಳೆಯ ಕಥೆ', is_correct: false },
+                    ],
+                    explanation: "'ಅವಕಾಶ' ಎಂದರೆ ಅನುಕೂಲಕರ ಸಂದರ್ಭ."
+                },
+                {
+                    id: 'q3',
+                    skill: 'Sentence Structure',
+                    question_type: 'arrange_words',
+                    prompt: 'ಸರಿಯಾದ ಕನ್ನಡ ವಾಕ್ಯವನ್ನು ರಚಿಸಲು ಪದಗಳನ್ನು ಜೋಡಿಸಿ:',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Arrange the words to form a correct Kannada sentence:',
+                        hi: 'सही वाक्य क्रम चुनें:',
+                        te: 'సరైన వాక్య క్రమాన్ని ఎంచుకోండి:',
+                        ta: 'சொற்களை வரிசைப்படுத்துங்கள்:',
+                        ml: 'വാക്കുകൾ ക്രമീകരിക്കുക:',
+                        kn: 'ಸರಿಯಾದ ವಾಕ್ಯ ರಚನೆಗಾಗಿ ಜೋಡಿಸಿ:'
+                    }),
+                    options: [
+                        { id: 1, text: 'ನಾನು ಪ್ರತಿದಿನ ಹೊಸ ಭಾಷೆ ಕಲಿಯುತ್ತೇನೆ.', is_correct: true },
+                        { id: 2, text: 'ಕಲಿಯುತ್ತೇನೆ ನಾನು ಹೊಸ ಭಾಷೆ ಪ್ರತಿದಿನ.', is_correct: false },
+                        { id: 3, text: 'ಹೊಸ ಭಾಷೆ ಕಲಿಯುತ್ತೇನೆ ಪ್ರತಿದಿನ ನಾನು.', is_correct: false },
+                        { id: 4, text: 'ಪ್ರತಿದಿನ ಕಲಿಯುತ್ತೇನೆ ನಾನು ಹೊಸ ಭಾಷೆ.', is_correct: false },
+                    ],
+                    explanation: 'ಕರ್ತೃ + ಕಾಲ + ಕರ್ಮ + ಕ್ರಿಯಾಪದ.'
+                },
+                {
+                    id: 'q4',
+                    skill: 'Comprehension & Context',
+                    question_type: 'fill_blank',
+                    prompt: 'ಯಶಸ್ಸಿಗೆ ನಿರಂತರ _____ ಅಗತ್ಯ.',
+                    passage: 'ಯಶಸ್ಸಿಗೆ ನಿರಂತರ _____ ಅಗತ್ಯ.',
+                    highlight_word: '_____',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Fill in the blank with the appropriate word:',
+                        hi: 'सही शब्द से खाली स्थान भरें:',
+                        te: 'సరిపోయే పదంతో భర్తీ చేయండి:',
+                        ta: 'கோடிட்ட இடத்தை நிரப்பவும்:',
+                        ml: 'വിടവ് നികത്തുക:',
+                        kn: 'ಸರಿಯಾದ ಪದದಿಂದ ಭರ್ತಿ ಮಾಡಿ:'
+                    }),
+                    options: [
+                        { id: 1, text: 'ಅಭ್ಯಾಸ', is_correct: true },
+                        { id: 2, text: 'ಆಲಸ್ಯ', is_correct: false },
+                        { id: 3, text: 'ನಿದ್ರೆ', is_correct: false },
+                        { id: 4, text: 'ಕೋಪ', is_correct: false },
+                    ],
+                    explanation: "'ಅಭ್ಯಾಸ' ವಾಕ್ಯಕ್ಕೆ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ನೀಡುತ್ತದೆ."
+                },
+                {
+                    id: 'q5',
+                    skill: 'Voice & Pronunciation',
+                    question_type: 'voice_speaking',
+                    prompt: 'ಈ ವಾಕ್ಯವನ್ನು ಗಟ್ಟಿಯಾಗಿ ಮಾತನಾಡಿ:',
+                    target_phrase: 'ನಮಸ್ಕಾರ! ನಾನು ಲಿಂಗೋಪಾತ್ ಮೂಲಕ ಕನ್ನಡ ಕಲಿಯುತ್ತಿದ್ದೇನೆ.',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Speak this sentence aloud into the microphone:',
+                        hi: 'इस वाक्य को स्पष्ट रूप से बोलें:',
+                        te: 'ఈ వాక్యాన్ని బిగ్గరగా చదవండి:',
+                        ta: 'இந்த வாக்கியத்தை சத்தமாகப் பேசுங்கள்:',
+                        ml: 'ഈ വാക്യം സംസാരിക്കുക:',
+                        kn: 'ಈ ವಾಕ್ಯವನ್ನು ಗಟ್ಟಿಯಾಗಿ ಮಾತನಾಡಿ:'
+                    }),
+                    options: [],
+                    explanation: 'ಸ್ಪಷ್ಟವಾಗಿ ಉಚ್ಚರಿಸಿ.'
+                }
+            ];
+        }
+
+        // Default English Target Language Set
+        return [
+            {
+                id: 'q1',
+                skill: 'Reading Passage',
+                question_type: 'reading_passage',
+                prompt: `Read the passage and select the correct meaning of 'excited':`,
+                passage: `Ravi was excited to visit the library every morning. He loved reading stories about different countries.`,
+                highlight_word: 'excited',
+                comfortable_bridge: getBridge('excited', {
+                    en: 'Excited / Enthusiastic',
+                    hi: 'उत्साहित',
+                    te: 'ఉత్సాహం',
+                    kn: 'ಉತ್ಸಾಹಭರಿತ',
+                    ta: 'ஆர்வமுள்ள',
+                    ml: 'ഉത്സാഹഭരിതനായ'
+                }),
+                options: [
+                    { id: 1, text: 'Enthusiastic and keen', is_correct: true },
+                    { id: 2, text: 'Uninterested and bored', is_correct: false },
+                    { id: 3, text: 'Fearful and hesitant', is_correct: false },
+                    { id: 4, text: 'Tired and sleepy', is_correct: false },
+                ],
+                explanation: '"Excited" means eager and enthusiastic.'
+            },
+            {
+                id: 'q2',
+                skill: 'Vocabulary Matching',
+                question_type: 'match_words',
+                prompt: `Select the synonym that best matches 'opportunity':`,
+                highlight_word: 'opportunity',
+                comfortable_bridge: getGenericBridge({
+                    en: `Select the synonym that best matches 'opportunity':`,
+                    hi: `'opportunity' (अवसर) का सही पर्याय चुनें:`,
+                    te: `'opportunity' (అవకాశం) కి సరిపోయే అర్థాన్ని ఎంచుకోండి:`,
+                    kn: `'opportunity' (ಅವಕಾಶ) ಪದದ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:`,
+                    ta: `'opportunity' (வாய்ப்பு) என்ற சொல்லின் பொருளைத் தேர்ந்தெடுக்கவும்:`,
+                    ml: `'opportunity' (അവസരം) എന്ന വാക്കിന്റെ അർത്ഥം കണ്ടെത്തുക:`
+                }),
+                options: [
+                    { id: 1, text: 'Favorable chance or moment', is_correct: true },
+                    { id: 2, text: 'Difficult obstacle or delay', is_correct: false },
+                    { id: 3, text: 'Misunderstanding or mistake', is_correct: false },
+                    { id: 4, text: 'Written record or document', is_correct: false },
+                ],
+                explanation: 'An opportunity is a favorable set of circumstances.'
+            },
+            {
+                id: 'q3',
+                skill: 'Sentence Structure',
+                question_type: 'arrange_words',
+                prompt: `Arrange the words to form a grammatically correct sentence:`,
+                comfortable_bridge: getGenericBridge({
+                    en: `Arrange words in subject + verb + object order:`,
+                    hi: `व्याकरण की दृष्टि से सही वाक्य क्रम चुनें:`,
+                    te: `సరైన వాక్య క్రమంలో అమర్చండి:`,
+                    kn: `ಸರಿಯಾದ ವಾಕ್ಯ ರಚನೆಗಾಗಿ ಜೋಡಿಸಿ:`,
+                    ta: `சரியான வாக்கியமாக அமைக்கவும்:`,
+                    ml: `ശരിയായ വാക്യം നിർമ്മിക്കുക:`
+                }),
+                options: [
+                    { id: 1, text: 'Every day she practices speaking fluent English.', is_correct: true },
+                    { id: 2, text: 'Practices she fluent English speaking every day.', is_correct: false },
+                    { id: 3, text: 'English fluent she practices speaking every day.', is_correct: false },
+                    { id: 4, text: 'Every day fluent English she speaking practices.', is_correct: false },
+                ],
+                explanation: 'Correct standard English word order: Subject + Verb + Object + Time clause.'
+            },
+            {
+                id: 'q4',
+                skill: 'Comprehension & Context',
+                question_type: 'fill_blank',
+                prompt: `Fill in the blank with the most fitting word:`,
+                passage: `Regular _____ is essential to master any new skill or spoken language.`,
+                highlight_word: '_____',
+                comfortable_bridge: getGenericBridge({
+                    en: `Choose the word that makes the sentence logical and meaningful:`,
+                    hi: `खाली स्थान के लिए सबसे उपयुक्त शब्द चुनें:`,
+                    te: `ఖాళీని సరియైన పదంతో భర్తీ చేయండి:`,
+                    kn: `ಖಾಲಿ ಜಾಗವನ್ನು ಸೂಕ್ತ ಪದದಿಂದ ಭರ್ತಿ ಮಾಡಿ:`,
+                    ta: `பொருத்தமான சொல்லால் நிரப்புக:`,
+                    ml: `ശരിയായ വാക്ക് കൊണ്ട് വിടവ് നികത്തുക:`
+                }),
+                options: [
+                    { id: 1, text: 'practice', is_correct: true },
+                    { id: 2, text: 'hesitation', is_correct: false },
+                    { id: 3, text: 'silence', is_correct: false },
+                    { id: 4, text: 'distraction', is_correct: false },
+                ],
+                explanation: '"Practice" logically completes the context of mastering a skill.'
+            },
+            {
+                id: 'q5',
+                skill: 'Voice & Pronunciation',
+                question_type: 'voice_speaking',
+                prompt: `Read the following sentence aloud clearly into your microphone:`,
+                target_phrase: `Consistency and daily practice lead to fluency and confidence.`,
+                comfortable_bridge: getGenericBridge({
+                    en: `Speak this sentence into microphone:`,
+                    hi: `इस वाक्य को माइक्रोफ़ोन में स्पष्ट रूप से बोलें:`,
+                    te: `ఈ వాక్యాన్ని బిగ్గరగా చదివి రికార్డ్ చేయండి:`,
+                    kn: `ಈ ವಾಕ್ಯವನ್ನು ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ:`,
+                    ta: `இந்த வாக்கியத்தை ஒலிவாங்கியில் பேசவும்:`,
+                    ml: `ഈ വാക്യം വ്യക്തമായി സംസാരിക്കുക:`
+                }),
+                options: [],
+                explanation: 'Focus on clear pronunciation.'
+            }
+        ];
     },
 
     async submitDiagnostic(answers: Record<string, any>): Promise<{ accuracy: number; insight: AILearnerInsight }> {
         try {
             return await apiClient.post<{ accuracy: number; insight: AILearnerInsight }>('/assessment/submit/', { answers });
-        } catch (err: any) {
-            const profile = StorageService.getProfile();
+        } catch {
             const defaultInsight: AILearnerInsight = {
                 summary_headline: "Personalized Literacy Assessment Complete ✨",
                 reading_summary: "You are comfortable with short passages and everyday written signs.",
@@ -504,14 +729,14 @@ export const assessmentService = {
                 recommended_focus: "Everyday conversations + sentence building",
                 recommended_starting_point: "Level 2 Reading & Level 1 Speaking",
             };
-            return { accuracy: 80.0, insight: defaultInsight };
+            return { accuracy: 85.0, insight: defaultInsight };
         }
     },
 
     async getAILearnerInsights(): Promise<AILearnerInsight> {
         try {
             return await apiClient.get<AILearnerInsight>('/insights/');
-        } catch (err: any) {
+        } catch {
             return {
                 summary_headline: "Personalized Literacy Diagnostic Complete ✨",
                 reading_summary: "You recognize everyday words and simple passages with high confidence.",

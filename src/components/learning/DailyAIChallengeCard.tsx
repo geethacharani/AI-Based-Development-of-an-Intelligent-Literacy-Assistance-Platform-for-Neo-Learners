@@ -51,7 +51,7 @@ export const DailyAIChallengeCard: React.FC = () => {
 
                     <div>
                         <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
-                            "{challenge.theme}"
+                            "{t('daily_focus_mastery_booster') || challenge.theme}"
                         </h3>
                         <p className="text-xs sm:text-sm text-slate-600 font-medium mt-1">
                             {t('challenge_desc_prefix')} <strong className="text-purple-700">{targetLangName}</strong> {t('challenge_desc_suffix')}
