@@ -605,6 +605,230 @@ export const assessmentService = {
             ];
         }
 
+        // 4. Target = Tamil
+        if (target === 'Tamil') {
+            return [
+                {
+                    id: 'q1',
+                    skill: 'Alphabet & Reading',
+                    question_type: 'reading_passage',
+                    prompt: 'பத்தியைப் படித்து "ஆர்வமுள்ள" என்ற சொல்லின் சரியான பொருளைத் தேர்ந்தெடுக்கவும்:',
+                    passage: 'ரவி ஒவ்வொரு காலையிலும் நூலகத்திற்குச் செல்ல மிகவும் ஆர்வமாக இருந்தான். வெவ்வேறு நாடுகளைப் பற்றிய கதைகளைப் படிக்க அவன் விரும்பினான்.',
+                    highlight_word: 'ஆர்வமுள்ள',
+                    comfortable_bridge: getBridge('ஆர்வமுள்ள', {
+                        en: 'Excited / Enthusiastic',
+                        hi: 'उत्साहित',
+                        te: 'ఉత్సాహం',
+                        kn: 'ಉತ್ಸಾಹಭರಿತ',
+                        ta: 'ஆர்வம் மற்றும் உற்சாகம்',
+                        ml: 'ഉത്സാഹഭരിതനായ'
+                    }),
+                    options: [
+                        { id: 1, text: 'ஆர்வம் மற்றும் உற்சாகம் (Enthusiastic and keen)', is_correct: true },
+                        { id: 2, text: 'ஆர்வம் இன்மையும் சலிப்பும்', is_correct: false },
+                        { id: 3, text: 'பயமும் தயக்கமும்', is_correct: false },
+                        { id: 4, text: 'சோர்வும் தூக்கமும்', is_correct: false },
+                    ],
+                    explanation: '"ஆர்வமுள்ள" என்றால் மிகுந்த ஈடுபாடும் உற்சாகமும் கொண்டது.'
+                },
+                {
+                    id: 'q2',
+                    skill: 'Vocabulary',
+                    question_type: 'match_words',
+                    prompt: '"வாய்ப்பு" என்ற சொல்லின் சரியான பொருளைத் தேர்ந்தெடுக்கவும்:',
+                    highlight_word: 'வாய்ப்பு',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Select the correct meaning for "வாய்ப்பு" (Opportunity):',
+                        hi: '"வாய்ப்பு" (अवसर) का सही अर्थ चुनें:',
+                        te: '"வாய்ப்பு" (అవకాశం) కి సరిపోయే అర్థాన్ని ఎంచుకోండి:',
+                        kn: '"வாய்ப்பு" (ಅವಕಾಶ) ಪದದ ಸರಿಯಾದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                        ml: '"வாய்ப்பு" (അവസരം) എന്ന വാക്കിന്റെ അർത്ഥം കണ്ടെത്തുക:',
+                        ta: 'சரியான பொருளைத் தேர்ந்தெடுக்கவும்:'
+                    }),
+                    options: [
+                        { id: 1, text: 'நல்ல நேரம் / நல் வாய்ப்பு', is_correct: true },
+                        { id: 2, text: 'பெரிய தடை அல்லது தாமதம்', is_correct: false },
+                        { id: 3, text: 'எழுத்துப் பிழை', is_correct: false },
+                        { id: 4, text: 'பழைய கதை', is_correct: false },
+                    ],
+                    explanation: '"வாய்ப்பு" என்பது ஒரு செயலைச் செய்ய ஏற்ற தருணம்.'
+                },
+                {
+                    id: 'q3',
+                    skill: 'Sentence Structure',
+                    question_type: 'arrange_words',
+                    prompt: 'சரியான தமிழ் வாக்கியத்தை அமைக்க சொற்களை ஒழுங்குபடுத்துங்கள்:',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Arrange the words to form a correct Tamil sentence:',
+                        hi: 'सही तमिल वाक्य क्रम चुनें:',
+                        te: 'సరైన వాక్య క్రమాన్ని ఎంచుకోండి:',
+                        kn: 'ಸರಿಯಾದ ವಾಕ್ಯ ರಚನೆಗಾಗಿ ಜೋಡಿಸಿ:',
+                        ml: 'വാക്കുകൾ ക്രമീകരിക്കുക:',
+                        ta: 'சரியான வாக்கிய அமைப்பைத் தேர்ந்தெடுக்கவும்:'
+                    }),
+                    options: [
+                        { id: 1, text: 'நான் தினமும் புதிய மொழியைக் கற்கிறேன்.', is_correct: true },
+                        { id: 2, text: 'கற்கிறேன் நான் புதிய மொழியைக் தினமும்.', is_correct: false },
+                        { id: 3, text: 'தினமும் கற்கிறேன் மொழியைக் புதிய நான்.', is_correct: false },
+                        { id: 4, text: 'புதிய மொழியைக் தினமும் கற்கிறேன் நான்.', is_correct: false },
+                    ],
+                    explanation: 'எழுவாய் + கால இடைநிலை + செயப்படுபொருள் + பயனிலை.'
+                },
+                {
+                    id: 'q4',
+                    skill: 'Comprehension & Context',
+                    question_type: 'fill_blank',
+                    prompt: 'வெற்றிக்கு தொடர்ச்சியான _____ அவசியம்.',
+                    passage: 'வெற்றிக்கு தொடர்ச்சியான _____ அவசியம்.',
+                    highlight_word: '_____',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Fill in the blank with the appropriate word:',
+                        hi: 'सही शब्द से खाली स्थान भरें:',
+                        te: 'సరిపోయే పదంతో భర్తీ చేయండి:',
+                        kn: 'ಸೂಕ್ತ ಪದದಿಂದ ಭರ್ತಿ ಮಾಡಿ:',
+                        ml: 'വിടവ് നികത്തുക:',
+                        ta: 'சரியான சொல்லால் நிரப்புக:'
+                    }),
+                    options: [
+                        { id: 1, text: 'பயிற்சி', is_correct: true },
+                        { id: 2, text: 'சோம்பல்', is_correct: false },
+                        { id: 3, text: 'தூக்கம்', is_correct: false },
+                        { id: 4, text: 'கோபம்', is_correct: false },
+                    ],
+                    explanation: '"பயிற்சி" என்பது தொடர் முயற்சியைக் குறிக்கிறது.'
+                },
+                {
+                    id: 'q5',
+                    skill: 'Voice & Pronunciation',
+                    question_type: 'voice_speaking',
+                    prompt: 'இந்த வாக்கியத்தை உரக்கப் படித்து பதிவு செய்யுங்கள்:',
+                    target_phrase: 'வணக்கம்! நான் லிங்கோபாத் மூலம் தமிழ் கற்றுக்கொள்கிறேன்.',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Speak this sentence aloud into the microphone:',
+                        hi: 'इस वाक्य को स्पष्ट रूप से बोलें:',
+                        te: 'ఈ వాక్యాన్ని బిగ్గరగా చదవండి:',
+                        kn: 'ಈ ವಾಕ್ಯವನ್ನು ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ:',
+                        ml: 'ഈ വാക്യം വ്യക്തമായി സംസാരിക്കുക:',
+                        ta: 'இந்த வாக்கியத்தை உரக்கப் படிக்கவும்:'
+                    }),
+                    options: [],
+                    explanation: 'தெளிவாக உச்சரிக்கவும்.'
+                }
+            ];
+        }
+
+        // 5. Target = Malayalam
+        if (target === 'Malayalam') {
+            return [
+                {
+                    id: 'q1',
+                    skill: 'Alphabet & Reading',
+                    question_type: 'reading_passage',
+                    prompt: 'ഖണ്ഡിക വായിച്ച് "ആവേശം" എന്ന വാക്കിന്റെ ശരിയായ അർത്ഥം തിരഞ്ഞെടുക്കുക:',
+                    passage: 'രവി ദിവസവും രാവിലെയെ ലൈബ്രറി സന്ദർശിക്കാൻ വളരെ ആവേശഭരിതനായിരുന്നു. വിവിധ രാജ്യങ്ങളെക്കുറിച്ചുള്ള കഥകൾ വായിക്കാൻ അവൻ ഇഷ്ടപ്പെട്ടു.',
+                    highlight_word: 'ആവേശം',
+                    comfortable_bridge: getBridge('ആവേശം', {
+                        en: 'Excited / Enthusiastic',
+                        hi: 'उत्साहित',
+                        te: 'ఉత్സാహం',
+                        kn: 'ಉತ್ಸಾಹಭರಿತ',
+                        ta: 'ஆர்வமுள்ள',
+                        ml: 'വളരെ കൗതുകവും സന്തോഷവും'
+                    }),
+                    options: [
+                        { id: 1, text: 'വളരെ കൗതുകവും സന്തോഷവും (Enthusiastic and keen)', is_correct: true },
+                        { id: 2, text: 'താൽപ്പര്യമില്ലാത്തതും മടുപ്പുള്ളതും', is_correct: false },
+                        { id: 3, text: 'ഭയമുള്ളതും സംശയാസ്പദമായതും', is_correct: false },
+                        { id: 4, text: 'ക്ഷീണിതനും ഉറക്കം വരുന്നവനും', is_correct: false },
+                    ],
+                    explanation: '"ആവേശം" എന്നാൽ സന്തോഷത്തോടുകൂടിയ വലിയ താല്പര്യം.'
+                },
+                {
+                    id: 'q2',
+                    skill: 'Vocabulary',
+                    question_type: 'match_words',
+                    prompt: '"അവസരം" എന്ന വാക്കിന്റെ ശരിയായ അർത്ഥം തിരഞ്ഞെടുക്കുക:',
+                    highlight_word: 'അവസരം',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Select the right synonym for "അവസരം" (Opportunity):',
+                        hi: '"അവസരം" (अवसर) का सही अर्थ चुनें:',
+                        te: '"അവസരം" (అవకాశం) కి సరిపోయే అర్థాన్ని ఎంచుకోండి:',
+                        kn: '"അവസരം" (ಅವಕಾಶ) ಪದದ ಅರ್ಥವನ್ನು ಆರಿಸಿ:',
+                        ta: '"அവസരം" (வாய்ப்பு) என்பதன் பொருளைத் தேர்ந்தெடுக்கவும்:',
+                        ml: 'ശരിയായ അർത്ഥം കണ്ടെത്തുക:'
+                    }),
+                    options: [
+                        { id: 1, text: 'നല്ല സമയം / ശുഭ മുഹൂർത്തം', is_correct: true },
+                        { id: 2, text: 'വലിയ തടസ്സം അല്ലെങ്കിൽ കാലതാമസം', is_correct: false },
+                        { id: 3, text: 'എഴുത്തിലെ തെറ്റ്', is_correct: false },
+                        { id: 4, text: 'പഴയ കഥ', is_correct: false },
+                    ],
+                    explanation: '"അവസരം" എന്നാൽ അനുയോജ്യമായ സമയം.'
+                },
+                {
+                    id: 'q3',
+                    skill: 'Sentence Structure',
+                    question_type: 'arrange_words',
+                    prompt: 'ശരിയായ മലയാളം വാക്യം നിർമ്മിക്കാൻ വാക്കുകൾ ക്രമീകരിക്കുക:',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Arrange the words to form a correct Malayalam sentence:',
+                        hi: 'सही वाक्य क्रम चुनें:',
+                        te: 'సరైన వాక్య క్రమాన్ని ఎంచుకోండి:',
+                        kn: 'ಸರಿಯಾದ ವಾಕ್ಯ ರಚನೆಗಾಗಿ ಜೋಡಿಸಿ:',
+                        ta: 'சொற்களை வரிசைப்படுத்துங்கள்:',
+                        ml: 'ശരിയായ വാക്യം നിർമ്മിക്കുക:'
+                    }),
+                    options: [
+                        { id: 1, text: 'ഞാൻ ദിവസവും പുതിയ ഭാഷ പഠിക്കുന്നു.', is_correct: true },
+                        { id: 2, text: 'പഠിക്കുന്നു ഞാൻ ഭാഷ പുതിയ ദിവസവും.', is_correct: false },
+                        { id: 3, text: 'ദിവസവും പഠിക്കുന്നു ഭാഷ പുതിയ ഞാൻ.', is_correct: false },
+                        { id: 4, text: 'പുതിയ ഭാഷ ദിവസവും പഠിക്കുന്നു ഞാൻ.', is_correct: false },
+                    ],
+                    explanation: 'കർത്താവ് + സമയം + കർമ്മം + ക്രിയ.'
+                },
+                {
+                    id: 'q4',
+                    skill: 'Comprehension & Context',
+                    question_type: 'fill_blank',
+                    prompt: 'വിജയത്തിന് നിരന്തരമായ _____ ആവശ്യമാണ്.',
+                    passage: 'വിജയത്തിന് നിരന്തരമായ _____ ആവശ്യമാണ്.',
+                    highlight_word: '_____',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Fill in the blank with the appropriate word:',
+                        hi: 'सही शब्द से खाली स्थान भरें:',
+                        te: 'సరిపోయే పదంతో భర్తీ చేయండి:',
+                        kn: 'ಸೂಕ್ತ ಪದದಿಂದ ಭರ್ತಿ ಮಾಡಿ:',
+                        ta: 'கோடிட்ட இடத்தை நிரப்பவும்:',
+                        ml: 'ശരിയായ വാക്ക് കൊണ്ട് വിടവ് നികത്തുക:'
+                    }),
+                    options: [
+                        { id: 1, text: 'അഭ്യാസം', is_correct: true },
+                        { id: 2, text: 'മടി', is_correct: false },
+                        { id: 3, text: 'ഉറക്കം', is_correct: false },
+                        { id: 4, text: 'ദേഷ്യം', is_correct: false },
+                    ],
+                    explanation: '"അഭ്യാസം" എന്നാൽ തുടർച്ചയായ പരിശീലനം.'
+                },
+                {
+                    id: 'q5',
+                    skill: 'Voice & Pronunciation',
+                    question_type: 'voice_speaking',
+                    prompt: 'ഈ വാക്യം വ്യക്തമായി സംസാരിക്കുക:',
+                    target_phrase: 'നമസ്കാരം! ഞാൻ ലിംഗോപാത്ത് വഴി മലയാളം പഠിക്കുകയാണ്.',
+                    comfortable_bridge: getGenericBridge({
+                        en: 'Speak this sentence aloud into the microphone:',
+                        hi: 'इस वाक्य को स्पष्ट रूप से बोलें:',
+                        te: 'ఈ వాక్యాన్ని బిగ్గరగా చదవండి:',
+                        kn: 'ಈ ವಾಕ್ಯವನ್ನು ಮೈಕ್ರೊಫೋನ್‌ನಲ್ಲಿ ಸ್ಪಷ್ಟವಾಗಿ ಮಾತನಾಡಿ:',
+                        ta: 'இந்த வாக்கியத்தை உரக்கப் படிக்கவும்:',
+                        ml: 'ഈ വാക്യം വ്യക്തമായി സംസാരിക്കുക:'
+                    }),
+                    options: [],
+                    explanation: 'വ്യക്തമായി ഉച്ചരിക്കുക.'
+                }
+            ];
+        }
+
         // Default English Target Language Set
         return [
             {

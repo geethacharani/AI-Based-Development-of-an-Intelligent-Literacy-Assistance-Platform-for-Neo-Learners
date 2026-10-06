@@ -38,15 +38,20 @@ export const DiagnosticAssessmentPage: React.FC = () => {
         { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
     ];
 
-    const initialTargetLang = (profile?.target_language?.code || 'hi').toLowerCase();
+    const initialTargetLang = (profile?.target_language?.code || 'en').toLowerCase();
+    const initialComfortLang = (profile?.comfortable_language?.code || supportLangCode || 'te').toLowerCase();
+
     const [selectedTargetLang, setSelectedTargetLang] = useState<string>(initialTargetLang);
-    const comfortLangCode = (profile?.comfortable_language?.code || supportLangCode || 'en').toLowerCase();
+    const [selectedComfortLang, setSelectedComfortLang] = useState<string>(initialComfortLang);
 
     useEffect(() => {
         if (profile?.target_language?.code) {
             setSelectedTargetLang(profile.target_language.code.toLowerCase());
         }
-    }, [profile?.target_language?.code]);
+        if (profile?.comfortable_language?.code) {
+            setSelectedComfortLang(profile.comfortable_language.code.toLowerCase());
+        }
+    }, [profile?.target_language?.code, profile?.comfortable_language?.code]);
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,7 +68,7 @@ export const DiagnosticAssessmentPage: React.FC = () => {
         const loadQuestions = async () => {
             setIsLoading(true);
             try {
-                const qList = await assessmentService.getDiagnosticQuestions(selectedTargetLang, comfortLangCode);
+                const qList = await assessmentService.getDiagnosticQuestions(selectedTargetLang, selectedComfortLang);
                 setQuestions(qList);
                 setCurrentIndex(0);
                 setSelectedAnswer(null);
@@ -74,7 +79,7 @@ export const DiagnosticAssessmentPage: React.FC = () => {
             }
         };
         loadQuestions();
-    }, [selectedTargetLang, comfortLangCode]);
+    }, [selectedTargetLang, selectedComfortLang]);
 
     const currentQ = questions[currentIndex];
 
@@ -97,8 +102,9 @@ export const DiagnosticAssessmentPage: React.FC = () => {
     }
 
     const activeTargetObj = ASSESSMENT_TARGET_LANGUAGES.find(l => l.code === selectedTargetLang) || ASSESSMENT_TARGET_LANGUAGES[0];
+    const activeComfortObj = ASSESSMENT_TARGET_LANGUAGES.find(l => l.code === selectedComfortLang) || ASSESSMENT_TARGET_LANGUAGES[1];
     const targetLangName = activeTargetObj.name;
-    const comfortableLangName = profile?.comfortable_language?.name || supportLangCode.toUpperCase();
+    const comfortableLangName = `${activeComfortObj.name} (${activeComfortObj.native})`;
 
     const handleSelectOption = (index: number) => {
         setSelectedAnswer(index);
@@ -208,6 +214,7 @@ export const DiagnosticAssessmentPage: React.FC = () => {
                             type="button"
                             onClick={async () => {
                                 setSelectedTargetLang(l.code);
+                                setSelectedComfortLang(l.code);
                                 if (updateTargetLanguage) {
                                     await updateTargetLanguage(l.code);
                                 }
