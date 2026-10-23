@@ -161,10 +161,7 @@ export const lingoBotService = {
     },
 
     isUnlocked(item: CustomizationItem, userXp: number = 0): boolean {
-        if (item.unlockedByDefault || item.xpRequired === 0) return true;
-        const manuallyUnlocked = this.getUnlockedItems();
-        if (manuallyUnlocked.includes(item.id)) return true;
-        return userXp >= item.xpRequired;
+        return true; // All items fully accessible in studio for demo/presentation
     },
 
     getItemsByCategory(category: string): CustomizationItem[] {

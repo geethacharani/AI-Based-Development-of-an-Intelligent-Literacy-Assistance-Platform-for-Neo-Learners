@@ -34,7 +34,8 @@ import {
     Save,
     Star,
     CheckCircle2,
-    HelpCircle
+    HelpCircle,
+    Palette
 } from 'lucide-react';
 import { voiceService } from '../services/voiceService';
 
@@ -350,6 +351,7 @@ export const DressLingoBotPage: React.FC = () => {
         { id: 'bags', label: cur.cat_bags, icon: <Briefcase className="w-4 h-4" /> },
         { id: 'accessories', label: cur.cat_tools, icon: <Wand2 className="w-4 h-4" /> },
         { id: 'auras', label: cur.cat_auras, icon: <Sparkles className="w-4 h-4" /> },
+        { id: 'colors', label: cur.cat_colors || 'Colors', icon: <Palette className="w-4 h-4" /> },
     ];
 
     const currentItems: CustomizationItem[] = selectedCategory !== 'colors'
@@ -603,28 +605,86 @@ export const DressLingoBotPage: React.FC = () => {
         return false;
     };
 
-    const handleSelectItem = (item: CustomizationItem) => {
-        setActiveItem(item);
-        // Play word pronunciation on select
-        const script = item.learning.targetScript[targetLangCode] || item.learning.targetScript['hi'] || item.learning.targetWord;
-        playAudio(script);
-        setBotReaction('curious');
-        setTimeout(() => setBotReaction('happy'), 1200);
+    const handleToggleEquip = (category: ItemCategory, itemId: string) => {
+        const currentlyEquipped = isEquipped(category, itemId);
+        const updated = { ...customization };
+
+        if (currentlyEquipped) {
+            if (category === 'clothes') updated.clothes = 'scholar_vest';
+            else if (category === 'hats') updated.hat = 'none';
+            else if (category === 'glasses') updated.glasses = 'none';
+            else if (category === 'bags') updated.bag = 'none';
+            else if (category === 'accessories') updated.accessory = 'none';
+            else if (category === 'auras') updated.aura = 'none';
+            setBotReaction('thinking');
+        } else {
+            if (category === 'clothes') updated.clothes = itemId;
+            else if (category === 'hats') updated.hat = itemId;
+            else if (category === 'glasses') updated.glasses = itemId;
+            else if (category === 'bags') updated.bag = itemId;
+            else if (category === 'accessories') updated.accessory = itemId;
+            else if (category === 'auras') updated.aura = itemId;
+            setBotReaction('celebrating');
+        }
+
+        setCustomization(updated);
+        lingoBotService.saveCustomization(updated);
+        setTimeout(() => setBotReaction('happy'), 1500);
     };
 
     const handleEquip = (category: ItemCategory, itemId: string) => {
+        handleToggleEquip(category, itemId);
+    };
+
+    const handleSelectColor = (colorId: string) => {
+        const updated = { ...customization, themeColor: colorId };
+        setCustomization(updated);
+        lingoBotService.saveCustomization(updated);
+        setBotReaction('celebrating');
+        setTimeout(() => setBotReaction('happy'), 1200);
+    };
+
+    const handleSelectItem = (item: CustomizationItem) => {
+        setActiveItem(item);
+
+        // Instantly equip or toggle onto LingoBot so it appears on the character avatar!
+        const currentlyEquipped = isEquipped(item.category, item.id);
         const updated = { ...customization };
-        if (category === 'clothes') updated.clothes = itemId;
-        if (category === 'hats') updated.hat = itemId;
-        if (category === 'glasses') updated.glasses = itemId;
-        if (category === 'bags') updated.bag = itemId;
-        if (category === 'accessories') updated.accessory = itemId;
-        if (category === 'auras') updated.aura = itemId;
+
+        if (currentlyEquipped) {
+            if (item.category === 'clothes') updated.clothes = 'scholar_vest';
+            else if (item.category === 'hats') updated.hat = 'none';
+            else if (item.category === 'glasses') updated.glasses = 'none';
+            else if (item.category === 'bags') updated.bag = 'none';
+            else if (item.category === 'accessories') updated.accessory = 'none';
+            else if (item.category === 'auras') updated.aura = 'none';
+            setBotReaction('thinking');
+        } else {
+            if (item.category === 'clothes') updated.clothes = item.id;
+            else if (item.category === 'hats') updated.hat = item.id;
+            else if (item.category === 'glasses') updated.glasses = item.id;
+            else if (item.category === 'bags') updated.bag = item.id;
+            else if (item.category === 'accessories') updated.accessory = item.id;
+            else if (item.category === 'auras') updated.aura = item.id;
+            setBotReaction('celebrating');
+        }
 
         setCustomization(updated);
         lingoBotService.saveCustomization(updated);
 
-        setBotReaction('celebrating');
+        // Mark word as learned and award XP if new
+        const { word, isNew } = lingoBotService.markWordAsLearned(item, targetLangCode, interfaceLangCode);
+        setLearnedWords(lingoBotService.getLearnedWords());
+        lingoCityService.addWordToGarden(word.script, word.phonetic, word.meaning, word.example);
+
+        // Play word pronunciation on select
+        const script = item.learning.targetScript[targetLangCode] || item.learning.targetScript['hi'] || item.learning.targetWord;
+        playAudio(script);
+
+        if (isNew) {
+            setXpNotification(15);
+            setTimeout(() => setXpNotification(null), 3000);
+        }
         setTimeout(() => setBotReaction('happy'), 1500);
     };
 
@@ -922,72 +982,107 @@ export const DressLingoBotPage: React.FC = () => {
                         {/* 2. Educational Item Cards Grid */}
                         <div className="bg-white/95 rounded-3xl p-5 border border-slate-200 shadow-soft space-y-4">
                             <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-                                <span>{cur.choose_item}</span>
-                                <span>{currentItems.length} {cur.items_count}</span>
+                                <span>{selectedCategory === 'colors' ? (cur.cat_colors || 'Choose Body Color') : cur.choose_item}</span>
+                                <span>{selectedCategory === 'colors' ? `${BOT_COLORS.length} Colors` : `${currentItems.length} ${cur.items_count}`}</span>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-1">
-                                {currentItems.map(item => {
-                                    const isSelected = activeItem.id === item.id;
-                                    const equipped = isEquipped(item.category, item.id);
-                                    const unlocked = lingoBotService.isUnlocked(item, userXp);
-                                    const learned = lingoBotService.isWordLearned(item.id);
-                                    const script = item.learning.targetScript[targetLangCode] || item.learning.targetScript['hi'] || item.learning.targetWord;
-
-                                    return (
-                                        <div
-                                            key={item.id}
-                                            onClick={() => handleSelectItem(item)}
-                                            className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative ${
-                                                isSelected
-                                                    ? 'border-brand-600 bg-brand-50/70 shadow-sm ring-2 ring-brand-300'
-                                                    : 'border-slate-200 hover:border-brand-300 bg-white hover:bg-slate-50'
-                                            }`}
-                                        >
-                                            <div className="flex items-start justify-between gap-2">
-                                                <div className="flex items-center gap-2.5">
-                                                    <div
-                                                        className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-2xs shrink-0"
-                                                        style={{ backgroundColor: `${item.previewColor}18` }}
-                                                    >
-                                                        {item.icon}
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="text-xs font-black text-slate-900">{getLocalizedItemName(item)}</h4>
-                                                        <div className="text-[11px] font-bold text-brand-700">
-                                                            {script}
-                                                        </div>
+                            {selectedCategory === 'colors' ? (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    {BOT_COLORS.map(color => {
+                                        const isSelected = customization.themeColor === color.id;
+                                        return (
+                                            <button
+                                                key={color.id}
+                                                type="button"
+                                                onClick={() => handleSelectColor(color.id)}
+                                                className={`p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center gap-2 text-center ${
+                                                    isSelected
+                                                        ? 'border-brand-600 bg-brand-50 shadow-md ring-2 ring-brand-300 scale-102'
+                                                        : 'border-slate-200 hover:border-brand-300 bg-white hover:bg-slate-50'
+                                                }`}
+                                            >
+                                                <div
+                                                    className="w-12 h-12 rounded-full shadow-md flex items-center justify-center text-white transition-transform hover:scale-105"
+                                                    style={{
+                                                        background: `linear-gradient(135deg, ${color.secondary}, ${color.hex})`
+                                                    }}
+                                                >
+                                                    {isSelected && <Check className="w-6 h-6 stroke-[3]" />}
+                                                </div>
+                                                <div>
+                                                    <div className="text-xs font-black text-slate-900">{color.name}</div>
+                                                    <div className="text-[10px] font-bold text-slate-500">
+                                                        {isSelected ? (cur.equipped || 'Equipped') : 'Tap to wear'}
                                                     </div>
                                                 </div>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-1">
+                                    {currentItems.map(item => {
+                                        const isSelected = activeItem.id === item.id;
+                                        const equipped = isEquipped(item.category, item.id);
+                                        const unlocked = lingoBotService.isUnlocked(item, userXp);
+                                        const learned = lingoBotService.isWordLearned(item.id);
+                                        const script = item.learning.targetScript[targetLangCode] || item.learning.targetScript['hi'] || item.learning.targetWord;
 
-                                                {/* Status Badges */}
-                                                {equipped ? (
-                                                    <span className="text-[9px] font-black text-brand-700 bg-brand-100 px-2 py-0.5 rounded-full flex items-center gap-0.5 shrink-0">
-                                                        <Check className="w-3 h-3" /> {cur.equipped}
-                                                    </span>
-                                                ) : learned ? (
-                                                    <span className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full shrink-0">
-                                                        ✓ {cur.learned}
-                                                    </span>
-                                                ) : unlocked ? (
-                                                    <span className="text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full shrink-0">
-                                                        {cur.unlocked}
-                                                    </span>
-                                                ) : (
-                                                    <span className="text-[9px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full flex items-center gap-0.5 shrink-0">
-                                                        <Lock className="w-3 h-3" /> {cur.locked}
-                                                    </span>
-                                                )}
-                                            </div>
+                                        return (
+                                            <div
+                                                key={item.id}
+                                                onClick={() => handleSelectItem(item)}
+                                                className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between relative ${
+                                                    equipped
+                                                        ? 'border-brand-600 bg-brand-50/90 shadow-md ring-2 ring-brand-400'
+                                                        : isSelected
+                                                            ? 'border-indigo-400 bg-indigo-50/50 shadow-sm'
+                                                            : 'border-slate-200 hover:border-brand-300 bg-white hover:bg-slate-50'
+                                                }`}
+                                            >
+                                                <div className="flex items-start justify-between gap-2">
+                                                    <div className="flex items-center gap-2.5">
+                                                        <div
+                                                            className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-2xs shrink-0"
+                                                            style={{ backgroundColor: `${item.previewColor}18` }}
+                                                        >
+                                                            {item.icon}
+                                                        </div>
+                                                        <div>
+                                                            <h4 className="text-xs font-black text-slate-900">{getLocalizedItemName(item)}</h4>
+                                                            <div className="text-[11px] font-bold text-brand-700">
+                                                                {script}
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                            <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                                                <span className="text-slate-500 font-medium">{cur.concept}: {getLocalizedConcept(item.learning.targetWord)}</span>
-                                                <span className="text-brand-600 font-bold hover:underline">{cur.learn_equip}</span>
+                                                    {/* Status Badges */}
+                                                    {equipped ? (
+                                                        <span className="text-[9px] font-black text-brand-800 bg-brand-200/80 px-2 py-0.5 rounded-full flex items-center gap-0.5 shrink-0 shadow-2xs animate-pulse">
+                                                            <Check className="w-3 h-3 text-brand-700" /> {cur.equipped}
+                                                        </span>
+                                                    ) : learned ? (
+                                                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full shrink-0">
+                                                            ✓ {cur.learned}
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-[9px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full shrink-0">
+                                                            {cur.unlocked}
+                                                        </span>
+                                                    )}
+                                                </div>
+
+                                                <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                                                    <span className="text-slate-500 font-medium">{cur.concept}: {getLocalizedConcept(item.learning.targetWord)}</span>
+                                                    <span className={`font-extrabold flex items-center gap-1 ${equipped ? 'text-brand-700' : 'text-slate-600 hover:text-brand-600'}`}>
+                                                        {equipped ? '✓ Wearing' : 'Tap to Wear →'}
+                                                    </span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
 
                         {/* 3. 📖 ACTIVE ITEM LEARNING PANEL (Teaching Vocabulary & Sentences) */}
@@ -1108,13 +1203,15 @@ export const DressLingoBotPage: React.FC = () => {
                                         )}
 
                                         <Button
-                                            variant="primary"
+                                            variant={isEquipped(activeItem.category, activeItem.id) ? "outline" : "primary"}
                                             size="sm"
-                                            onClick={() => handleMarkAsLearned(activeItem)}
+                                            onClick={() => handleToggleEquip(activeItem.category, activeItem.id)}
                                             leftIcon={<Check className="w-3.5 h-3.5" />}
-                                            className="bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs shadow-md"
+                                            className={isEquipped(activeItem.category, activeItem.id)
+                                                ? "border-emerald-500 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 font-extrabold text-xs shadow-sm"
+                                                : "bg-brand-600 hover:bg-brand-700 text-white font-extrabold text-xs shadow-md"}
                                         >
-                                            {isEquipped(activeItem.category, activeItem.id) ? cur.learned_and_equipped : cur.learn_and_wear}
+                                            {isEquipped(activeItem.category, activeItem.id) ? '✓ Currently Wearing (Tap to Remove)' : (cur.learn_and_wear || 'Wear on LingoBot (+15 XP)')}
                                         </Button>
                                     </div>
                                 </div>
